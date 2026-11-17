@@ -676,48 +676,80 @@
           <!-- Controle & Opslaan Formulier (na uitlezen of handmatig) -->
           <div id="sbReviewBox" class="win98-inset p-3 space-y-3">
             <div class="flex justify-between items-center border-b pb-1.5">
-              <h3 class="font-black text-purple-900">📝 Sessie Controleren & Opslaan</h3>
-              <button onclick="addEmptyPlayerRow()" class="win98-btn text-[11px] bg-green-200">+ Speler Toevoegen</button>
+              <h3 class="font-black text-purple-900">📝 Beide Sessies (Foto 1 & Foto 2) Controleren</h3>
+              <span class="text-[11px] text-gray-600 font-bold">CPU's zijn al uitgefilterd</span>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-              <div>
-                <label class="block text-[11px] font-bold text-gray-700 mb-1">Datum van de sessie:</label>
-                <input id="sbSessionDate" type="date" class="w-full border-2 border-gray-500 px-2 py-1 bg-white text-black font-bold text-xs">
+            <div>
+              <label class="block text-[11px] font-bold text-gray-700 mb-1">Datum van deze dinsdagavond:</label>
+              <input id="sbSessionDate" type="date" class="w-full sm:w-64 border-2 border-gray-500 px-2 py-1 bg-white text-black font-bold text-xs">
+            </div>
+
+            <!-- SESSIE / FOTO 1 BLOK -->
+            <div class="border-2 border-blue-400 bg-blue-50/60 p-2.5 rounded space-y-2">
+              <div class="flex flex-wrap justify-between items-center gap-2 border-b border-blue-300 pb-1.5">
+                <span class="font-black text-blue-950 text-xs sm:text-sm">🏁 Sessie 1 (Foto 1)</span>
+                <div class="flex items-center gap-2">
+                  <label class="text-[11px] font-bold text-gray-800">Winnaar Sessie 1:</label>
+                  <select id="sbWinningTeam1" class="border-2 border-gray-500 px-2 py-0.5 bg-white text-black font-bold text-xs">
+                    <option value="Rood">🔴 Team Rood</option>
+                    <option value="Blauw">🔵 Team Blauw</option>
+                    <option value="Geen / FFA">🏁 Geen / FFA</option>
+                  </select>
+                  <button onclick="addEmptyPlayerRow(1)" class="win98-btn text-[10px] bg-green-200">+ Speler</button>
+                </div>
               </div>
-              <div>
-                <label class="block text-[11px] font-bold text-gray-700 mb-1">Winnend Team:</label>
-                <select id="sbWinningTeam" class="w-full border-2 border-gray-500 px-2 py-1 bg-white text-black font-bold text-xs">
-                  <option value="Rood">🔴 Team Rood</option>
-                  <option value="Blauw">🔵 Team Blauw</option>
-                  <option value="Geen / FFA">🏁 Geen / Ieder voor zich</option>
-                </select>
+              <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse text-xs">
+                  <thead>
+                    <tr class="bg-blue-100 border-b border-blue-300">
+                      <th class="p-1">Echte Speler</th>
+                      <th class="p-1 w-20">Punten</th>
+                      <th class="p-1 w-28">Team</th>
+                      <th class="p-1 w-8 text-center">Wis</th>
+                    </tr>
+                  </thead>
+                  <tbody id="sbExtractedRows1">
+                    <tr><td colspan="4" class="p-2 text-center text-gray-500 italic">Upload foto's of klik op "+ Speler".</td></tr>
+                  </tbody>
+                </table>
               </div>
             </div>
 
-            <div class="overflow-x-auto">
-              <table class="w-full text-left border-collapse text-xs">
-                <thead>
-                  <tr class="bg-gray-200 border-b-2 border-gray-400">
-                    <th class="p-1.5">Speler (Echte naam)</th>
-                    <th class="p-1.5 w-24">Punten</th>
-                    <th class="p-1.5 w-28">Team</th>
-                    <th class="p-1.5 w-10 text-center">Wis</th>
-                  </tr>
-                </thead>
-                <tbody id="sbExtractedRows">
-                  <tr>
-                    <td colspan="4" class="p-3 text-center text-gray-500 italic">
-                      Upload 2 foto's hierboven om automatisch in te vullen, of klik op "+ Speler Toevoegen".
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+            <!-- SESSIE / FOTO 2 BLOK -->
+            <div class="border-2 border-purple-400 bg-purple-50/60 p-2.5 rounded space-y-2">
+              <div class="flex flex-wrap justify-between items-center gap-2 border-b border-purple-300 pb-1.5">
+                <span class="font-black text-purple-950 text-xs sm:text-sm">🏁 Sessie 2 (Foto 2)</span>
+                <div class="flex items-center gap-2">
+                  <label class="text-[11px] font-bold text-gray-800">Winnaar Sessie 2:</label>
+                  <select id="sbWinningTeam2" class="border-2 border-gray-500 px-2 py-0.5 bg-white text-black font-bold text-xs">
+                    <option value="Rood">🔴 Team Rood</option>
+                    <option value="Blauw">🔵 Team Blauw</option>
+                    <option value="Geen / FFA">🏁 Geen / FFA</option>
+                  </select>
+                  <button onclick="addEmptyPlayerRow(2)" class="win98-btn text-[10px] bg-green-200">+ Speler</button>
+                </div>
+              </div>
+              <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse text-xs">
+                  <thead>
+                    <tr class="bg-purple-100 border-b border-purple-300">
+                      <th class="p-1">Echte Speler</th>
+                      <th class="p-1 w-20">Punten</th>
+                      <th class="p-1 w-28">Team</th>
+                      <th class="p-1 w-8 text-center">Wis</th>
+                    </tr>
+                  </thead>
+                  <tbody id="sbExtractedRows2">
+                    <tr><td colspan="4" class="p-2 text-center text-gray-500 italic">Optioneel voor 2e foto van de avond.</td></tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
 
             <div class="flex justify-end pt-2 border-t">
               <button id="sbSaveSessionBtn" onclick="saveMarioKartSession()" class="win98-btn py-2 px-5 bg-green-400 hover:bg-green-500 text-black font-black text-xs sm:text-sm">
-                💾 Sessie Definitief Opslaan in Scorebord
+                💾 Beide Sessies Opslaan in Scorebord
               </button>
             </div>
           </div>
@@ -727,11 +759,11 @@
         <div id="sbViewStats" class="hidden space-y-3">
           <div class="win98-inset p-3">
             <div class="flex justify-between items-center mb-2 border-b pb-1.5">
-              <h2 class="font-black text-blue-900">📊 Spelersklassement & Aanwezigheidslijst</h2>
-              <span id="sbTotalSessionsBadge" class="bg-blue-900 text-yellow-300 px-2 py-0.5 rounded text-[11px] font-bold">0 Sessies</span>
+              <h2 class="font-black text-blue-900">📊 Algemeen Scorebord & Aanwezigheid</h2>
+              <span id="sbTotalSessionsBadge" class="bg-blue-900 text-yellow-300 px-2 py-0.5 rounded text-[11px] font-bold">0 Speeldagen</span>
             </div>
             <p class="text-[11px] text-gray-600 mb-3">
-              Nieuwe namen op geüploade foto's worden automatisch aan deze lijst toegevoegd.
+              Individuele punten over alle sessies heen, gewonnen team-sessies en aanwezigheidspercentage.
             </p>
             <div class="overflow-x-auto">
               <table class="w-full text-left border-collapse text-xs">
@@ -740,8 +772,8 @@
                     <th class="p-2">#</th>
                     <th class="p-2">Naam</th>
                     <th class="p-2 text-right">Totaal Ptn</th>
-                    <th class="p-2 text-right">Gemiddeld</th>
-                    <th class="p-2 text-center">Team Winst</th>
+                    <th class="p-2 text-right">Gem. / Sessie</th>
+                    <th class="p-2 text-center">Sessie Winst</th>
                     <th class="p-2 text-center">Aanwezig</th>
                   </tr>
                 </thead>
@@ -758,7 +790,7 @@
           <div class="win98-inset p-3">
             <h2 class="font-black text-amber-800 border-b pb-1.5 mb-2">👑 All-Time Topscores (Individueel per Sessie)</h2>
             <p class="text-[11px] text-gray-600 mb-3">
-              De hoogste dagscores ooit behaald, inclusief datum en aanwezige spelers van die avond.
+              De hoogste individuele scores ooit behaald in een sessie, inclusief teamgenoten, tegenstanders en datum.
             </p>
             <div id="sbTopScoresList" class="space-y-2">
               <p class="text-center text-gray-500 p-4">Nog geen topscores geregistreerd.</p>
@@ -769,7 +801,7 @@
         <!-- TAB 4: SESSIE HISTORIEK -->
         <div id="sbViewHistory" class="hidden space-y-3">
           <div class="win98-inset p-3">
-            <h2 class="font-black text-purple-900 border-b pb-1.5 mb-2">📅 Gespeelde Dinsdagavond Sessies</h2>
+            <h2 class="font-black text-purple-900 border-b pb-1.5 mb-2">📅 Uitslagen per Speeldag (Sessie 1 & Sessie 2)</h2>
             <div id="sbSessionsHistoryList" class="space-y-3">
               <p class="text-center text-gray-500 p-4">Nog geen sessies opgeslagen.</p>
             </div>
@@ -780,72 +812,82 @@
     </div>
   </div>
 
-  <!-- Firebase SDK voor Gedeelde Opslag -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-    import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-    import { getFirestore, collection, addDoc, onSnapshot, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+  <!-- Supabase REST API Integratie voor Gedeeld Scorebord -->
+  <script>
+    const MK_SUPABASE_URL = "https://oxpjzrgrlkzpgqzulwld.supabase.co";
+    const MK_SUPABASE_KEY = "sb_publishable_EXq70eQsieiaSJOUU4iudQ_jj72xAMj";
+    const mkSupabaseHeaders = {
+      'apikey': MK_SUPABASE_KEY,
+      'Authorization': 'Bearer ' + MK_SUPABASE_KEY,
+      'Content-Type': 'application/json'
+    };
 
-    let db = null;
-    let auth = null;
-    let currentUser = null;
-    const appId = typeof __app_id !== 'undefined' ? __app_id : 'mariokart-parre-scoreboard';
-
-    async function initScoreboardBackend() {
+    window.syncScoreboardFromSupabase = async function() {
       try {
-        if (typeof __firebase_config !== 'undefined') {
-          const firebaseConfig = JSON.parse(__firebase_config);
-          const app = initializeApp(firebaseConfig);
-          auth = getAuth(app);
-          db = getFirestore(app);
-
-          if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-            await signInWithCustomToken(auth, __initial_auth_token);
-          } else {
-            await signInAnonymously(auth);
-          }
-          currentUser = auth.currentUser;
-
-          if (currentUser && db) {
-            const sessionsRef = collection(db, 'artifacts', appId, 'public', 'data', 'mk_sessions');
-            onSnapshot(sessionsRef, (snapshot) => {
-              const loaded = [];
-              snapshot.forEach((docSnap) => {
-                loaded.push({ id: docSnap.id, ...docSnap.data() });
-              });
-              // Sorteer van nieuwste naar oudste in geheugen
-              loaded.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
-              window.mkSessionsData = loaded;
-              if (typeof window.renderAllScoreboardViews === 'function') {
-                window.renderAllScoreboardViews();
-              }
-            }, (err) => {
-              console.warn("Firestore luisterfout:", err);
-            });
+        const res = await fetch(`${MK_SUPABASE_URL}/rest/v1/mk_sessions?select=*&order=date.desc,id.desc`, {
+          method: 'GET',
+          headers: mkSupabaseHeaders
+        });
+        if (res.ok) {
+          const data = await res.json();
+          if (Array.isArray(data)) {
+            window.mkSessionsData = data.map(row => ({
+              id: row.id,
+              date: row.date,
+              winningTeam: row.winning_team,
+              players: Array.isArray(row.players) ? row.players : []
+            }));
+            if (typeof window.renderAllScoreboardViews === 'function') {
+              window.renderAllScoreboardViews();
+            }
           }
         }
       } catch (e) {
-        console.warn("Backend init overgeslagen of offline:", e);
+        console.warn("Fout bij ophalen uit Supabase:", e);
       }
-    }
+    };
 
     window.saveSessionToCloud = async function(sessionObj) {
-      if (db && currentUser) {
-        const sessionsRef = collection(db, 'artifacts', appId, 'public', 'data', 'mk_sessions');
-        await addDoc(sessionsRef, sessionObj);
-        return true;
+      try {
+        const res = await fetch(`${MK_SUPABASE_URL}/rest/v1/mk_sessions`, {
+          method: 'POST',
+          headers: {
+            ...mkSupabaseHeaders,
+            'Prefer': 'return=representation'
+          },
+          body: JSON.stringify([{
+            date: sessionObj.date,
+            winning_team: sessionObj.winningTeam,
+            players: sessionObj.players
+          }])
+        });
+        if (res.ok) {
+          await window.syncScoreboardFromSupabase();
+          return true;
+        }
+      } catch (e) {
+        console.warn("Fout bij opslaan in Supabase:", e);
       }
       return false;
     };
 
     window.deleteSessionFromCloud = async function(sessionId) {
-      if (db && currentUser && sessionId) {
-        const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'mk_sessions', sessionId);
-        await deleteDoc(docRef);
+      try {
+        const res = await fetch(`${MK_SUPABASE_URL}/rest/v1/mk_sessions?id=eq.${encodeURIComponent(sessionId)}`, {
+          method: 'DELETE',
+          headers: mkSupabaseHeaders
+        });
+        if (res.ok) {
+          await window.syncScoreboardFromSupabase();
+        }
+      } catch (e) {
+        console.warn("Fout bij verwijderen uit Supabase:", e);
       }
     };
 
-    initScoreboardBackend();
+    window.addEventListener('DOMContentLoaded', () => {
+      window.syncScoreboardFromSupabase();
+    });
   </script>
 
   <script>
@@ -923,6 +965,7 @@
       if (dateInput && !dateInput.value) {
         dateInput.value = new Date().toISOString().split('T')[0];
       }
+      window.syncScoreboardFromSupabase();
       renderAllScoreboardViews();
     };
 
@@ -941,119 +984,11 @@
     // ==========================================
     window.mkSessionsData = [];
     let tempBase64Photos = [];
-    let currentDraftPlayers = [];
+    let currentDraftPlayers1 = [];
+    let currentDraftPlayers2 = [];
 
     // Uitgebreide lijst met Mario Kart CPU namen (NL & EN) om weg te filteren
-    const MARIO_KART_CPUS = new Set([
-      'mario', 'luigi', 'peach', 'daisy', 'rosalina', 'tanooki mario', 'cat peach',
-      'yoshi', 'toad', 'koopa troopa', 'koopa', 'shy guy', 'lakitu', 'toadette',
-      'king boo', 'baby mario', 'baby luigi', 'baby peach', 'baby daisy', 'baby rosalina',
-      'metal mario', 'pink gold peach', 'wario', 'waluigi', 'donkey kong', 'bowser',
-      'dry bones', 'bowser jr', 'bowser jr.', 'dry bowser', 'lemmy', 'larry', 'wendy',
-      'ludwig', 'iggy', 'roy', 'morton', 'inkling girl', 'inkling boy', 'link',
-      'villager', 'isabelle', 'birdo', 'petey piranha', 'wiggler', 'kamek', 'peachette',
-      'funky kong', 'diddy kong', 'pauline'
-    ]);
-
-    function isCpuName(name) {
-      if (!name) return true;
-      const clean = name.trim().toLowerCase();
-      return MARIO_KART_CPUS.has(clean);
-    }
-
-    function showSbBanner(msg, isError = false) {
-      const banner = document.getElementById('sbStatusBanner');
-      if (!banner) return;
-      banner.textContent = msg;
-      banner.className = `p-2 rounded border-2 font-bold text-xs ${isError ? 'bg-red-100 border-red-500 text-red-900' : 'bg-green-100 border-green-500 text-green-900'}`;
-      banner.classList.remove('hidden');
-      setTimeout(() => {
-        banner.classList.add('hidden');
-      }, 6000);
-    }
-
-    window.switchSbTab = function(tabName) {
-      const tabs = ['upload', 'stats', 'top', 'history'];
-      tabs.forEach(t => {
-        const btn = document.getElementById('sbTab' + t.charAt(0).toUpperCase() + t.slice(1));
-        const view = document.getElementById('sbView' + t.charAt(0).toUpperCase() + t.slice(1));
-        if (btn) btn.classList.toggle('active', t === tabName);
-        if (view) view.classList.toggle('hidden', t !== tabName);
-      });
-      renderAllScoreboardViews();
-    };
-
-    // Foto's inlezen vanaf gsm (max 2) en verkleinen in geheugen voor snelle AI-analyse
-    window.handleSbPhotos = async function(event) {
-      const files = Array.from(event.target.files || []).slice(0, 2);
-      if (files.length === 0) return;
-
-      tempBase64Photos = [];
-      const thumbsContainer = document.getElementById('sbThumbnails');
-      const previewBox = document.getElementById('sbPreviewContainer');
-      const countText = document.getElementById('sbFileCountText');
-      const analyzeBtn = document.getElementById('sbAnalyzeBtn');
-
-      thumbsContainer.innerHTML = '';
-
-      for (const file of files) {
-        const resizedBase64 = await resizeImageToBase64(file, 1024);
-        tempBase64Photos.push(resizedBase64);
-
-        const img = document.createElement('img');
-        img.src = `data:image/jpeg;base64,${resizedBase64}`;
-        img.className = 'w-14 h-14 object-cover border border-black rounded';
-        thumbsContainer.appendChild(img);
-      }
-
-      countText.textContent = `${tempBase64Photos.length} foto('s) klaar om uit te lezen`;
-      previewBox.classList.remove('hidden');
-      analyzeBtn.disabled = false;
-    };
-
-    function resizeImageToBase64(file, maxDim) {
-      return new Promise((resolve) => {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          const img = new Image();
-          img.onload = () => {
-            const canvas = document.createElement('canvas');
-            let w = img.width;
-            let h = img.height;
-            if (w > maxDim || h > maxDim) {
-              if (w > h) {
-                h = Math.round((h * maxDim) / w);
-                w = maxDim;
-              } else {
-                w = Math.round((w * maxDim) / h);
-                h = maxDim;
-              }
-            }
-            canvas.width = w;
-            canvas.height = h;
-            const ctx = canvas.getContext('2d');
-            ctx.drawImage(img, 0, 0, w, h);
-            const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
-            resolve(dataUrl.split(',')[1]);
-          };
-          img.src = e.target.result;
-        };
-        reader.readAsDataURL(file);
-      });
-    }
-
-    function clearTempPhotos() {
-      tempBase64Photos = [];
-      const input = document.getElementById('sbPhotoInput');
-      const thumbs = document.getElementById('sbThumbnails');
-      const previewBox = document.getElementById('sbPreviewContainer');
-      const analyzeBtn = document.getElementById('sbAnalyzeBtn');
-      if (input) input.value = '';
-      if (thumbs) thumbs.innerHTML = '';
-      if (previewBox) previewBox.classList.add('hidden');
-      if (analyzeBtn) analyzeBtn.disabled = true;
-    }
-
+// ... existing code ... -->
     // Gemini Vision API aanroepen met exponential backoff om scores uit te lezen
     window.analyzeUploadedPhotos = async function() {
       if (tempBase64Photos.length === 0) return;
@@ -1066,15 +1001,17 @@
       const knownPlayers = getKnownPlayerNames();
       const knownHint = knownPlayers.length > 0 ? `Bekende echte spelers uit eerdere sessies zijn: ${knownPlayers.join(', ')}. ` : '';
 
-      const promptText = `Je bekijkt ${tempBase64Photos.length} foto('s) van een Mario Kart eindstand/scorebord na een sessie.
-${knownHint}Haal ALLE spelersnamen, hun behaalde punten en (indien zichtbaar door rode/blauwe kleur of achtergrond) hun team ("Rood", "Blauw", of "Onbekend") van de foto's.
+      const promptText = `Je bekijkt ${tempBase64Photos.length} foto('s) van Mario Kart eindstanden (foto 1 = Sessie 1, foto 2 = Sessie 2).
+${knownHint}Analyseer ELKE foto afzonderlijk en haal voor elke foto apart op:
+1. Welk team die sessie gewonnen heeft ("Rood", "Blauw", of "Geen / FFA") op basis van de totaalscore of het winnaarsscherm.
+2. Alle echte spelersnamen, hun behaalde punten in die specifieke sessie en hun team ("Rood" of "Blauw", herkenbaar aan de rode of blauwe balk/achtergrond).
 BELANGRIJK:
-- Als dezelfde speler op beide foto's staat (bijvoorbeeld race 1 en race 2), tel dan hun punten bij elkaar op of geef beide weer zodat we het totaal hebben.
-- Negeer standaard Mario Kart CPU-personages (zoals Mario, Luigi, Peach, Bowser, Yoshi, Toad, Koopa, Donkey Kong, Wario, Waluigi, Rosalina, Shy Guy, Metal Mario, Baby Mario, etc.) tenzij het overduidelijk een aangepaste spelersnaam is.
-- Geef ook aan welk team gewonnen heeft ("Rood", "Blauw" of "Geen / FFA") op basis van de totaalscore van de teams.`;
+- Houd Foto 1 (sessionNumber: 1) en Foto 2 (sessionNumber: 2) STRIKT gescheiden zodat we voor beide sessies apart weten welk team gewonnen is en wie bij welk team hoorde.
+- Negeer standaard Mario Kart CPU-personages (zoals Mario, Luigi, Peach, Bowser, Yoshi, Toad, Koopa, Donkey Kong, Wario, Waluigi, Rosalina, Shy Guy, Metal Mario, Baby Mario, Dry Bones, Lakitu, etc.) tenzij het overduidelijk een echte spelersnaam is.`;
 
       const parts = [{ text: promptText }];
-      tempBase64Photos.forEach(b64 => {
+      tempBase64Photos.forEach((b64, idx) => {
+        parts.push({ text: `--- FOTO ${idx + 1} (SESSIE ${idx + 1}) ---` });
         parts.push({
           inlineData: {
             mimeType: "image/jpeg",
@@ -1090,21 +1027,31 @@ BELANGRIJK:
           responseSchema: {
             type: "OBJECT",
             properties: {
-              winningTeam: { type: "STRING" },
-              players: {
+              sessions: {
                 type: "ARRAY",
                 items: {
                   type: "OBJECT",
                   properties: {
-                    name: { type: "STRING" },
-                    points: { type: "NUMBER" },
-                    team: { type: "STRING" }
+                    sessionNumber: { type: "NUMBER" },
+                    winningTeam: { type: "STRING" },
+                    players: {
+                      type: "ARRAY",
+                      items: {
+                        type: "OBJECT",
+                        properties: {
+                          name: { type: "STRING" },
+                          points: { type: "NUMBER" },
+                          team: { type: "STRING" }
+                        },
+                        required: ["name", "points", "team"]
+                      }
+                    }
                   },
-                  required: ["name", "points", "team"]
+                  required: ["sessionNumber", "winningTeam", "players"]
                 }
               }
             },
-            required: ["winningTeam", "players"]
+            required: ["sessions"]
           }
         }
       };
@@ -1145,100 +1092,118 @@ BELANGRIJK:
 
       try {
         const parsed = JSON.parse(responseData.candidates[0].content.parts[0].text);
-        const extracted = (parsed.players || []).filter(p => !isCpuName(p.name));
+        const extractedSessions = parsed.sessions || [];
 
-        // Samenvoegen als dezelfde speler meerdere keren voorkomt over de 2 foto's
-        const mergedMap = new Map();
-        extracted.forEach(p => {
-          const cleanName = p.name.trim();
-          const key = cleanName.toLowerCase();
-          if (mergedMap.has(key)) {
-            const existing = mergedMap.get(key);
-            existing.points += (Number(p.points) || 0);
-          } else {
-            mergedMap.set(key, {
-              name: cleanName,
+        const s1 = extractedSessions.find(s => s.sessionNumber === 1) || extractedSessions[0];
+        const s2 = extractedSessions.find(s => s.sessionNumber === 2) || extractedSessions[1];
+
+        if (s1) {
+          currentDraftPlayers1 = (s1.players || [])
+            .filter(p => !isCpuName(p.name))
+            .map(p => ({
+              name: p.name.trim(),
               points: Number(p.points) || 0,
               team: (p.team === 'Rood' || p.team === 'Blauw') ? p.team : 'Rood'
-            });
+            }));
+          const t1 = document.getElementById('sbWinningTeam1');
+          if (t1 && (s1.winningTeam === 'Rood' || s1.winningTeam === 'Blauw' || s1.winningTeam === 'Geen / FFA')) {
+            t1.value = s1.winningTeam;
           }
-        });
-
-        currentDraftPlayers = Array.from(mergedMap.values());
-
-        const teamSelect = document.getElementById('sbWinningTeam');
-        if (teamSelect && (parsed.winningTeam === 'Rood' || parsed.winningTeam === 'Blauw' || parsed.winningTeam === 'Geen / FFA')) {
-          teamSelect.value = parsed.winningTeam;
+        } else {
+          currentDraftPlayers1 = [];
         }
 
-        renderDraftPlayersTable();
-        showSbBanner(`✅ ${currentDraftPlayers.length} echte speler(s) uitgelezen! CPU's zijn weggefilterd en de foto's zijn automatisch gewist.`);
+        if (s2) {
+          currentDraftPlayers2 = (s2.players || [])
+            .filter(p => !isCpuName(p.name))
+            .map(p => ({
+              name: p.name.trim(),
+              points: Number(p.points) || 0,
+              team: (p.team === 'Rood' || p.team === 'Blauw') ? p.team : 'Rood'
+            }));
+          const t2 = document.getElementById('sbWinningTeam2');
+          if (t2 && (s2.winningTeam === 'Rood' || s2.winningTeam === 'Blauw' || s2.winningTeam === 'Geen / FFA')) {
+            t2.value = s2.winningTeam;
+          }
+        } else {
+          currentDraftPlayers2 = [];
+        }
+
+        renderDraftPlayersTable(1);
+        renderDraftPlayersTable(2);
+        const totalFound = currentDraftPlayers1.length + currentDraftPlayers2.length;
+        showSbBanner(`✅ ${totalFound} speler-vermeldingen uitgelezen over ${s2 ? '2 sessies' : '1 sessie'}! CPU's zijn weggefilterd en foto's zijn gewist.`);
       } catch (e) {
         showSbBanner("Fout bij verwerken van de resultaten. Vul ze hieronder handmatig aan.", true);
       }
     };
 
-    function renderDraftPlayersTable() {
-      const tbody = document.getElementById('sbExtractedRows');
+    function renderDraftPlayersTable(sessionNum) {
+      const tbody = document.getElementById('sbExtractedRows' + sessionNum);
+      const list = sessionNum === 1 ? currentDraftPlayers1 : currentDraftPlayers2;
       if (!tbody) return;
 
-      if (currentDraftPlayers.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="4" class="p-3 text-center text-gray-500 italic">Geen spelers in lijst. Klik op "+ Speler Toevoegen".</td></tr>`;
+      if (list.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="4" class="p-2 text-center text-gray-500 italic">Geen spelers ingevuld voor Sessie ${sessionNum}.</td></tr>`;
         return;
       }
 
-      tbody.innerHTML = currentDraftPlayers.map((p, idx) => `
+      tbody.innerHTML = list.map((p, idx) => `
         <tr class="border-b border-gray-300 bg-white">
           <td class="p-1">
-            <input type="text" value="${escapeHtmlAttr(p.name)}" onchange="updateDraftPlayer(${idx}, 'name', this.value)" class="w-full border border-gray-400 px-1.5 py-1 font-bold text-black bg-yellow-50">
+            <input type="text" value="${escapeHtmlAttr(p.name)}" onchange="updateDraftPlayer(${sessionNum}, ${idx}, 'name', this.value)" class="w-full border border-gray-400 px-1.5 py-1 font-bold text-black bg-yellow-50">
           </td>
           <td class="p-1">
-            <input type="number" value="${p.points}" onchange="updateDraftPlayer(${idx}, 'points', Number(this.value))" class="w-full border border-gray-400 px-1.5 py-1 font-bold text-black text-right">
+            <input type="number" value="${p.points}" onchange="updateDraftPlayer(${sessionNum}, ${idx}, 'points', Number(this.value))" class="w-full border border-gray-400 px-1.5 py-1 font-bold text-black text-right">
           </td>
           <td class="p-1">
-            <select onchange="updateDraftPlayer(${idx}, 'team', this.value)" class="w-full border border-gray-400 px-1 py-1 font-bold text-black">
+            <select onchange="updateDraftPlayer(${sessionNum}, ${idx}, 'team', this.value)" class="w-full border border-gray-400 px-1 py-1 font-bold text-black">
               <option value="Rood" ${p.team === 'Rood' ? 'selected' : ''}>🔴 Rood</option>
               <option value="Blauw" ${p.team === 'Blauw' ? 'selected' : ''}>🔵 Blauw</option>
               <option value="Geen" ${p.team === 'Geen' ? 'selected' : ''}>🏁 Geen</option>
             </select>
           </td>
           <td class="p-1 text-center">
-            <button onclick="removeDraftPlayer(${idx})" class="win98-btn bg-red-200 text-red-800 px-2">✕</button>
+            <button onclick="removeDraftPlayer(${sessionNum}, ${idx})" class="win98-btn bg-red-200 text-red-800 px-2">✕</button>
           </td>
         </tr>
       `).join('');
     }
 
-    window.updateDraftPlayer = function(idx, field, val) {
-      if (currentDraftPlayers[idx]) {
-        currentDraftPlayers[idx][field] = val;
+    window.updateDraftPlayer = function(sessionNum, idx, field, val) {
+      const list = sessionNum === 1 ? currentDraftPlayers1 : currentDraftPlayers2;
+      if (list[idx]) {
+        list[idx][field] = val;
       }
     };
 
-    window.removeDraftPlayer = function(idx) {
-      currentDraftPlayers.splice(idx, 1);
-      renderDraftPlayersTable();
+    window.removeDraftPlayer = function(sessionNum, idx) {
+      const list = sessionNum === 1 ? currentDraftPlayers1 : currentDraftPlayers2;
+      list.splice(idx, 1);
+      renderDraftPlayersTable(sessionNum);
     };
 
-    window.addEmptyPlayerRow = function() {
-      currentDraftPlayers.push({ name: '', points: 0, team: 'Rood' });
-      renderDraftPlayersTable();
+    window.addEmptyPlayerRow = function(sessionNum) {
+      const list = sessionNum === 1 ? currentDraftPlayers1 : currentDraftPlayers2;
+      list.push({ name: '', points: 0, team: 'Rood' });
+      renderDraftPlayersTable(sessionNum);
     };
 
     window.saveMarioKartSession = async function() {
       const dateVal = document.getElementById('sbSessionDate').value || new Date().toISOString().split('T')[0];
-      const winningTeam = document.getElementById('sbWinningTeam').value;
+      const winningTeam1 = document.getElementById('sbWinningTeam1').value;
+      const winningTeam2 = document.getElementById('sbWinningTeam2').value;
 
-      const validPlayers = currentDraftPlayers
-        .map(p => ({
-          name: (p.name || '').trim(),
-          points: Number(p.points) || 0,
-          team: p.team || 'Geen'
-        }))
+      const valid1 = currentDraftPlayers1
+        .map(p => ({ name: (p.name || '').trim(), points: Number(p.points) || 0, team: p.team || 'Geen' }))
         .filter(p => p.name.length > 0 && !isCpuName(p.name));
 
-      if (validPlayers.length === 0) {
-        showSbBanner("Voeg minstens 1 echte speler met een naam toe voordat je opslaat.", true);
+      const valid2 = currentDraftPlayers2
+        .map(p => ({ name: (p.name || '').trim(), points: Number(p.points) || 0, team: p.team || 'Geen' }))
+        .filter(p => p.name.length > 0 && !isCpuName(p.name));
+
+      if (valid1.length === 0 && valid2.length === 0) {
+        showSbBanner("Voeg minstens 1 echte speler met een naam toe in Sessie 1 of Sessie 2.", true);
         return;
       }
 
@@ -1246,26 +1211,39 @@ BELANGRIJK:
       saveBtn.disabled = true;
       saveBtn.textContent = "⏳ Opslaan...";
 
-      const sessionObj = {
-        date: dateVal,
-        winningTeam: winningTeam,
-        players: validPlayers,
-        createdAt: Date.now()
-      };
+      let savedCount = 0;
 
-      const savedToCloud = await window.saveSessionToCloud(sessionObj);
-      if (!savedToCloud) {
-        // Fallback in-memory voor huidige sessie
-        window.mkSessionsData.unshift({ id: 'local-' + Date.now(), ...sessionObj });
+      if (valid1.length > 0) {
+        const sObj1 = {
+          date: dateVal,
+          winningTeam: winningTeam1,
+          players: valid1.map(p => ({ ...p, sessionNum: 1 }))
+        };
+        const ok1 = await window.saveSessionToCloud(sObj1);
+        if (!ok1) window.mkSessionsData.unshift({ id: 'local-1-' + Date.now(), ...sObj1 });
+        savedCount++;
       }
 
-      currentDraftPlayers = [];
-      renderDraftPlayersTable();
+      if (valid2.length > 0) {
+        const sObj2 = {
+          date: dateVal,
+          winningTeam: winningTeam2,
+          players: valid2.map(p => ({ ...p, sessionNum: 2 }))
+        };
+        const ok2 = await window.saveSessionToCloud(sObj2);
+        if (!ok2) window.mkSessionsData.unshift({ id: 'local-2-' + Date.now(), ...sObj2 });
+        savedCount++;
+      }
+
+      currentDraftPlayers1 = [];
+      currentDraftPlayers2 = [];
+      renderDraftPlayersTable(1);
+      renderDraftPlayersTable(2);
       clearTempPhotos();
       saveBtn.disabled = false;
-      saveBtn.textContent = "💾 Sessie Definitief Opslaan in Scorebord";
+      saveBtn.textContent = "💾 Beide Sessies Opslaan in Scorebord";
 
-      showSbBanner(`🎉 Sessie van ${formatNlDate(dateVal)} opgeslagen! Alle spelersstatistieken en topscores zijn bijgewerkt.`);
+      showSbBanner(`🎉 ${savedCount} sessie(s) op ${formatNlDate(dateVal)} opgeslagen! Alle statistieken en teams zijn bijgewerkt.`);
       switchSbTab('stats');
     };
 
@@ -1294,10 +1272,14 @@ BELANGRIJK:
 
     window.renderAllScoreboardViews = function() {
       const sessions = window.mkSessionsData || [];
-      const totalSessions = sessions.length;
+      const totalSessionsCount = sessions.length;
+
+      // Unieke speeldagen tellen voor aanwezigheid per avond
+      const uniqueDates = new Set(sessions.map(s => s.date));
+      const totalDaysCount = uniqueDates.size;
 
       const badge = document.getElementById('sbTotalSessionsBadge');
-      if (badge) badge.textContent = `${totalSessions} Sessie(s)`;
+      if (badge) badge.textContent = `${totalDaysCount} Speeldag(en) • ${totalSessionsCount} Sessies`;
 
       // 1. AGGREGEER SPELERSSTATISTIEKEN & AANWEZIGHEID
       const statsMap = new Map();
@@ -1309,12 +1291,14 @@ BELANGRIJK:
               name: p.name.trim(),
               totalPoints: 0,
               sessionsPlayed: 0,
+              daysPresent: new Set(),
               teamWins: 0
             });
           }
           const st = statsMap.get(key);
           st.totalPoints += (Number(p.points) || 0);
           st.sessionsPlayed += 1;
+          st.daysPresent.add(session.date);
           if (session.winningTeam && session.winningTeam !== 'Geen / FFA' && p.team === session.winningTeam) {
             st.teamWins += 1;
           }
@@ -1325,11 +1309,12 @@ BELANGRIJK:
       const statsTbody = document.getElementById('sbPlayersTableBody');
       if (statsTbody) {
         if (playersArray.length === 0) {
-          statsTbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-gray-500">Nog geen spelers geregistreerd. Upload eerst een foto!</td></tr>`;
+          statsTbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-gray-500">Nog geen spelers geregistreerd. Upload eerst foto's!</td></tr>`;
         } else {
           statsTbody.innerHTML = playersArray.map((st, idx) => {
             const avg = st.sessionsPlayed > 0 ? Math.round(st.totalPoints / st.sessionsPlayed) : 0;
-            const attendancePct = totalSessions > 0 ? Math.round((st.sessionsPlayed / totalSessions) * 100) : 0;
+            const daysCount = st.daysPresent.size;
+            const attendancePct = totalDaysCount > 0 ? Math.round((daysCount / totalDaysCount) * 100) : 0;
             const medal = idx === 0 ? '🥇 ' : idx === 1 ? '🥈 ' : idx === 2 ? '🥉 ' : '';
             return `
               <tr class="hover:bg-blue-50">
@@ -1337,10 +1322,10 @@ BELANGRIJK:
                 <td class="p-2 font-black text-blue-950">${medal}${escapeHtmlAttr(st.name)}</td>
                 <td class="p-2 text-right font-black text-green-700">${st.totalPoints}</td>
                 <td class="p-2 text-right font-mono">${avg}</td>
-                <td class="p-2 text-center font-bold text-amber-700">${st.teamWins}x 🏆</td>
+                <td class="p-2 text-center font-bold text-amber-700">${st.teamWins}/${st.sessionsPlayed} 🏆</td>
                 <td class="p-2 text-center">
                   <span class="bg-gray-200 border border-gray-400 px-1.5 py-0.5 rounded font-mono text-[11px] font-bold">
-                    ${st.sessionsPlayed}/${totalSessions} (${attendancePct}%)
+                    ${daysCount}/${totalDaysCount} avonden (${attendancePct}%)
                   </span>
                 </td>
               </tr>
@@ -1349,18 +1334,28 @@ BELANGRIJK:
         }
       }
 
-      // 2. TOPSCORES MET VOLLEDIGE SESSIE INFO
+      // 2. TOPSCORES MET VOLLEDIGE SESSIE & TEAM INFO
       const allPerformances = [];
       sessions.forEach(session => {
-        const attendees = (session.players || []).map(pl => pl.name.trim()).join(', ');
         const formattedDate = formatNlDate(session.date);
+        const sNum = session.players?.[0]?.sessionNum ? `Sessie ${session.players[0].sessionNum}` : 'Sessie';
         (session.players || []).forEach(p => {
+          const teammates = (session.players || [])
+            .filter(pl => pl.team === p.team && pl.name.trim().toLowerCase() !== p.name.trim().toLowerCase())
+            .map(pl => pl.name.trim());
+          const opponents = (session.players || [])
+            .filter(pl => pl.team !== p.team)
+            .map(pl => pl.name.trim());
+
           allPerformances.push({
             playerName: p.name.trim(),
             points: Number(p.points) || 0,
             team: p.team,
+            wonSession: session.winningTeam === p.team,
+            sNum: sNum,
             formattedDate: formattedDate,
-            attendees: attendees
+            teammates: teammates.length > 0 ? teammates.join(', ') : 'Geen',
+            opponents: opponents.length > 0 ? opponents.join(', ') : 'Geen'
           });
         });
       });
@@ -1374,14 +1369,18 @@ BELANGRIJK:
           topListEl.innerHTML = allPerformances.slice(0, 10).map((perf, idx) => {
             const badgeColor = idx === 0 ? 'bg-yellow-300 border-yellow-600' : idx === 1 ? 'bg-gray-200 border-gray-500' : idx === 2 ? 'bg-amber-200 border-amber-600' : 'bg-white border-gray-300';
             return `
-              <div class="p-2.5 border-2 rounded ${badgeColor} flex flex-col sm:flex-row sm:items-center justify-between gap-1">
-                <div>
+              <div class="p-2.5 border-2 rounded ${badgeColor} space-y-1">
+                <div class="flex flex-wrap justify-between items-center gap-1">
                   <div class="font-black text-sm text-black">
-                    #${idx + 1} ${escapeHtmlAttr(perf.playerName)} — <span class="text-red-700">${perf.points} punten</span>
+                    #${idx + 1} ${escapeHtmlAttr(perf.playerName)} — <span class="text-red-700">${perf.points} ptn</span>
                   </div>
-                  <div class="text-[11px] text-gray-700 font-mono mt-0.5">
-                    📅 ${escapeHtmlAttr(perf.formattedDate)} • Sessie met: <strong>${escapeHtmlAttr(perf.attendees)}</strong>
-                  </div>
+                  <span class="text-[11px] font-bold px-2 py-0.5 rounded bg-white/80 border border-gray-400">
+                    ${perf.team === 'Rood' ? '🔴 Rood' : perf.team === 'Blauw' ? '🔵 Blauw' : '🏁 FFA'} ${perf.wonSession ? '(🏆 Gewonnen)' : ''}
+                  </span>
+                </div>
+                <div class="text-[11px] text-gray-800 font-mono">
+                  📅 ${escapeHtmlAttr(perf.formattedDate)} (${escapeHtmlAttr(perf.sNum)})<br>
+                  🤝 Teamgenoten: <strong>${escapeHtmlAttr(perf.teammates)}</strong> • ⚔️ Tegenstanders: <strong>${escapeHtmlAttr(perf.opponents)}</strong>
                 </div>
               </div>
             `;
@@ -1389,43 +1388,103 @@ BELANGRIJK:
         }
       }
 
-      // 3. SESSIE HISTORIEK
+      // 3. SESSIE HISTORIEK GEGROEPEERD PER DAG (MET WINNEND EN VERLIEZEND TEAM)
       const historyEl = document.getElementById('sbSessionsHistoryList');
       if (historyEl) {
         if (sessions.length === 0) {
           historyEl.innerHTML = `<p class="text-center text-gray-500 p-4">Nog geen sessies gespeeld.</p>`;
         } else {
-          historyEl.innerHTML = sessions.map(session => {
-            const winPlayers = (session.players || []).filter(p => p.team === session.winningTeam).map(p => p.name);
-            const sortedPlayers = [...(session.players || [])].sort((a, b) => (b.points || 0) - (a.points || 0));
-            return `
-              <div class="border-2 border-gray-400 bg-gray-50 p-2.5 rounded space-y-2">
-                <div class="flex flex-wrap justify-between items-center border-b border-gray-300 pb-1.5 gap-2">
-                  <div>
-                    <span class="font-black text-blue-900">📅 ${escapeHtmlAttr(formatNlDate(session.date))}</span>
-                    <span class="ml-2 px-2 py-0.5 rounded text-[11px] font-bold bg-yellow-200 border border-yellow-500 text-black">
-                      🏆 Winnaar: Team ${escapeHtmlAttr(session.winningTeam)} ${winPlayers.length > 0 ? '(' + escapeHtmlAttr(winPlayers.join(', ')) + ')' : ''}
-                    </span>
-                  </div>
-                  <button onclick="deleteSbSession('${session.id}')" class="win98-btn bg-red-100 text-red-800 text-[10px]">🗑️ Verwijder</button>
+          // Groepeer sessies per datum
+          const groupedByDate = new Map();
+          sessions.forEach(s => {
+            if (!groupedByDate.has(s.date)) groupedByDate.set(s.date, []);
+            groupedByDate.get(s.date).push(s);
+          });
+
+          let htmlOut = '';
+          groupedByDate.forEach((daySessions, dateStr) => {
+            // Sorteer sessie 1 voor sessie 2
+            daySessions.sort((a, b) => (a.players?.[0]?.sessionNum || 1) - (b.players?.[0]?.sessionNum || 1));
+
+            // Bereken dagtotaal per echte speler over beide sessies
+            const dayTotalsMap = new Map();
+            daySessions.forEach(sess => {
+              (sess.players || []).forEach(p => {
+                const k = p.name.trim().toLowerCase();
+                if (!dayTotalsMap.has(k)) dayTotalsMap.set(k, { name: p.name.trim(), pts: 0 });
+                dayTotalsMap.get(k).pts += (Number(p.points) || 0);
+              });
+            });
+            const dayTotals = Array.from(dayTotalsMap.values()).sort((a, b) => b.pts - a.pts);
+
+            htmlOut += `
+              <div class="border-2 border-blue-800 bg-white p-3 rounded space-y-2.5 shadow-sm">
+                <div class="flex flex-wrap justify-between items-center border-b-2 border-blue-200 pb-1.5">
+                  <span class="font-black text-blue-950 text-sm">📅 ${escapeHtmlAttr(formatNlDate(dateStr))}</span>
+                  <span class="text-[11px] font-bold bg-blue-100 text-blue-900 px-2 py-0.5 rounded">
+                    Dagtotaal: ${dayTotals.map(d => `${escapeHtmlAttr(d.name)} (${d.pts})`).join(' • ')}
+                  </span>
                 </div>
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
-                  ${sortedPlayers.map(p => `
-                    <div class="bg-white border border-gray-300 px-2 py-1 rounded flex justify-between items-center text-xs">
-                      <span class="font-bold truncate">${p.team === 'Rood' ? '🔴' : p.team === 'Blauw' ? '🔵' : '🏁'} ${escapeHtmlAttr(p.name)}</span>
-                      <span class="font-black text-blue-900 ml-1">${p.points}</span>
-                    </div>
-                  `).join('')}
-                </div>
-              </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-2.5">
             `;
-          }).join('');
+
+            daySessions.forEach((session, sIdx) => {
+              const sLabel = session.players?.[0]?.sessionNum ? `Sessie ${session.players[0].sessionNum}` : `Sessie ${sIdx + 1}`;
+              const winTeam = session.winningTeam;
+              const winners = (session.players || []).filter(p => p.team === winTeam).sort((a, b) => b.points - a.points);
+              const losers = (session.players || []).filter(p => p.team !== winTeam).sort((a, b) => b.points - a.points);
+              const loserTeamName = winTeam === 'Rood' ? 'Blauw' : winTeam === 'Blauw' ? 'Rood' : 'Overige';
+
+              htmlOut += `
+                <div class="border-2 border-gray-400 bg-gray-50 p-2 rounded space-y-2">
+                  <div class="flex justify-between items-center border-b border-gray-300 pb-1">
+                    <span class="font-black text-purple-900 text-xs">🏁 ${sLabel}</span>
+                    <button onclick="deleteSbSession('${session.id}')" class="win98-btn bg-red-100 text-red-800 text-[10px]">🗑️ Wis</button>
+                  </div>
+
+                  <!-- Winnend Team -->
+                  <div class="bg-green-100 border border-green-500 p-1.5 rounded">
+                    <div class="font-black text-green-900 text-[11px] mb-1">
+                      🏆 Winnend Team: ${winTeam === 'Rood' ? '🔴 Rood' : winTeam === 'Blauw' ? '🔵 Blauw' : escapeHtmlAttr(winTeam)}
+                    </div>
+                    <div class="space-y-0.5">
+                      ${winners.length > 0 ? winners.map(p => `
+                        <div class="flex justify-between text-xs bg-white/80 px-1.5 py-0.5 rounded">
+                          <span class="font-bold text-black">${escapeHtmlAttr(p.name)}</span>
+                          <span class="font-black text-green-800">${p.points} ptn</span>
+                        </div>
+                      `).join('') : '<div class="text-[11px] text-gray-600 italic">Geen spelers geregistreerd</div>'}
+                    </div>
+                  </div>
+
+                  <!-- Verliezend Team / Tegenstanders -->
+                  <div class="bg-red-50 border border-red-300 p-1.5 rounded">
+                    <div class="font-bold text-red-900 text-[11px] mb-1">
+                      ⚔️ Andere Team: ${loserTeamName === 'Rood' ? '🔴 Rood' : loserTeamName === 'Blauw' ? '🔵 Blauw' : 'Tegenstanders'}
+                    </div>
+                    <div class="space-y-0.5">
+                      ${losers.length > 0 ? losers.map(p => `
+                        <div class="flex justify-between text-xs bg-white/80 px-1.5 py-0.5 rounded">
+                          <span class="font-bold text-gray-800">${escapeHtmlAttr(p.name)}</span>
+                          <span class="font-bold text-red-800">${p.points} ptn</span>
+                        </div>
+                      `).join('') : '<div class="text-[11px] text-gray-500 italic">Geen spelers in ander team</div>'}
+                    </div>
+                  </div>
+                </div>
+              `;
+            });
+
+            htmlOut += `</div></div>`;
+          });
+
+          historyEl.innerHTML = htmlOut;
         }
       }
     };
 
     window.deleteSbSession = async function(id) {
-      if (id.startsWith('local-')) {
+      if (String(id).startsWith('local-')) {
         window.mkSessionsData = window.mkSessionsData.filter(s => s.id !== id);
         renderAllScoreboardViews();
       } else {
