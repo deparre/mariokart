@@ -308,6 +308,33 @@
       transform: translateZ(0);
       will-change: transform;
     }
+    #scoreboardModal {
+      backdrop-filter: blur(4px);
+      will-change: transform;
+    }
+    .win98-tab {
+      background: #c0c0c0;
+      border: 2px solid;
+      border-color: #ffffff #808080 #808080 #ffffff;
+      padding: 5px 10px;
+      font-family: 'Tahoma', sans-serif;
+      font-size: 11px;
+      font-weight: bold;
+      color: #000;
+      cursor: pointer;
+    }
+    .win98-tab.active {
+      background: #e5e7eb;
+      border-color: #808080 #ffffff #e5e7eb #808080;
+      position: relative;
+      top: 1px;
+    }
+    .win98-inset {
+      background: #ffffff;
+      border: 2px solid;
+      border-color: #808080 #ffffff #ffffff #808080;
+      color: #000;
+    }
   </style>
 </head>
 <body class="relative select-none flex flex-col items-center justify-center min-h-screen p-3 sm:p-5">
@@ -352,6 +379,26 @@
       </div>
     </div>
     <span class="shortcut-label">bent_vs_saus<br>.exe</span>
+  </div>
+
+  <!-- VINTAGE DESKTOP SNELKOPPELING: scoreboard.exe -->
+  <div class="desktop-shortcut-icon" style="top: 190px; right: 18px;" onclick="openScoreboardModal()" title="Dubbelklik om scoreboard.exe te openen!">
+    <span class="absolute -top-1 -right-1 bg-cyan-500 text-black font-mono text-[7px] px-1 py-0.2 rounded-full border border-white font-black animate-pulse">APP</span>
+    <div class="shortcut-badge" style="border-color: #00ffff #ff007f #ff007f #00ffff; box-shadow: 2px 2px 0px #000, 0 0 12px rgba(0, 255, 255, 0.7);">
+      <!-- Retro Trofee & Grafiek Icoontje -->
+      <svg class="w-7 h-7 drop-shadow" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M7 4h10v6a5 5 0 0 1-10 0V4z" fill="#facc15" stroke="#ca8a04" stroke-width="1.5"/>
+        <path d="M7 6H4v2a3 3 0 0 0 3 3M17 6h3v2a3 3 0 0 1-3 3" stroke="#facc15" stroke-width="1.5"/>
+        <rect x="10" y="15" width="4" height="3" fill="#cbd5e1"/>
+        <rect x="7" y="18" width="10" height="2.5" fill="#94a3b8"/>
+      </svg>
+      <div class="shortcut-arrow">
+        <svg class="w-2 h-2" viewBox="0 0 8 8" fill="none">
+          <path d="M1 7L7 1M7 1H3M7 1V5" stroke="#000080" stroke-width="1.5"/>
+        </svg>
+      </div>
+    </div>
+    <span class="shortcut-label">scoreboard<br>.exe</span>
   </div>
 
   <!-- Interactieve Starfield Canvas op achtergrond -->
@@ -558,6 +605,249 @@
     </div>
   </div>
 
+  <!-- MARIO KART SCOREBORD & STATISTIEKEN APP MODAL -->
+  <div id="scoreboardModal" class="hidden fixed inset-0 z-[99999] bg-black/85 flex items-center justify-center p-1 sm:p-3 overflow-y-auto">
+    <div class="win98-window rainbow-neon-border w-full max-w-3xl p-1 text-black shadow-[0_15px_50px_rgba(0,0,0,0.9)] my-auto max-h-[95vh] flex flex-col font-sans">
+      
+      <!-- Window Titlebar -->
+      <div class="win98-titlebar bg-gradient-to-r from-blue-900 via-purple-900 to-pink-800 text-white shrink-0">
+        <div class="flex items-center gap-1.5 min-w-0">
+          <span>🏆</span>
+          <span class="tracking-wider text-[11px] sm:text-xs font-black truncate text-yellow-300">
+            C:\MARIOKART\SCOREBOARD_STATS.EXE - [Dinsdagavond Cup]
+          </span>
+        </div>
+        <div class="flex gap-1 shrink-0">
+          <button class="win98-btn" onclick="closeScoreboardModal()">_</button>
+          <button class="win98-btn" onclick="closeScoreboardModal()">✕</button>
+        </div>
+      </div>
+
+      <!-- Navigatie Tabs -->
+      <div class="bg-[#c0c0c0] px-2 pt-2 flex flex-wrap gap-1 border-b border-gray-500 shrink-0">
+        <button id="sbTabUpload" class="win98-tab active" onclick="switchSbTab('upload')">📸 2 Foto's Uploaden</button>
+        <button id="sbTabStats" class="win98-tab" onclick="switchSbTab('stats')">📊 Spelers & Aanwezigheid</button>
+        <button id="sbTabTop" class="win98-tab" onclick="switchSbTab('top')">👑 Topscores</button>
+        <button id="sbTabHistory" class="win98-tab" onclick="switchSbTab('history')">📅 Sessies</button>
+      </div>
+
+      <!-- Content Gebied -->
+      <div class="bg-[#e5e7eb] p-2 sm:p-4 overflow-y-auto flex-1 space-y-3 text-xs sm:text-sm select-text">
+        
+        <!-- Status / Meldingen Balk -->
+        <div id="sbStatusBanner" class="hidden p-2 rounded border-2 font-bold text-xs"></div>
+
+        <!-- TAB 1: UPLOAD & AI UITLEZEN -->
+        <div id="sbViewUpload" class="space-y-3">
+          <div class="win98-inset p-3 space-y-3">
+            <div class="flex items-center justify-between border-b pb-2">
+              <h2 class="font-black text-blue-900 text-sm sm:text-base">📸 Wekelijkse Uitslag Inlezen (2 Foto's)</h2>
+              <span class="text-[10px] bg-green-100 text-green-800 border border-green-400 px-2 py-0.5 rounded font-bold">Auto-CPU Filter Actief</span>
+            </div>
+            <p class="text-xs text-gray-700 leading-relaxed">
+              Selecteer <strong>tot 2 foto's</strong> van het eindscherm op je gsm. De AI leest direct de punten van alle echte spelers uit en negeert automatisch Mario Kart CPU's. <em>Na verwerking worden de foto's direct uit het geheugen verwijderd.</em>
+            </p>
+
+            <div class="flex flex-col sm:flex-row gap-2 items-stretch sm:items-center">
+              <label class="win98-btn py-2.5 px-4 bg-yellow-300 hover:bg-yellow-400 text-black font-black text-xs sm:text-sm text-center cursor-pointer flex-1">
+                📱 Kies 1 of 2 Foto's van GSM
+                <input id="sbPhotoInput" type="file" accept="image/*" multiple class="hidden" onchange="handleSbPhotos(event)">
+              </label>
+              <button id="sbAnalyzeBtn" onclick="analyzeUploadedPhotos()" disabled class="win98-btn py-2.5 px-4 bg-cyan-300 disabled:opacity-50 text-black font-black text-xs sm:text-sm">
+                🤖 Lees Scores Uit
+              </button>
+            </div>
+
+            <!-- Tijdelijke thumbnails (worden gewist na verwerking) -->
+            <div id="sbPreviewContainer" class="hidden flex gap-3 items-center bg-gray-100 p-2 border border-dashed border-gray-400">
+              <div id="sbThumbnails" class="flex gap-2"></div>
+              <div class="text-[11px] text-gray-600">
+                <p id="sbFileCountText" class="font-bold text-black">0 foto's klaar</p>
+                <p>Worden direct gewist na uitlezen.</p>
+              </div>
+            </div>
+
+            <!-- Laadindicator -->
+            <div id="sbLoadingBox" class="hidden bg-blue-950 text-cyan-300 p-3 rounded border-2 border-cyan-400 text-center font-mono text-xs animate-pulse">
+              ⏳ Bezig met AI-beeldherkenning & CPU's wegfilteren... Even geduld!
+            </div>
+          </div>
+
+          <!-- Controle & Opslaan Formulier (na uitlezen of handmatig) -->
+          <div id="sbReviewBox" class="win98-inset p-3 space-y-3">
+            <div class="flex justify-between items-center border-b pb-1.5">
+              <h3 class="font-black text-purple-900">📝 Sessie Controleren & Opslaan</h3>
+              <button onclick="addEmptyPlayerRow()" class="win98-btn text-[11px] bg-green-200">+ Speler Toevoegen</button>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              <div>
+                <label class="block text-[11px] font-bold text-gray-700 mb-1">Datum van de sessie:</label>
+                <input id="sbSessionDate" type="date" class="w-full border-2 border-gray-500 px-2 py-1 bg-white text-black font-bold text-xs">
+              </div>
+              <div>
+                <label class="block text-[11px] font-bold text-gray-700 mb-1">Winnend Team:</label>
+                <select id="sbWinningTeam" class="w-full border-2 border-gray-500 px-2 py-1 bg-white text-black font-bold text-xs">
+                  <option value="Rood">🔴 Team Rood</option>
+                  <option value="Blauw">🔵 Team Blauw</option>
+                  <option value="Geen / FFA">🏁 Geen / Ieder voor zich</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="overflow-x-auto">
+              <table class="w-full text-left border-collapse text-xs">
+                <thead>
+                  <tr class="bg-gray-200 border-b-2 border-gray-400">
+                    <th class="p-1.5">Speler (Echte naam)</th>
+                    <th class="p-1.5 w-24">Punten</th>
+                    <th class="p-1.5 w-28">Team</th>
+                    <th class="p-1.5 w-10 text-center">Wis</th>
+                  </tr>
+                </thead>
+                <tbody id="sbExtractedRows">
+                  <tr>
+                    <td colspan="4" class="p-3 text-center text-gray-500 italic">
+                      Upload 2 foto's hierboven om automatisch in te vullen, of klik op "+ Speler Toevoegen".
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="flex justify-end pt-2 border-t">
+              <button id="sbSaveSessionBtn" onclick="saveMarioKartSession()" class="win98-btn py-2 px-5 bg-green-400 hover:bg-green-500 text-black font-black text-xs sm:text-sm">
+                💾 Sessie Definitief Opslaan in Scorebord
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 2: SPELERS STATISTIEKEN & AANWEZIGHEID -->
+        <div id="sbViewStats" class="hidden space-y-3">
+          <div class="win98-inset p-3">
+            <div class="flex justify-between items-center mb-2 border-b pb-1.5">
+              <h2 class="font-black text-blue-900">📊 Spelersklassement & Aanwezigheidslijst</h2>
+              <span id="sbTotalSessionsBadge" class="bg-blue-900 text-yellow-300 px-2 py-0.5 rounded text-[11px] font-bold">0 Sessies</span>
+            </div>
+            <p class="text-[11px] text-gray-600 mb-3">
+              Nieuwe namen op geüploade foto's worden automatisch aan deze lijst toegevoegd.
+            </p>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left border-collapse text-xs">
+                <thead>
+                  <tr class="bg-blue-900 text-white">
+                    <th class="p-2">#</th>
+                    <th class="p-2">Naam</th>
+                    <th class="p-2 text-right">Totaal Ptn</th>
+                    <th class="p-2 text-right">Gemiddeld</th>
+                    <th class="p-2 text-center">Team Winst</th>
+                    <th class="p-2 text-center">Aanwezig</th>
+                  </tr>
+                </thead>
+                <tbody id="sbPlayersTableBody" class="divide-y divide-gray-300">
+                  <tr><td colspan="6" class="p-4 text-center text-gray-500">Nog geen gegevens beschikbaar...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 3: TOPSCORES MET SESSIE INFO -->
+        <div id="sbViewTop" class="hidden space-y-3">
+          <div class="win98-inset p-3">
+            <h2 class="font-black text-amber-800 border-b pb-1.5 mb-2">👑 All-Time Topscores (Individueel per Sessie)</h2>
+            <p class="text-[11px] text-gray-600 mb-3">
+              De hoogste dagscores ooit behaald, inclusief datum en aanwezige spelers van die avond.
+            </p>
+            <div id="sbTopScoresList" class="space-y-2">
+              <p class="text-center text-gray-500 p-4">Nog geen topscores geregistreerd.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 4: SESSIE HISTORIEK -->
+        <div id="sbViewHistory" class="hidden space-y-3">
+          <div class="win98-inset p-3">
+            <h2 class="font-black text-purple-900 border-b pb-1.5 mb-2">📅 Gespeelde Dinsdagavond Sessies</h2>
+            <div id="sbSessionsHistoryList" class="space-y-3">
+              <p class="text-center text-gray-500 p-4">Nog geen sessies opgeslagen.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Firebase SDK voor Gedeelde Opslag -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import { getFirestore, collection, addDoc, onSnapshot, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+    let db = null;
+    let auth = null;
+    let currentUser = null;
+    const appId = typeof __app_id !== 'undefined' ? __app_id : 'mariokart-parre-scoreboard';
+
+    async function initScoreboardBackend() {
+      try {
+        if (typeof __firebase_config !== 'undefined') {
+          const firebaseConfig = JSON.parse(__firebase_config);
+          const app = initializeApp(firebaseConfig);
+          auth = getAuth(app);
+          db = getFirestore(app);
+
+          if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+            await signInWithCustomToken(auth, __initial_auth_token);
+          } else {
+            await signInAnonymously(auth);
+          }
+          currentUser = auth.currentUser;
+
+          if (currentUser && db) {
+            const sessionsRef = collection(db, 'artifacts', appId, 'public', 'data', 'mk_sessions');
+            onSnapshot(sessionsRef, (snapshot) => {
+              const loaded = [];
+              snapshot.forEach((docSnap) => {
+                loaded.push({ id: docSnap.id, ...docSnap.data() });
+              });
+              // Sorteer van nieuwste naar oudste in geheugen
+              loaded.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+              window.mkSessionsData = loaded;
+              if (typeof window.renderAllScoreboardViews === 'function') {
+                window.renderAllScoreboardViews();
+              }
+            }, (err) => {
+              console.warn("Firestore luisterfout:", err);
+            });
+          }
+        }
+      } catch (e) {
+        console.warn("Backend init overgeslagen of offline:", e);
+      }
+    }
+
+    window.saveSessionToCloud = async function(sessionObj) {
+      if (db && currentUser) {
+        const sessionsRef = collection(db, 'artifacts', appId, 'public', 'data', 'mk_sessions');
+        await addDoc(sessionsRef, sessionObj);
+        return true;
+      }
+      return false;
+    };
+
+    window.deleteSessionFromCloud = async function(sessionId) {
+      if (db && currentUser && sessionId) {
+        const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'mk_sessions', sessionId);
+        await deleteDoc(docRef);
+      }
+    };
+
+    initScoreboardBackend();
+  </script>
+
   <script>
     // ==========================================
     // 0. MODAL CONTROLLERS & EXPORT (DIRECT GLOBAAL BESCHIKBAAR)
@@ -619,6 +909,527 @@
       if (iframe) {
         iframe.srcdoc = '';
         bentIframeLoaded = false;
+      }
+    };
+
+    window.openScoreboardModal = function() {
+      const modal = document.getElementById('scoreboardModal');
+      isModalOpen = true;
+      if (modal) {
+        modal.classList.remove('hidden');
+        modal.style.display = 'flex';
+      }
+      const dateInput = document.getElementById('sbSessionDate');
+      if (dateInput && !dateInput.value) {
+        dateInput.value = new Date().toISOString().split('T')[0];
+      }
+      renderAllScoreboardViews();
+    };
+
+    window.closeScoreboardModal = function() {
+      const modal = document.getElementById('scoreboardModal');
+      isModalOpen = false;
+      if (modal) {
+        modal.classList.add('hidden');
+        modal.style.display = 'none';
+      }
+      clearTempPhotos();
+    };
+
+    // ==========================================
+    // 0.5 SCOREBORD APP LOGICA, AI FOTO-UITLEZER & STATISTIEKEN
+    // ==========================================
+    window.mkSessionsData = [];
+    let tempBase64Photos = [];
+    let currentDraftPlayers = [];
+
+    // Uitgebreide lijst met Mario Kart CPU namen (NL & EN) om weg te filteren
+    const MARIO_KART_CPUS = new Set([
+      'mario', 'luigi', 'peach', 'daisy', 'rosalina', 'tanooki mario', 'cat peach',
+      'yoshi', 'toad', 'koopa troopa', 'koopa', 'shy guy', 'lakitu', 'toadette',
+      'king boo', 'baby mario', 'baby luigi', 'baby peach', 'baby daisy', 'baby rosalina',
+      'metal mario', 'pink gold peach', 'wario', 'waluigi', 'donkey kong', 'bowser',
+      'dry bones', 'bowser jr', 'bowser jr.', 'dry bowser', 'lemmy', 'larry', 'wendy',
+      'ludwig', 'iggy', 'roy', 'morton', 'inkling girl', 'inkling boy', 'link',
+      'villager', 'isabelle', 'birdo', 'petey piranha', 'wiggler', 'kamek', 'peachette',
+      'funky kong', 'diddy kong', 'pauline'
+    ]);
+
+    function isCpuName(name) {
+      if (!name) return true;
+      const clean = name.trim().toLowerCase();
+      return MARIO_KART_CPUS.has(clean);
+    }
+
+    function showSbBanner(msg, isError = false) {
+      const banner = document.getElementById('sbStatusBanner');
+      if (!banner) return;
+      banner.textContent = msg;
+      banner.className = `p-2 rounded border-2 font-bold text-xs ${isError ? 'bg-red-100 border-red-500 text-red-900' : 'bg-green-100 border-green-500 text-green-900'}`;
+      banner.classList.remove('hidden');
+      setTimeout(() => {
+        banner.classList.add('hidden');
+      }, 6000);
+    }
+
+    window.switchSbTab = function(tabName) {
+      const tabs = ['upload', 'stats', 'top', 'history'];
+      tabs.forEach(t => {
+        const btn = document.getElementById('sbTab' + t.charAt(0).toUpperCase() + t.slice(1));
+        const view = document.getElementById('sbView' + t.charAt(0).toUpperCase() + t.slice(1));
+        if (btn) btn.classList.toggle('active', t === tabName);
+        if (view) view.classList.toggle('hidden', t !== tabName);
+      });
+      renderAllScoreboardViews();
+    };
+
+    // Foto's inlezen vanaf gsm (max 2) en verkleinen in geheugen voor snelle AI-analyse
+    window.handleSbPhotos = async function(event) {
+      const files = Array.from(event.target.files || []).slice(0, 2);
+      if (files.length === 0) return;
+
+      tempBase64Photos = [];
+      const thumbsContainer = document.getElementById('sbThumbnails');
+      const previewBox = document.getElementById('sbPreviewContainer');
+      const countText = document.getElementById('sbFileCountText');
+      const analyzeBtn = document.getElementById('sbAnalyzeBtn');
+
+      thumbsContainer.innerHTML = '';
+
+      for (const file of files) {
+        const resizedBase64 = await resizeImageToBase64(file, 1024);
+        tempBase64Photos.push(resizedBase64);
+
+        const img = document.createElement('img');
+        img.src = `data:image/jpeg;base64,${resizedBase64}`;
+        img.className = 'w-14 h-14 object-cover border border-black rounded';
+        thumbsContainer.appendChild(img);
+      }
+
+      countText.textContent = `${tempBase64Photos.length} foto('s) klaar om uit te lezen`;
+      previewBox.classList.remove('hidden');
+      analyzeBtn.disabled = false;
+    };
+
+    function resizeImageToBase64(file, maxDim) {
+      return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const img = new Image();
+          img.onload = () => {
+            const canvas = document.createElement('canvas');
+            let w = img.width;
+            let h = img.height;
+            if (w > maxDim || h > maxDim) {
+              if (w > h) {
+                h = Math.round((h * maxDim) / w);
+                w = maxDim;
+              } else {
+                w = Math.round((w * maxDim) / h);
+                h = maxDim;
+              }
+            }
+            canvas.width = w;
+            canvas.height = h;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, w, h);
+            const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
+            resolve(dataUrl.split(',')[1]);
+          };
+          img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function clearTempPhotos() {
+      tempBase64Photos = [];
+      const input = document.getElementById('sbPhotoInput');
+      const thumbs = document.getElementById('sbThumbnails');
+      const previewBox = document.getElementById('sbPreviewContainer');
+      const analyzeBtn = document.getElementById('sbAnalyzeBtn');
+      if (input) input.value = '';
+      if (thumbs) thumbs.innerHTML = '';
+      if (previewBox) previewBox.classList.add('hidden');
+      if (analyzeBtn) analyzeBtn.disabled = true;
+    }
+
+    // Gemini Vision API aanroepen met exponential backoff om scores uit te lezen
+    window.analyzeUploadedPhotos = async function() {
+      if (tempBase64Photos.length === 0) return;
+
+      const loadingBox = document.getElementById('sbLoadingBox');
+      const analyzeBtn = document.getElementById('sbAnalyzeBtn');
+      loadingBox.classList.remove('hidden');
+      analyzeBtn.disabled = true;
+
+      const knownPlayers = getKnownPlayerNames();
+      const knownHint = knownPlayers.length > 0 ? `Bekende echte spelers uit eerdere sessies zijn: ${knownPlayers.join(', ')}. ` : '';
+
+      const promptText = `Je bekijkt ${tempBase64Photos.length} foto('s) van een Mario Kart eindstand/scorebord na een sessie.
+${knownHint}Haal ALLE spelersnamen, hun behaalde punten en (indien zichtbaar door rode/blauwe kleur of achtergrond) hun team ("Rood", "Blauw", of "Onbekend") van de foto's.
+BELANGRIJK:
+- Als dezelfde speler op beide foto's staat (bijvoorbeeld race 1 en race 2), tel dan hun punten bij elkaar op of geef beide weer zodat we het totaal hebben.
+- Negeer standaard Mario Kart CPU-personages (zoals Mario, Luigi, Peach, Bowser, Yoshi, Toad, Koopa, Donkey Kong, Wario, Waluigi, Rosalina, Shy Guy, Metal Mario, Baby Mario, etc.) tenzij het overduidelijk een aangepaste spelersnaam is.
+- Geef ook aan welk team gewonnen heeft ("Rood", "Blauw" of "Geen / FFA") op basis van de totaalscore van de teams.`;
+
+      const parts = [{ text: promptText }];
+      tempBase64Photos.forEach(b64 => {
+        parts.push({
+          inlineData: {
+            mimeType: "image/jpeg",
+            data: b64
+          }
+        });
+      });
+
+      const payload = {
+        contents: [{ role: "user", parts: parts }],
+        generationConfig: {
+          responseMimeType: "application/json",
+          responseSchema: {
+            type: "OBJECT",
+            properties: {
+              winningTeam: { type: "STRING" },
+              players: {
+                type: "ARRAY",
+                items: {
+                  type: "OBJECT",
+                  properties: {
+                    name: { type: "STRING" },
+                    points: { type: "NUMBER" },
+                    team: { type: "STRING" }
+                  },
+                  required: ["name", "points", "team"]
+                }
+              }
+            },
+            required: ["winningTeam", "players"]
+          }
+        }
+      };
+
+      const apiKey = "";
+      const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+
+      let responseData = null;
+      const delays = [1000, 2000, 4000, 8000];
+
+      for (let attempt = 0; attempt <= delays.length; attempt++) {
+        try {
+          const res = await fetch(apiUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+          if (res.ok) {
+            responseData = await res.json();
+            break;
+          }
+        } catch (err) {
+          // Stille retry bij netwerk/throttling fout
+        }
+        if (attempt < delays.length) {
+          await new Promise(r => setTimeout(r, delays[attempt]));
+        }
+      }
+
+      // FOTO'S DIRECT AUTOMATISCH VERWIJDEREN UIT GEHEUGEN
+      clearTempPhotos();
+      loadingBox.classList.add('hidden');
+
+      if (!responseData || !responseData.candidates?.[0]?.content?.parts?.[0]?.text) {
+        showSbBanner("Kon de foto's niet automatisch uitlezen. Controleer de belichting of vul de scores hieronder handmatig in.", true);
+        return;
+      }
+
+      try {
+        const parsed = JSON.parse(responseData.candidates[0].content.parts[0].text);
+        const extracted = (parsed.players || []).filter(p => !isCpuName(p.name));
+
+        // Samenvoegen als dezelfde speler meerdere keren voorkomt over de 2 foto's
+        const mergedMap = new Map();
+        extracted.forEach(p => {
+          const cleanName = p.name.trim();
+          const key = cleanName.toLowerCase();
+          if (mergedMap.has(key)) {
+            const existing = mergedMap.get(key);
+            existing.points += (Number(p.points) || 0);
+          } else {
+            mergedMap.set(key, {
+              name: cleanName,
+              points: Number(p.points) || 0,
+              team: (p.team === 'Rood' || p.team === 'Blauw') ? p.team : 'Rood'
+            });
+          }
+        });
+
+        currentDraftPlayers = Array.from(mergedMap.values());
+
+        const teamSelect = document.getElementById('sbWinningTeam');
+        if (teamSelect && (parsed.winningTeam === 'Rood' || parsed.winningTeam === 'Blauw' || parsed.winningTeam === 'Geen / FFA')) {
+          teamSelect.value = parsed.winningTeam;
+        }
+
+        renderDraftPlayersTable();
+        showSbBanner(`✅ ${currentDraftPlayers.length} echte speler(s) uitgelezen! CPU's zijn weggefilterd en de foto's zijn automatisch gewist.`);
+      } catch (e) {
+        showSbBanner("Fout bij verwerken van de resultaten. Vul ze hieronder handmatig aan.", true);
+      }
+    };
+
+    function renderDraftPlayersTable() {
+      const tbody = document.getElementById('sbExtractedRows');
+      if (!tbody) return;
+
+      if (currentDraftPlayers.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="4" class="p-3 text-center text-gray-500 italic">Geen spelers in lijst. Klik op "+ Speler Toevoegen".</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = currentDraftPlayers.map((p, idx) => `
+        <tr class="border-b border-gray-300 bg-white">
+          <td class="p-1">
+            <input type="text" value="${escapeHtmlAttr(p.name)}" onchange="updateDraftPlayer(${idx}, 'name', this.value)" class="w-full border border-gray-400 px-1.5 py-1 font-bold text-black bg-yellow-50">
+          </td>
+          <td class="p-1">
+            <input type="number" value="${p.points}" onchange="updateDraftPlayer(${idx}, 'points', Number(this.value))" class="w-full border border-gray-400 px-1.5 py-1 font-bold text-black text-right">
+          </td>
+          <td class="p-1">
+            <select onchange="updateDraftPlayer(${idx}, 'team', this.value)" class="w-full border border-gray-400 px-1 py-1 font-bold text-black">
+              <option value="Rood" ${p.team === 'Rood' ? 'selected' : ''}>🔴 Rood</option>
+              <option value="Blauw" ${p.team === 'Blauw' ? 'selected' : ''}>🔵 Blauw</option>
+              <option value="Geen" ${p.team === 'Geen' ? 'selected' : ''}>🏁 Geen</option>
+            </select>
+          </td>
+          <td class="p-1 text-center">
+            <button onclick="removeDraftPlayer(${idx})" class="win98-btn bg-red-200 text-red-800 px-2">✕</button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    window.updateDraftPlayer = function(idx, field, val) {
+      if (currentDraftPlayers[idx]) {
+        currentDraftPlayers[idx][field] = val;
+      }
+    };
+
+    window.removeDraftPlayer = function(idx) {
+      currentDraftPlayers.splice(idx, 1);
+      renderDraftPlayersTable();
+    };
+
+    window.addEmptyPlayerRow = function() {
+      currentDraftPlayers.push({ name: '', points: 0, team: 'Rood' });
+      renderDraftPlayersTable();
+    };
+
+    window.saveMarioKartSession = async function() {
+      const dateVal = document.getElementById('sbSessionDate').value || new Date().toISOString().split('T')[0];
+      const winningTeam = document.getElementById('sbWinningTeam').value;
+
+      const validPlayers = currentDraftPlayers
+        .map(p => ({
+          name: (p.name || '').trim(),
+          points: Number(p.points) || 0,
+          team: p.team || 'Geen'
+        }))
+        .filter(p => p.name.length > 0 && !isCpuName(p.name));
+
+      if (validPlayers.length === 0) {
+        showSbBanner("Voeg minstens 1 echte speler met een naam toe voordat je opslaat.", true);
+        return;
+      }
+
+      const saveBtn = document.getElementById('sbSaveSessionBtn');
+      saveBtn.disabled = true;
+      saveBtn.textContent = "⏳ Opslaan...";
+
+      const sessionObj = {
+        date: dateVal,
+        winningTeam: winningTeam,
+        players: validPlayers,
+        createdAt: Date.now()
+      };
+
+      const savedToCloud = await window.saveSessionToCloud(sessionObj);
+      if (!savedToCloud) {
+        // Fallback in-memory voor huidige sessie
+        window.mkSessionsData.unshift({ id: 'local-' + Date.now(), ...sessionObj });
+      }
+
+      currentDraftPlayers = [];
+      renderDraftPlayersTable();
+      clearTempPhotos();
+      saveBtn.disabled = false;
+      saveBtn.textContent = "💾 Sessie Definitief Opslaan in Scorebord";
+
+      showSbBanner(`🎉 Sessie van ${formatNlDate(dateVal)} opgeslagen! Alle spelersstatistieken en topscores zijn bijgewerkt.`);
+      switchSbTab('stats');
+    };
+
+    function getKnownPlayerNames() {
+      const names = new Set();
+      (window.mkSessionsData || []).forEach(s => {
+        (s.players || []).forEach(p => {
+          if (p.name) names.add(p.name.trim());
+        });
+      });
+      return Array.from(names);
+    }
+
+    function formatNlDate(isoDate) {
+      if (!isoDate) return 'Onbekende datum';
+      const parts = isoDate.split('-');
+      if (parts.length !== 3) return isoDate;
+      const d = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
+      const days = ['Zondag', 'Maandag', 'Dinsdag', 'Woensdag', 'Donderdag', 'Vrijdag', 'Zaterdag'];
+      return `${days[d.getDay()]} ${parts[2]}/${parts[1]}/${parts[0]}`;
+    }
+
+    function escapeHtmlAttr(str) {
+      return String(str || '').replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    window.renderAllScoreboardViews = function() {
+      const sessions = window.mkSessionsData || [];
+      const totalSessions = sessions.length;
+
+      const badge = document.getElementById('sbTotalSessionsBadge');
+      if (badge) badge.textContent = `${totalSessions} Sessie(s)`;
+
+      // 1. AGGREGEER SPELERSSTATISTIEKEN & AANWEZIGHEID
+      const statsMap = new Map();
+      sessions.forEach(session => {
+        (session.players || []).forEach(p => {
+          const key = p.name.trim().toLowerCase();
+          if (!statsMap.has(key)) {
+            statsMap.set(key, {
+              name: p.name.trim(),
+              totalPoints: 0,
+              sessionsPlayed: 0,
+              teamWins: 0
+            });
+          }
+          const st = statsMap.get(key);
+          st.totalPoints += (Number(p.points) || 0);
+          st.sessionsPlayed += 1;
+          if (session.winningTeam && session.winningTeam !== 'Geen / FFA' && p.team === session.winningTeam) {
+            st.teamWins += 1;
+          }
+        });
+      });
+
+      const playersArray = Array.from(statsMap.values()).sort((a, b) => b.totalPoints - a.totalPoints);
+      const statsTbody = document.getElementById('sbPlayersTableBody');
+      if (statsTbody) {
+        if (playersArray.length === 0) {
+          statsTbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-gray-500">Nog geen spelers geregistreerd. Upload eerst een foto!</td></tr>`;
+        } else {
+          statsTbody.innerHTML = playersArray.map((st, idx) => {
+            const avg = st.sessionsPlayed > 0 ? Math.round(st.totalPoints / st.sessionsPlayed) : 0;
+            const attendancePct = totalSessions > 0 ? Math.round((st.sessionsPlayed / totalSessions) * 100) : 0;
+            const medal = idx === 0 ? '🥇 ' : idx === 1 ? '🥈 ' : idx === 2 ? '🥉 ' : '';
+            return `
+              <tr class="hover:bg-blue-50">
+                <td class="p-2 font-bold">${idx + 1}</td>
+                <td class="p-2 font-black text-blue-950">${medal}${escapeHtmlAttr(st.name)}</td>
+                <td class="p-2 text-right font-black text-green-700">${st.totalPoints}</td>
+                <td class="p-2 text-right font-mono">${avg}</td>
+                <td class="p-2 text-center font-bold text-amber-700">${st.teamWins}x 🏆</td>
+                <td class="p-2 text-center">
+                  <span class="bg-gray-200 border border-gray-400 px-1.5 py-0.5 rounded font-mono text-[11px] font-bold">
+                    ${st.sessionsPlayed}/${totalSessions} (${attendancePct}%)
+                  </span>
+                </td>
+              </tr>
+            `;
+          }).join('');
+        }
+      }
+
+      // 2. TOPSCORES MET VOLLEDIGE SESSIE INFO
+      const allPerformances = [];
+      sessions.forEach(session => {
+        const attendees = (session.players || []).map(pl => pl.name.trim()).join(', ');
+        const formattedDate = formatNlDate(session.date);
+        (session.players || []).forEach(p => {
+          allPerformances.push({
+            playerName: p.name.trim(),
+            points: Number(p.points) || 0,
+            team: p.team,
+            formattedDate: formattedDate,
+            attendees: attendees
+          });
+        });
+      });
+
+      allPerformances.sort((a, b) => b.points - a.points);
+      const topListEl = document.getElementById('sbTopScoresList');
+      if (topListEl) {
+        if (allPerformances.length === 0) {
+          topListEl.innerHTML = `<p class="text-center text-gray-500 p-4">Nog geen topscores beschikbaar.</p>`;
+        } else {
+          topListEl.innerHTML = allPerformances.slice(0, 10).map((perf, idx) => {
+            const badgeColor = idx === 0 ? 'bg-yellow-300 border-yellow-600' : idx === 1 ? 'bg-gray-200 border-gray-500' : idx === 2 ? 'bg-amber-200 border-amber-600' : 'bg-white border-gray-300';
+            return `
+              <div class="p-2.5 border-2 rounded ${badgeColor} flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+                <div>
+                  <div class="font-black text-sm text-black">
+                    #${idx + 1} ${escapeHtmlAttr(perf.playerName)} — <span class="text-red-700">${perf.points} punten</span>
+                  </div>
+                  <div class="text-[11px] text-gray-700 font-mono mt-0.5">
+                    📅 ${escapeHtmlAttr(perf.formattedDate)} • Sessie met: <strong>${escapeHtmlAttr(perf.attendees)}</strong>
+                  </div>
+                </div>
+              </div>
+            `;
+          }).join('');
+        }
+      }
+
+      // 3. SESSIE HISTORIEK
+      const historyEl = document.getElementById('sbSessionsHistoryList');
+      if (historyEl) {
+        if (sessions.length === 0) {
+          historyEl.innerHTML = `<p class="text-center text-gray-500 p-4">Nog geen sessies gespeeld.</p>`;
+        } else {
+          historyEl.innerHTML = sessions.map(session => {
+            const winPlayers = (session.players || []).filter(p => p.team === session.winningTeam).map(p => p.name);
+            const sortedPlayers = [...(session.players || [])].sort((a, b) => (b.points || 0) - (a.points || 0));
+            return `
+              <div class="border-2 border-gray-400 bg-gray-50 p-2.5 rounded space-y-2">
+                <div class="flex flex-wrap justify-between items-center border-b border-gray-300 pb-1.5 gap-2">
+                  <div>
+                    <span class="font-black text-blue-900">📅 ${escapeHtmlAttr(formatNlDate(session.date))}</span>
+                    <span class="ml-2 px-2 py-0.5 rounded text-[11px] font-bold bg-yellow-200 border border-yellow-500 text-black">
+                      🏆 Winnaar: Team ${escapeHtmlAttr(session.winningTeam)} ${winPlayers.length > 0 ? '(' + escapeHtmlAttr(winPlayers.join(', ')) + ')' : ''}
+                    </span>
+                  </div>
+                  <button onclick="deleteSbSession('${session.id}')" class="win98-btn bg-red-100 text-red-800 text-[10px]">🗑️ Verwijder</button>
+                </div>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
+                  ${sortedPlayers.map(p => `
+                    <div class="bg-white border border-gray-300 px-2 py-1 rounded flex justify-between items-center text-xs">
+                      <span class="font-bold truncate">${p.team === 'Rood' ? '🔴' : p.team === 'Blauw' ? '🔵' : '🏁'} ${escapeHtmlAttr(p.name)}</span>
+                      <span class="font-black text-blue-900 ml-1">${p.points}</span>
+                    </div>
+                  `).join('')}
+                </div>
+              </div>
+            `;
+          }).join('');
+        }
+      }
+    };
+
+    window.deleteSbSession = async function(id) {
+      if (id.startsWith('local-')) {
+        window.mkSessionsData = window.mkSessionsData.filter(s => s.id !== id);
+        renderAllScoreboardViews();
+      } else {
+        await window.deleteSessionFromCloud(id);
       }
     };
 
