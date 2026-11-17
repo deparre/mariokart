@@ -988,7 +988,145 @@
     let currentDraftPlayers2 = [];
 
     // Uitgebreide lijst met Mario Kart CPU namen (NL & EN) om weg te filteren
-// ... existing code ... -->
+    const MARIO_KART_CPU_NAMES = new Set([
+      'mario', 'luigi', 'peach', 'daisy', 'rosalina', 'tanooki mario', 'cat peach',
+      'yoshi', 'toad', 'koopa troopa', 'koopa', 'shy guy', 'lakitu', 'toadette',
+      'king boo', 'baby mario', 'baby luigi', 'baby peach', 'baby daisy', 'baby rosalina',
+      'metal mario', 'pink gold peach', 'wario', 'waluigi', 'donkey kong', 'bowser',
+      'dry bones', 'bowser jr.', 'bowser jr', 'dry bowser', 'lemmy', 'larry', 'wendy',
+      'ludwig', 'iggy', 'roy', 'morton', 'inkling girl', 'inkling boy', 'link',
+      'villager', 'isabelle', 'birdo', 'petey piranha', 'wiggler', 'kamek', 'peachette',
+      'funky kong', 'diddy kong', 'pauline', 'cpu', 'com'
+    ]);
+
+    function isCpuName(name) {
+      if (!name) return true;
+      const clean = name.trim().toLowerCase();
+      if (clean.length === 0) return true;
+      return MARIO_KART_CPU_NAMES.has(clean);
+    }
+
+    window.switchSbTab = function(tabName) {
+      const tabs = ['upload', 'stats', 'top', 'history'];
+      tabs.forEach(t => {
+        const cap = t.charAt(0).toUpperCase() + t.slice(1);
+        const btn = document.getElementById('sbTab' + cap);
+        const view = document.getElementById('sbView' + cap);
+        if (btn) btn.classList.toggle('active', t === tabName);
+        if (view) view.classList.toggle('hidden', t !== tabName);
+      });
+      if (tabName !== 'upload') {
+        renderAllScoreboardViews();
+      }
+    };
+
+    function showSbBanner(msg, isError = false) {
+      const banner = document.getElementById('sbStatusBanner');
+      if (!banner) return;
+      banner.textContent = msg;
+      banner.classList.remove('hidden', 'bg-green-100', 'border-green-600', 'text-green-900', 'bg-red-100', 'border-red-600', 'text-red-900');
+      if (isError) {
+        banner.classList.add('bg-red-100', 'border-red-600', 'text-red-900');
+      } else {
+        banner.classList.add('bg-green-100', 'border-green-600', 'text-green-900');
+      }
+    }
+
+    function clearTempPhotos() {
+      tempBase64Photos = [];
+      const input = document.getElementById('sbPhotoInput');
+      if (input) input.value = '';
+      const previewContainer = document.getElementById('sbPreviewContainer');
+      const thumbs = document.getElementById('sbThumbnails');
+      const analyzeBtn = document.getElementById('sbAnalyzeBtn');
+      const countText = document.getElementById('sbFileCountText');
+      if (thumbs) thumbs.innerHTML = '';
+      if (previewContainer) previewContainer.classList.add('hidden');
+      if (countText) countText.textContent = '0 foto\'s klaar';
+      if (analyzeBtn) analyzeBtn.disabled = true;
+    }
+
+    function compressImageToJpegBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          const img = new Image();
+          img.onload = () => {
+            const maxDim = 1400;
+            let w = img.width;
+            let h = img.height;
+            if (w > maxDim || h > maxDim) {
+              if (w > h) {
+                h = Math.round((h * maxDim) / w);
+                w = maxDim;
+              } else {
+                w = Math.round((w * maxDim) / h);
+                h = maxDim;
+              }
+            }
+            const c = document.createElement('canvas');
+            c.width = w;
+            c.height = h;
+            const cctx = c.getContext('2d');
+            cctx.drawImage(img, 0, 0, w, h);
+            const dataUrl = c.toDataURL('image/jpeg', 0.85);
+            resolve({
+              dataUrl: dataUrl,
+              base64: dataUrl.split(',')[1]
+            });
+          };
+          img.onerror = reject;
+          img.src = ev.target.result;
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+
+    window.handleSbPhotos = async function(event) {
+      const files = Array.from(event.target.files || []).slice(0, 2);
+      if (files.length === 0) return;
+
+      const previewContainer = document.getElementById('sbPreviewContainer');
+      const thumbs = document.getElementById('sbThumbnails');
+      const countText = document.getElementById('sbFileCountText');
+      const analyzeBtn = document.getElementById('sbAnalyzeBtn');
+
+      if (thumbs) thumbs.innerHTML = '';
+      if (previewContainer) previewContainer.classList.remove('hidden');
+      if (countText) countText.textContent = `⏳ ${files.length} foto('s) voorbereiden...`;
+      if (analyzeBtn) analyzeBtn.disabled = true;
+
+      tempBase64Photos = [];
+
+      for (let i = 0; i < files.length; i++) {
+        try {
+          const processed = await compressImageToJpegBase64(files[i]);
+          tempBase64Photos.push(processed.base64);
+
+          if (thumbs) {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'relative border-2 border-blue-800 rounded overflow-hidden bg-black w-16 h-12 shrink-0';
+            wrapper.innerHTML = `
+              <img src="${processed.dataUrl}" class="w-full h-full object-cover" alt="Sessie ${i + 1}">
+              <span class="absolute bottom-0 right-0 bg-blue-900 text-yellow-300 text-[9px] font-bold px-1">S${i + 1}</span>
+            `;
+            thumbs.appendChild(wrapper);
+          }
+        } catch (err) {
+          console.warn('Fout bij inladen foto:', err);
+        }
+      }
+
+      if (tempBase64Photos.length > 0) {
+        if (countText) countText.textContent = `✅ ${tempBase64Photos.length} foto('s) geselecteerd en klaar!`;
+        if (analyzeBtn) analyzeBtn.disabled = false;
+        showSbBanner(`📸 ${tempBase64Photos.length} foto('s) geladen! Klik nu op "🤖 Lees Scores Uit".`);
+      } else {
+        if (countText) countText.textContent = `⚠️ Kon geselecteerde foto's niet openen.`;
+      }
+    };
+
     // Gemini Vision API aanroepen met exponential backoff om scores uit te lezen
     window.analyzeUploadedPhotos = async function() {
       if (tempBase64Photos.length === 0) return;
