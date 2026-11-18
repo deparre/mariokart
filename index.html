@@ -48,36 +48,9 @@
       100% { background-position: 300% 50%; }
     }
 
-    @keyframes parreVortexMania {
-      0% {
-        transform: rotateX(25deg) rotateY(-20deg) rotateZ(-3deg) scale(0.95) translateZ(0px);
-        filter: drop-shadow(-8px 10px 0px #000) drop-shadow(0 0 25px #00ffff) hue-rotate(0deg);
-      }
-      20% {
-        transform: rotateX(-22deg) rotateY(18deg) rotateZ(5deg) scale(1.08) translateZ(40px) skewX(4deg);
-        filter: drop-shadow(10px -8px 0px #000) drop-shadow(0 0 35px #ff007f) hue-rotate(90deg);
-      }
-      40% {
-        transform: rotateX(28deg) rotateY(25deg) rotateZ(-5deg) scale(1.02) translateZ(20px) skewY(-3deg);
-        filter: drop-shadow(-10px -10px 0px #000) drop-shadow(0 0 30px #ffff00) hue-rotate(180deg);
-      }
-      60% {
-        transform: rotateX(-15deg) rotateY(-25deg) rotateZ(6deg) scale(1.12) translateZ(55px) skewX(-5deg);
-        filter: drop-shadow(12px 10px 0px #000) drop-shadow(0 0 45px #00ff66) hue-rotate(270deg);
-      }
-      80% {
-        transform: rotateX(18deg) rotateY(15deg) rotateZ(-2deg) scale(1.04) translateZ(30px);
-        filter: drop-shadow(-7px 8px 0px #000) drop-shadow(0 0 32px #ff00aa) hue-rotate(320deg);
-      }
-      100% {
-        transform: rotateX(25deg) rotateY(-20deg) rotateZ(-3deg) scale(0.95) translateZ(0px);
-        filter: drop-shadow(-8px 10px 0px #000) drop-shadow(0 0 25px #00ffff) hue-rotate(360deg);
-      }
-    }
-
     .wordart-rainbow {
       font-family: 'Impact', 'Arial Black', sans-serif;
-      font-size: clamp(0.95rem, 4.3vw, 2.2rem);
+      font-size: clamp(1rem, 4.5vw, 2.3rem);
       font-weight: 900;
       text-transform: uppercase;
       letter-spacing: clamp(0.5px, 0.6vw, 2px);
@@ -88,21 +61,8 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       display: inline-block;
-      transform-style: preserve-3d;
-      text-shadow: 
-        1px 1px 0px #e6005c,
-        2px 2px 0px #c7004c,
-        3px 3px 0px #a3003e,
-        4px 4px 0px #800030,
-        5px 5px 0px #5e0023,
-        6px 6px 0px #3d0016,
-        7px 7px 0px #1a0009,
-        8px 8px 0px #000000,
-        10px 10px 16px rgba(0, 0, 0, 0.9),
-        0 0 25px rgba(0, 255, 255, 0.8),
-        0 0 45px rgba(255, 0, 128, 0.6);
-      filter: drop-shadow(0 0 12px rgba(255, 255, 0, 0.6));
-      animation: parreVortexMania 4.5s ease-in-out infinite, rainbowSlide 2s linear infinite;
+      filter: drop-shadow(2px 3px 0px #000) drop-shadow(0 0 12px rgba(0, 255, 255, 0.55));
+      animation: rainbowSlide 3.5s linear infinite;
     }
 
     /* VRIJSTAANDE MARIO KART GIFS (GEEN RANDEN) */
@@ -219,28 +179,25 @@
       box-shadow: 0 0 18px rgba(255, 230, 0, 0.7);
     }
 
-    /* 90s DESKTOP SNELKOPPELING ICON STYLING */
-    .desktop-shortcut-icon {
-      position: absolute;
-      top: 18px;
-      right: 18px;
+    /* 90s GAME LAUNCHER ICONEN ONDERAAN */
+    .bottom-shortcut-icon {
+      position: relative;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      width: 78px;
+      width: 86px;
       cursor: pointer;
       user-select: none;
-      z-index: 40;
-      padding: 4px;
+      padding: 6px;
       border: 1px dotted transparent;
       transition: transform 0.15s ease, filter 0.15s ease;
     }
-    .desktop-shortcut-icon:hover {
+    .bottom-shortcut-icon:hover {
       transform: scale(1.08);
       filter: drop-shadow(0 0 10px #fbc531);
     }
-    .desktop-shortcut-icon:active, .desktop-shortcut-icon:focus {
+    .bottom-shortcut-icon:active, .bottom-shortcut-icon:focus {
       border: 1px dotted #ffffff;
       background: rgba(0, 0, 128, 0.45);
     }
@@ -323,48 +280,6 @@
   </style>
 </head>
 <body class="relative select-none flex flex-col items-center justify-center min-h-screen p-3 sm:p-5">
-
-  <!-- VINTAGE DESKTOP SNELKOPPELING: gta:jonie.exe -->
-  <div class="desktop-shortcut-icon" onclick="openGtaJonieModal()" title="Dubbelklik om gta:jonie.exe te starten!">
-    <span class="absolute -top-1 -right-1 bg-red-600 text-yellow-200 font-mono text-[7px] px-1 py-0.2 rounded-full border border-white font-black animate-pulse">EXE</span>
-    <div class="shortcut-badge">
-      <!-- Retro Golfkar & Pistool Icoontje -->
-      <svg class="w-7 h-7 drop-shadow" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect x="3" y="10" width="18" height="6" rx="2" fill="#198754"/>
-        <rect x="7" y="5" width="10" height="2" fill="#fbc531"/>
-        <rect x="5" y="7" width="2" height="6" fill="#cbd5e1"/>
-        <rect x="17" y="7" width="2" height="6" fill="#cbd5e1"/>
-        <circle cx="7" cy="17" r="3" fill="#111317" stroke="#cbd5e1" stroke-width="1"/>
-        <circle cx="17" cy="17" r="3" fill="#111317" stroke="#cbd5e1" stroke-width="1"/>
-        <rect x="11" y="9" width="3" height="4" fill="#ff2a55"/>
-      </svg>
-      <div class="shortcut-arrow">
-        <svg class="w-2 h-2" viewBox="0 0 8 8" fill="none">
-          <path d="M1 7L7 1M7 1H3M7 1V5" stroke="#000080" stroke-width="1.5"/>
-        </svg>
-      </div>
-    </div>
-    <span class="shortcut-label">gta:jonie<br>.exe</span>
-  </div>
-
-  <!-- VINTAGE DESKTOP SNELKOPPELING: bent_vs_saus.exe -->
-  <div class="desktop-shortcut-icon" style="top: 104px; right: 18px;" onclick="openBentVsSausModal()" title="Dubbelklik om bent_vs_saus.exe te starten!">
-    <span class="absolute -top-1 -right-1 bg-amber-500 text-stone-950 font-mono text-[7px] px-1 py-0.2 rounded-full border border-white font-black animate-pulse">EXE</span>
-    <div class="shortcut-badge" style="border-color: #f59e0b #b45309 #b45309 #f59e0b; box-shadow: 2px 2px 0px #000, 0 0 12px rgba(245, 158, 11, 0.6);">
-      <!-- Retro Saustube & Frikandel Icoontje -->
-      <svg class="w-7 h-7 drop-shadow" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M4 19h16v2H4v-2zm2-4h12l1-8H5l1 8zm3-13h2v4H9V2zm4 0h2v4h-2V2z" fill="#f59e0b"/>
-        <rect x="8" y="11" width="8" height="3" rx="1.5" fill="#78350f"/>
-        <circle cx="12" cy="7" r="1.5" fill="#ef4444"/>
-      </svg>
-      <div class="shortcut-arrow">
-        <svg class="w-2 h-2" viewBox="0 0 8 8" fill="none">
-          <path d="M1 7L7 1M7 1H3M7 1V5" stroke="#000080" stroke-width="1.5"/>
-        </svg>
-      </div>
-    </div>
-    <span class="shortcut-label">bent_vs_saus<br>.exe</span>
-  </div>
 
   <!-- Interactieve Starfield Canvas op achtergrond -->
   <canvas id="starCanvas" class="fixed inset-0 w-full h-full pointer-events-none z-0"></canvas>
@@ -655,16 +570,16 @@
             <div class="overflow-x-auto">
               <table class="w-full text-left border-collapse text-[11px] sm:text-xs">
                 <thead>
-                  <tr class="bg-gray-200 border-b-2 border-gray-400">
-                    <th class="py-1.5 px-1 sm:p-2 w-7">#</th>
+                  <tr class="bg-blue-900 text-white">
+                    <th class="py-1.5 px-1 sm:p-2">#</th>
                     <th class="py-1.5 px-1.5 sm:p-2">Speler</th>
-                    <th class="py-1.5 px-1.5 sm:p-2 text-right whitespace-nowrap">Ptn</th>
-                    <th class="py-1.5 px-1.5 sm:p-2 text-right whitespace-nowrap">Gem.</th>
-                    <th class="py-1.5 px-1 sm:p-2 text-center whitespace-nowrap">Winst</th>
-                    <th class="py-1.5 px-1 sm:p-2 text-center whitespace-nowrap">Aanwezig</th>
+                    <th class="py-1.5 px-1.5 sm:p-2 text-right">Punten</th>
+                    <th class="py-1.5 px-1.5 sm:p-2 text-right">Gem.</th>
+                    <th class="py-1.5 px-1 sm:p-2 text-center">Winst</th>
+                    <th class="py-1.5 px-1 sm:p-2 text-center">Aanwezig</th>
                   </tr>
                 </thead>
-                <tbody id="sbPlayersTableBody" class="divide-y divide-gray-200">
+                <tbody id="sbPlayersTableBody" class="divide-y divide-gray-300">
                   <tr><td colspan="6" class="p-4 text-center text-gray-500">Nog geen gegevens beschikbaar...</td></tr>
                 </tbody>
               </table>
@@ -672,20 +587,23 @@
           </div>
         </div>
 
-        <!-- TAB 3: TOPSCORES -->
+        <!-- TAB 3: TOPSCORES & RECORDS -->
         <div id="sbViewTop" class="hidden space-y-3">
-          <div class="win98-inset p-3">
-            <h2 class="font-black text-amber-800 text-sm sm:text-base border-b pb-2 mb-2">👑 Hall of Fame — Hoogste Individuele Scores</h2>
+          <div class="win98-inset p-2.5 sm:p-3">
+            <h2 class="font-black text-amber-800 text-xs sm:text-base border-b pb-2 mb-2">👑 Hall of Fame — Hoogste Individuele Scores</h2>
             <div id="sbTopScoresList" class="space-y-2">
               <p class="text-center text-gray-500 p-4">Nog geen topscores geregistreerd.</p>
             </div>
           </div>
         </div>
 
-        <!-- TAB 4: SESSIES & TEAMS HISTORIE -->
+        <!-- TAB 4: GESPEELDE SESSIES -->
         <div id="sbViewHistory" class="hidden space-y-3">
-          <div class="win98-inset p-3">
-            <h2 class="font-black text-purple-900 text-sm sm:text-base border-b pb-2 mb-2">📅 Gespeelde Avonden & Team Uitslagen</h2>
+          <div class="win98-inset p-2.5 sm:p-3">
+            <div class="flex justify-between items-center border-b pb-2 mb-2">
+              <h2 class="font-black text-purple-900 text-xs sm:text-base">📅 Alle Gespeelde Sessies</h2>
+              <button onclick="syncScoreboardFromSupabase()" class="win98-btn text-[10px] bg-blue-100">🔄 Vernieuw</button>
+            </div>
             <div id="sbSessionsHistoryList" class="space-y-2.5">
               <p class="text-center text-gray-500 p-4">Nog geen sessies opgeslagen.</p>
             </div>
@@ -695,12 +613,56 @@
       </div>
     </div>
 
-    <!-- 4. COMPACTE FOOTER MET MARIO KART RACER & LINK NAAR PARRE.BE -->
-    <div class="w-full flex flex-col items-center justify-center gap-2 pt-1">
+    <!-- 4. COMPACTE FOOTER MET GAMES, MARIO KART RACER & LINK NAAR PARRE.BE -->
+    <div class="w-full flex flex-col items-center justify-center gap-3 pt-2">
+      
+      <!-- 90s Retro Games Snelkoppelingen onderaan -->
+      <div class="flex items-center justify-center gap-6 sm:gap-10">
+        <!-- gta:jonie.exe -->
+        <div class="bottom-shortcut-icon" onclick="openGtaJonieModal()" title="Klik om gta:jonie.exe te starten!">
+          <span class="absolute top-0 right-1 bg-red-600 text-yellow-200 font-mono text-[7px] px-1 py-0.2 rounded-full border border-white font-black animate-pulse z-10">EXE</span>
+          <div class="shortcut-badge">
+            <svg class="w-7 h-7 drop-shadow" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="3" y="10" width="18" height="6" rx="2" fill="#198754"/>
+              <rect x="7" y="5" width="10" height="2" fill="#fbc531"/>
+              <rect x="5" y="7" width="2" height="6" fill="#cbd5e1"/>
+              <rect x="17" y="7" width="2" height="6" fill="#cbd5e1"/>
+              <circle cx="7" cy="17" r="3" fill="#111317" stroke="#cbd5e1" stroke-width="1"/>
+              <circle cx="17" cy="17" r="3" fill="#111317" stroke="#cbd5e1" stroke-width="1"/>
+              <rect x="11" y="9" width="3" height="4" fill="#ff2a55"/>
+            </svg>
+            <div class="shortcut-arrow">
+              <svg class="w-2 h-2" viewBox="0 0 8 8" fill="none">
+                <path d="M1 7L7 1M7 1H3M7 1V5" stroke="#000080" stroke-width="1.5"/>
+              </svg>
+            </div>
+          </div>
+          <span class="shortcut-label">gta:jonie.exe</span>
+        </div>
+
+        <!-- bent_vs_saus.exe -->
+        <div class="bottom-shortcut-icon" onclick="openBentVsSausModal()" title="Klik om bent_vs_saus.exe te starten!">
+          <span class="absolute top-0 right-1 bg-amber-500 text-stone-950 font-mono text-[7px] px-1 py-0.2 rounded-full border border-white font-black animate-pulse z-10">EXE</span>
+          <div class="shortcut-badge" style="border-color: #f59e0b #b45309 #b45309 #f59e0b; box-shadow: 2px 2px 0px #000, 0 0 12px rgba(245, 158, 11, 0.6);">
+            <svg class="w-7 h-7 drop-shadow" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M4 19h16v2H4v-2zm2-4h12l1-8H5l1 8zm3-13h2v4H9V2zm4 0h2v4h-2V2z" fill="#f59e0b"/>
+              <rect x="8" y="11" width="8" height="3" rx="1.5" fill="#78350f"/>
+              <circle cx="12" cy="7" r="1.5" fill="#ef4444"/>
+            </svg>
+            <div class="shortcut-arrow">
+              <svg class="w-2 h-2" viewBox="0 0 8 8" fill="none">
+                <path d="M1 7L7 1M7 1H3M7 1V5" stroke="#000080" stroke-width="1.5"/>
+              </svg>
+            </div>
+          </div>
+          <span class="shortcut-label">bent_vs_saus.exe</span>
+        </div>
+      </div>
+
       <img 
         src="https://i.ibb.co/m5T9rydk/tumblr-p0exqx-Sq-Om1rl04amo2-250.webp" 
         alt="Mario Kart Racer Animatie" 
-        class="clean-mk-gif w-16 h-16 sm:w-20 sm:h-20 object-contain"
+        class="clean-mk-gif w-14 h-14 sm:w-18 sm:h-18 object-contain"
       >
       <a href="https://www.parre.be" target="_blank" rel="noopener noreferrer" class="subtle-parre-link">
         <span>🌐</span>
@@ -1586,23 +1548,54 @@ BELANGRIJKE REGELS:
         if (allRecords.length === 0) {
           topListEl.innerHTML = '<p class="text-center text-gray-500 p-4">Nog geen topscores geregistreerd.</p>';
         } else {
-          topListEl.innerHTML = allRecords.slice(0, 15).map((rec, idx) => {
+          topListEl.innerHTML = allRecords.slice(0, 20).map((rec, idx) => {
+            const isTop3 = idx < 3;
+            const rankBadge = idx === 0 ? '👑 1' : idx === 1 ? '🥈 2' : idx === 2 ? '🥉 3' : `#${idx + 1}`;
+            const cardStyle = idx === 0
+              ? 'border-2 border-amber-500 bg-gradient-to-r from-yellow-50 via-amber-100/80 to-yellow-50 shadow-md p-2.5 sm:p-3'
+              : idx === 1
+                ? 'border-2 border-slate-400 bg-gradient-to-r from-slate-50 via-gray-100 to-slate-50 shadow-sm p-2.5'
+                : idx === 2
+                  ? 'border-2 border-orange-400 bg-gradient-to-r from-orange-50 via-amber-50 to-orange-50 shadow-sm p-2.5'
+                  : 'border border-gray-300 bg-white p-2';
+            const badgeStyle = idx === 0
+              ? 'bg-amber-400 text-black border border-amber-700 px-2 py-0.5 rounded text-xs sm:text-sm font-black'
+              : idx === 1
+                ? 'bg-slate-300 text-slate-900 border border-slate-500 px-1.5 py-0.5 rounded text-xs font-black'
+                : idx === 2
+                  ? 'bg-orange-300 text-orange-950 border border-orange-600 px-1.5 py-0.5 rounded text-xs font-black'
+                  : 'text-gray-500 font-black text-xs';
+            const nameSize = idx === 0
+              ? 'text-base sm:text-lg font-black text-amber-950'
+              : isTop3
+                ? 'text-sm sm:text-base font-black text-blue-950'
+                : 'text-xs sm:text-sm font-black text-blue-950';
+            const ptsSize = idx === 0
+              ? 'text-2xl sm:text-3xl font-black text-amber-600 leading-none'
+              : isTop3
+                ? 'text-xl sm:text-2xl font-black text-amber-700 leading-none'
+                : 'text-lg sm:text-xl font-black text-amber-700 leading-none';
+
             return `
-              <div class="border-2 border-gray-300 bg-white p-2.5 rounded flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                <div class="flex items-start gap-2 min-w-0">
-                  <span class="font-black text-amber-600 text-sm shrink-0">#${idx + 1}</span>
-                  <div class="min-w-0">
-                    <div class="flex flex-wrap items-center gap-1.5">
-                      <span class="font-black text-blue-950 text-xs sm:text-sm">${escapeHtmlAttr(rec.name)}</span>
-                    </div>
-                    <div class="text-[11px] text-gray-600 mt-0.5">📅 ${escapeHtmlAttr(formatDutchSessionDate(rec.date))}</div>
-                    ${rec.teammates.length > 0 ? `<div class="text-[10px] text-green-800 mt-0.5">🤝 Teamgenoten: <b>${escapeHtmlAttr(rec.teammates.join(', '))}</b></div>` : ''}
-                    ${rec.opponents.length > 0 ? `<div class="text-[10px] text-gray-600">⚔️ Tegenstanders: ${escapeHtmlAttr(rec.opponents.join(', '))}</div>` : ''}
+              <div class="${cardStyle} rounded-lg flex flex-col gap-1">
+                <!-- Bovenste rij: Rang + Naam bovenaan + Grote Punten rechts -->
+                <div class="flex items-center justify-between gap-2">
+                  <div class="flex items-center gap-2 min-w-0">
+                    <span class="${badgeStyle} shrink-0">${rankBadge}</span>
+                    <span class="${nameSize} truncate">${escapeHtmlAttr(rec.name)}</span>
+                    ${idx === 0 ? '<span class="text-[9px] bg-amber-500 text-white font-black px-1.5 py-0.5 rounded uppercase tracking-wider shrink-0">RECORD</span>' : ''}
+                  </div>
+                  <div class="text-right shrink-0 flex items-baseline gap-0.5">
+                    <span class="${ptsSize}">${rec.points}</span>
+                    <span class="text-[10px] sm:text-xs font-black text-gray-600">ptn</span>
                   </div>
                 </div>
-                <div class="text-right shrink-0">
-                  <span class="text-base sm:text-lg font-black text-amber-700">${rec.points}</span>
-                  <span class="text-[10px] font-bold text-gray-500"> ptn</span>
+
+                <!-- Compacte details eronder -->
+                <div class="flex flex-wrap items-center gap-x-2.5 gap-y-0.5 text-[10px] sm:text-[11px] text-gray-600 leading-tight">
+                  <span>📅 ${escapeHtmlAttr(formatDutchSessionDate(rec.date))}</span>
+                  ${rec.teammates.length > 0 ? `<span class="text-green-800">🤝 <b>${escapeHtmlAttr(rec.teammates.join(', '))}</b></span>` : ''}
+                  ${rec.opponents.length > 0 ? `<span class="text-gray-500">⚔️ ${escapeHtmlAttr(rec.opponents.join(', '))}</span>` : ''}
                 </div>
               </div>
             `;
