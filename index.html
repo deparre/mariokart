@@ -326,11 +326,6 @@
             C:\MARIOKART\COUNTDOWN_BRUSSELS.EXE
           </span>
         </div>
-        <div class="flex gap-1 shrink-0">
-          <button class="win98-btn" onclick="playBeep(440, 0.08)">_</button>
-          <button class="win98-btn" onclick="playBeep(880, 0.08)">□</button>
-          <button class="win98-btn" onclick="playKartCrash()">✕</button>
-        </div>
       </div>
 
       <!-- Live Race Alert Banner (Zichtbaar bij 21:00) -->
@@ -411,20 +406,16 @@
             C:\MARIOKART\SCOREBOARD_STATS.EXE - [Dinsdagavond Cup]
           </span>
         </div>
-        <div class="flex gap-1 shrink-0">
-          <button class="win98-btn" onclick="playBeep(440, 0.08)">_</button>
-          <button class="win98-btn" onclick="playBeep(880, 0.08)">□</button>
-        </div>
       </div>
 
-      <!-- Navigatie Tabs -->
-      <div class="bg-[#c0c0c0] px-1.5 sm:px-2 pt-1.5 flex items-center justify-between gap-1 border-b border-gray-500 shrink-0">
-        <div class="flex flex-wrap gap-1">
-          <button id="sbTabStats" class="win98-tab active text-[10px] sm:text-[11px] px-2 sm:px-2.5" onclick="switchSbTab('stats')">📊 Spelers & Aanwezigheid</button>
-          <button id="sbTabTop" class="win98-tab text-[10px] sm:text-[11px] px-2 sm:px-2.5" onclick="switchSbTab('top')">👑 Topscores</button>
-          <button id="sbTabHistory" class="win98-tab text-[10px] sm:text-[11px] px-2 sm:px-2.5" onclick="switchSbTab('history')">📅 Sessies</button>
+      <!-- Navigatie Tabs (Altijd netjes op 1 lijn op mobiel) -->
+      <div class="bg-[#c0c0c0] px-1 sm:px-2 pt-1.5 flex items-center justify-between gap-0.5 sm:gap-1 border-b border-gray-500 shrink-0 flex-nowrap overflow-x-auto">
+        <div class="flex items-center gap-0.5 sm:gap-1 flex-nowrap">
+          <button id="sbTabStats" class="win98-tab active text-[9.5px] sm:text-[11px] px-1.5 sm:px-2.5 py-1 whitespace-nowrap" onclick="switchSbTab('stats')">📊 Spelers</button>
+          <button id="sbTabTop" class="win98-tab text-[9.5px] sm:text-[11px] px-1.5 sm:px-2.5 py-1 whitespace-nowrap" onclick="switchSbTab('top')">👑 Topscores</button>
+          <button id="sbTabHistory" class="win98-tab text-[9.5px] sm:text-[11px] px-1.5 sm:px-2.5 py-1 whitespace-nowrap" onclick="switchSbTab('history')">📅 Sessies</button>
         </div>
-        <button id="sbTabUpload" class="win98-tab text-[9px] sm:text-[10px] px-2 opacity-80 hover:opacity-100" onclick="switchSbTab('upload')" title="Alleen voor beheerder na de sessie">🔒 Beheer</button>
+        <button id="sbTabUpload" class="win98-tab text-[9px] sm:text-[10px] px-1.5 sm:px-2 py-1 whitespace-nowrap opacity-80 hover:opacity-100 shrink-0" onclick="switchSbTab('upload')" title="Alleen voor beheerder na de sessie">🔒 Beheer</button>
       </div>
 
       <!-- Content Gebied -->
@@ -1548,7 +1539,7 @@ BELANGRIJKE REGELS:
         if (allRecords.length === 0) {
           topListEl.innerHTML = '<p class="text-center text-gray-500 p-4">Nog geen topscores geregistreerd.</p>';
         } else {
-          topListEl.innerHTML = allRecords.slice(0, 20).map((rec, idx) => {
+          topListEl.innerHTML = allRecords.map((rec, idx) => {
             const isTop3 = idx < 3;
             const rankBadge = idx === 0 ? '👑 1' : idx === 1 ? '🥈 2' : idx === 2 ? '🥉 3' : `#${idx + 1}`;
             const cardStyle = idx === 0
