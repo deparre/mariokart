@@ -34,12 +34,12 @@
       overflow-x: hidden;
     }
 
-    /* WORDART 3D VORTEX STYLES (EXACT UIT DE EERSTE VERSIE) */
+    /* WORDART 3D VORTEX STYLES (COMPACT) */
     .wordart-container-3d {
       perspective: 700px;
       transform-style: preserve-3d;
       display: inline-block;
-      padding: 10px 10px;
+      padding: 2px 6px;
       max-width: 100%;
     }
 
@@ -77,10 +77,11 @@
 
     .wordart-rainbow {
       font-family: 'Impact', 'Arial Black', sans-serif;
-      font-size: clamp(2.4rem, 11vw, 5.8rem);
+      font-size: clamp(0.95rem, 4.3vw, 2.2rem);
       font-weight: 900;
       text-transform: uppercase;
-      letter-spacing: clamp(1px, 1.5vw, 5px);
+      letter-spacing: clamp(0.5px, 0.6vw, 2px);
+      white-space: nowrap;
       position: relative;
       background: linear-gradient(90deg, #ff0055, #ff7700, #ffff00, #00ff66, #00ffff, #0055ff, #aa00ff, #ff0055);
       background-size: 300% auto;
@@ -97,23 +98,11 @@
         6px 6px 0px #3d0016,
         7px 7px 0px #1a0009,
         8px 8px 0px #000000,
-        9px 9px 0px #000000,
-        10px 10px 0px #000000,
-        12px 14px 20px rgba(0, 0, 0, 0.9),
-        0 0 35px rgba(0, 255, 255, 0.8),
-        0 0 60px rgba(255, 0, 128, 0.6);
-      filter: drop-shadow(0 0 15px rgba(255, 255, 0, 0.6));
+        10px 10px 16px rgba(0, 0, 0, 0.9),
+        0 0 25px rgba(0, 255, 255, 0.8),
+        0 0 45px rgba(255, 0, 128, 0.6);
+      filter: drop-shadow(0 0 12px rgba(255, 255, 0, 0.6));
       animation: parreVortexMania 4.5s ease-in-out infinite, rainbowSlide 2s linear infinite;
-    }
-
-    .wordart-line-top {
-      display: block;
-      line-height: 1.05;
-      margin-bottom: 4px;
-    }
-    .wordart-line-bottom {
-      display: block;
-      line-height: 1.05;
     }
 
     /* VRIJSTAANDE MARIO KART GIFS (GEEN RANDEN) */
@@ -132,27 +121,27 @@
     /* COUNTDOWN VAKKEN & CIJFERS */
     .countdown-card {
       background: #000000;
-      border: 3px solid #ff007f;
-      outline: 2px dashed #00ffff;
-      box-shadow: 0 0 15px rgba(255, 0, 128, 0.5), inset 0 0 10px rgba(0, 0, 0, 0.8);
-      border-radius: 8px;
+      border: 2px solid #ff007f;
+      outline: 1px dashed #00ffff;
+      box-shadow: 0 0 12px rgba(255, 0, 128, 0.45), inset 0 0 8px rgba(0, 0, 0, 0.8);
+      border-radius: 6px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 10px 4px;
+      padding: 6px 2px;
       min-width: 0;
       width: 100%;
     }
 
     .pixel-clock-digit {
       font-family: 'Press Start 2P', monospace;
-      font-size: clamp(1.2rem, 4vw, 2.7rem);
+      font-size: clamp(1.05rem, 3.5vw, 2.1rem);
       font-weight: 900;
       color: #ffff00;
       text-shadow: 
-        0 0 10px #ffea00,
-        0 0 20px #ff7700,
+        0 0 8px #ffea00,
+        0 0 16px #ff7700,
         2px 2px 0px #000;
       line-height: 1;
       width: 100%;
@@ -308,10 +297,6 @@
       transform: translateZ(0);
       will-change: transform;
     }
-    #scoreboardModal {
-      backdrop-filter: blur(4px);
-      will-change: transform;
-    }
     .win98-tab {
       background: #c0c0c0;
       border: 2px solid;
@@ -381,26 +366,6 @@
     <span class="shortcut-label">bent_vs_saus<br>.exe</span>
   </div>
 
-  <!-- VINTAGE DESKTOP SNELKOPPELING: scoreboard.exe -->
-  <div class="desktop-shortcut-icon" style="top: 190px; right: 18px;" onclick="openScoreboardModal()" title="Dubbelklik om scoreboard.exe te openen!">
-    <span class="absolute -top-1 -right-1 bg-cyan-500 text-black font-mono text-[7px] px-1 py-0.2 rounded-full border border-white font-black animate-pulse">APP</span>
-    <div class="shortcut-badge" style="border-color: #00ffff #ff007f #ff007f #00ffff; box-shadow: 2px 2px 0px #000, 0 0 12px rgba(0, 255, 255, 0.7);">
-      <!-- Retro Trofee & Grafiek Icoontje -->
-      <svg class="w-7 h-7 drop-shadow" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M7 4h10v6a5 5 0 0 1-10 0V4z" fill="#facc15" stroke="#ca8a04" stroke-width="1.5"/>
-        <path d="M7 6H4v2a3 3 0 0 0 3 3M17 6h3v2a3 3 0 0 1-3 3" stroke="#facc15" stroke-width="1.5"/>
-        <rect x="10" y="15" width="4" height="3" fill="#cbd5e1"/>
-        <rect x="7" y="18" width="10" height="2.5" fill="#94a3b8"/>
-      </svg>
-      <div class="shortcut-arrow">
-        <svg class="w-2 h-2" viewBox="0 0 8 8" fill="none">
-          <path d="M1 7L7 1M7 1H3M7 1V5" stroke="#000080" stroke-width="1.5"/>
-        </svg>
-      </div>
-    </div>
-    <span class="shortcut-label">scoreboard<br>.exe</span>
-  </div>
-
   <!-- Interactieve Starfield Canvas op achtergrond -->
   <canvas id="starCanvas" class="fixed inset-0 w-full h-full pointer-events-none z-0"></canvas>
 
@@ -408,23 +373,22 @@
   <canvas id="cursorCanvas" class="fixed inset-0 w-full h-full pointer-events-none z-50"></canvas>
 
   <!-- CENTRALE HOOFDCONTAINER -->
-  <main class="relative z-10 flex flex-col items-center justify-center w-full max-w-3xl mx-auto">
+  <main class="relative z-10 flex flex-col items-center justify-start w-full max-w-3xl mx-auto pt-0.5 pb-4 space-y-2">
 
-    <!-- 1. TITELSECTIE MET DE ORIGINELE VORTEX 3D TITEL EN VRIJSTAANDE GIFS -->
-    <div class="flex items-center justify-center w-full gap-2 sm:gap-6 my-2">
+    <!-- 1. COMPACTE TITELSECTIE MET VORTEX 3D TITEL EN VRIJSTAANDE GIFS -->
+    <div class="flex items-center justify-center w-full gap-2 sm:gap-4 mt-0.5">
       
       <!-- GIF 1: Linkerkant naast logo (Koopa Troopa) -->
       <img 
         src="https://i.ibb.co/wNh13mXB/super-mario-kart-rotating-koopatroopa.gif" 
         alt="Mario Kart Rotating Koopa Troopa" 
-        class="clean-mk-gif w-20 h-20 sm:w-28 sm:h-28 md:w-32 md:h-32 object-contain shrink-0"
+        class="clean-mk-gif w-10 h-10 sm:w-14 sm:h-14 object-contain shrink-0"
       >
 
       <!-- Centraal Geanimeerd Parre Vortex WordArt 3D Logo -->
-      <div class="wordart-container-3d text-center z-10 overflow-visible relative py-2">
+      <div class="wordart-container-3d text-center z-10 overflow-visible relative">
         <h1 class="wordart-rainbow cursor-pointer select-none" onclick="playKartHonk(); spawnSparkleExplosion(event);">
-          <span class="wordart-line-top">MARIOKART</span>
-          <span class="wordart-line-bottom">COUNTDOWN</span>
+          MARIOKART ME VEEL
         </h1>
       </div>
 
@@ -432,25 +396,18 @@
       <img 
         src="https://i.ibb.co/0VnxffPz/2514858-3fe71.gif" 
         alt="Mario Kart 90s Gif" 
-        class="clean-mk-gif w-20 h-20 sm:w-28 sm:h-28 md:w-32 md:h-32 object-contain shrink-0"
+        class="clean-mk-gif w-10 h-10 sm:w-14 sm:h-14 object-contain shrink-0"
       >
     </div>
 
-    <!-- Subtiele subtitel badge met Brusselse tijdzone -->
-    <div class="flex items-center justify-center gap-2 mb-3">
-      <span class="text-yellow-300 font-mono text-[10px] sm:text-xs font-bold tracking-widest bg-black/70 px-2.5 py-1 rounded border border-cyan-400/80 shadow-[0_0_10px_rgba(0,255,255,0.4)]">
-        ★ ELKE DINSDAG OM 21:00 (BRUSSELSE TIJD) ★
-      </span>
-    </div>
-
-    <!-- 2. HET REUZE COUNTDOWN VENSTER (WINDOWS 98 / 90s RETRO STYLE) -->
-    <div class="w-full win98-window rainbow-neon-border p-1 shadow-2xl relative">
+    <!-- 2. COMPACT COUNTDOWN VENSTER (WINDOWS 98 / 90s RETRO STYLE) -->
+    <div class="w-full win98-window rainbow-neon-border p-0.5 shadow-2xl relative">
       
       <!-- Titlebar -->
-      <div class="win98-titlebar bg-gradient-to-r from-red-900 via-purple-900 to-indigo-900">
+      <div class="win98-titlebar bg-gradient-to-r from-red-900 via-purple-900 to-indigo-900 py-0.5 px-1.5">
         <div class="flex items-center gap-1.5 min-w-0">
           <span>🏁</span>
-          <span class="tracking-wider text-[11px] sm:text-xs font-black text-yellow-300 truncate">
+          <span class="tracking-wider text-[9px] sm:text-[11px] font-black text-yellow-300 truncate">
             C:\MARIOKART\COUNTDOWN_BRUSSELS.EXE
           </span>
         </div>
@@ -462,88 +419,289 @@
       </div>
 
       <!-- Live Race Alert Banner (Zichtbaar bij 21:00) -->
-      <div id="raceLiveBanner" class="hidden bg-gradient-to-r from-green-500 via-yellow-400 to-green-500 text-black text-center py-2 px-3 font-black text-xs sm:text-sm animate-pulse border-b-2 border-black">
+      <div id="raceLiveBanner" class="hidden bg-gradient-to-r from-green-500 via-yellow-400 to-green-500 text-black text-center py-1 px-2 font-black text-[10px] sm:text-xs animate-pulse border-b-2 border-black">
         🚦 RACE TIJD! DINSDAG 21:00 BEREIKT! RESET NAAR VOLGENDE WEEK... 🚦
       </div>
 
       <!-- Countdown Display Container -->
-      <div class="p-3 sm:p-5 bg-gradient-to-b from-[#12002b] via-[#090017] to-[#04000d]">
+      <div class="p-1.5 sm:p-2.5 bg-gradient-to-b from-[#12002b] via-[#090017] to-[#04000d]">
         
         <!-- Doel Header -->
-        <div class="text-center mb-3">
-          <span id="nextTuesdayDate" class="text-cyan-300 font-mono text-[10px] sm:text-xs font-bold tracking-wider bg-black/60 px-3 py-1 rounded border border-cyan-500/50">
+        <div class="text-center mb-1.5">
+          <span id="nextTuesdayDate" class="text-cyan-300 font-mono text-[8px] sm:text-[11px] font-bold tracking-wider bg-black/60 px-2 py-0.5 rounded border border-cyan-500/50">
             Start: Dinsdag 21:00
           </span>
         </div>
 
-        <!-- Cijfer Grid (4 Vakken: Dagen, Uren, Minuten, Seconden) -->
-        <div class="grid grid-cols-4 gap-2 sm:gap-3 w-full max-w-xl mx-auto">
+        <!-- Cijfer Grid met GIF's links en rechts -->
+        <div class="flex items-center justify-center gap-1.5 sm:gap-3 w-full">
           
-          <!-- Dagen -->
-          <div class="countdown-card">
-            <span id="daysBox" class="pixel-clock-digit">00</span>
-            <span class="text-[8px] sm:text-[10px] text-pink-400 font-bold mt-1.5 tracking-wider">DAGEN</span>
+          <!-- GIF 3: Linkerkant naast countdown -->
+          <img 
+            src="https://i.ibb.co/Vpk45YH2/d97df91ae1a4516dbdff9dba36f299bc.gif" 
+            alt="Mario Kart Item Box" 
+            class="clean-mk-gif w-8 h-8 sm:w-11 sm:h-11 object-contain shrink-0"
+          >
+
+          <!-- 4 Vakken: Dagen, Uren, Minuten, Seconden -->
+          <div class="grid grid-cols-4 gap-1.5 sm:gap-2.5 flex-1 max-w-md">
+            
+            <!-- Dagen -->
+            <div class="countdown-card py-1.5 px-1">
+              <span id="daysBox" class="pixel-clock-digit">00</span>
+              <span class="text-[7px] sm:text-[9px] text-pink-400 font-bold mt-0.5 tracking-wider">DAGEN</span>
+            </div>
+
+            <!-- Uren -->
+            <div class="countdown-card py-1.5 px-1">
+              <span id="hoursBox" class="pixel-clock-digit">00</span>
+              <span class="text-[7px] sm:text-[9px] text-pink-400 font-bold mt-0.5 tracking-wider">UREN</span>
+            </div>
+
+            <!-- Minuten -->
+            <div class="countdown-card py-1.5 px-1">
+              <span id="minsBox" class="pixel-clock-digit">00</span>
+              <span class="text-[7px] sm:text-[9px] text-pink-400 font-bold mt-0.5 tracking-wider">MIN</span>
+            </div>
+
+            <!-- Seconden -->
+            <div class="countdown-card py-1.5 px-1">
+              <span id="secsBox" class="pixel-clock-digit">00</span>
+              <span class="text-[7px] sm:text-[9px] text-cyan-300 font-bold mt-0.5 tracking-wider animate-pulse">SEC</span>
+            </div>
+
           </div>
 
-          <!-- Uren -->
-          <div class="countdown-card">
-            <span id="hoursBox" class="pixel-clock-digit">00</span>
-            <span class="text-[8px] sm:text-[10px] text-pink-400 font-bold mt-1.5 tracking-wider">UREN</span>
-          </div>
-
-          <!-- Minuten -->
-          <div class="countdown-card">
-            <span id="minsBox" class="pixel-clock-digit">00</span>
-            <span class="text-[8px] sm:text-[10px] text-pink-400 font-bold mt-1.5 tracking-wider">MIN</span>
-          </div>
-
-          <!-- Seconden -->
-          <div class="countdown-card">
-            <span id="secsBox" class="pixel-clock-digit">00</span>
-            <span class="text-[8px] sm:text-[10px] text-cyan-300 font-bold mt-1.5 tracking-wider animate-pulse">SEC</span>
-          </div>
+          <!-- GIF 4: Rechterkant naast countdown -->
+          <img 
+            src="https://i.ibb.co/qY74vL2x/tumblr-mxk56x-Fc-DU1rby4vso1-500.webp" 
+            alt="Mario Kart Driving Character" 
+            class="clean-mk-gif w-8 h-8 sm:w-11 sm:h-11 object-contain shrink-0"
+          >
 
         </div>
-
-      </div>
-
-      <!-- Onderkant venster: Statusbalk met 2 Mario Kart Gifs netjes symmetrisch uitgelijnd -->
-      <div class="bg-gray-300 border-t-2 border-gray-400 px-3 py-2 flex flex-row items-center justify-between">
-        
-        <!-- GIF 3: Linksonder de klok -->
-        <img 
-          src="https://i.ibb.co/Vpk45YH2/d97df91ae1a4516dbdff9dba36f299bc.gif" 
-          alt="Mario Kart Item Box" 
-          class="clean-mk-gif w-14 h-14 sm:w-16 sm:h-16 object-contain"
-        >
-
-        <!-- Tekst status in het midden -->
-        <div class="text-center font-mono text-[9px] sm:text-[11px] text-gray-800 font-bold">
-          <span class="text-red-600">●</span> <span>AUTO-RESET ELKE DINSDAG 21:00</span>
-        </div>
-
-        <!-- GIF 4: Rechtsonder de klok -->
-        <img 
-          src="https://i.ibb.co/qY74vL2x/tumblr-mxk56x-Fc-DU1rby4vso1-500.webp" 
-          alt="Mario Kart Driving Character" 
-          class="clean-mk-gif w-14 h-14 sm:w-16 sm:h-16 object-contain"
-        >
 
       </div>
 
     </div>
 
-    <!-- 3. RONDRIJDENDE MARIO KART GIF 5 ALS RETRO RACER EFFECT -->
-    <div class="w-full flex justify-center items-center my-3">
+    <!-- 3. MARIO KART SCOREBORD & STATISTIEKEN VENSTER DIRECT ONDER DE COUNTDOWN -->
+    <div id="scoreboardSection" class="win98-window rainbow-neon-border w-full p-1 text-black shadow-2xl flex flex-col font-sans">
+      
+      <!-- Window Titlebar -->
+      <div class="win98-titlebar bg-gradient-to-r from-blue-900 via-purple-900 to-pink-800 text-white shrink-0">
+        <div class="flex items-center gap-1.5 min-w-0">
+          <span>🏆</span>
+          <span class="tracking-wider text-[10px] sm:text-xs font-black truncate text-yellow-300">
+            C:\MARIOKART\SCOREBOARD_STATS.EXE - [Dinsdagavond Cup]
+          </span>
+        </div>
+        <div class="flex gap-1 shrink-0">
+          <button class="win98-btn" onclick="playBeep(440, 0.08)">_</button>
+          <button class="win98-btn" onclick="playBeep(880, 0.08)">□</button>
+        </div>
+      </div>
+
+      <!-- Navigatie Tabs -->
+      <div class="bg-[#c0c0c0] px-1.5 sm:px-2 pt-1.5 flex items-center justify-between gap-1 border-b border-gray-500 shrink-0">
+        <div class="flex flex-wrap gap-1">
+          <button id="sbTabStats" class="win98-tab active text-[10px] sm:text-[11px] px-2 sm:px-2.5" onclick="switchSbTab('stats')">📊 Spelers & Aanwezigheid</button>
+          <button id="sbTabTop" class="win98-tab text-[10px] sm:text-[11px] px-2 sm:px-2.5" onclick="switchSbTab('top')">👑 Topscores</button>
+          <button id="sbTabHistory" class="win98-tab text-[10px] sm:text-[11px] px-2 sm:px-2.5" onclick="switchSbTab('history')">📅 Sessies</button>
+        </div>
+        <button id="sbTabUpload" class="win98-tab text-[9px] sm:text-[10px] px-2 opacity-80 hover:opacity-100" onclick="switchSbTab('upload')" title="Alleen voor beheerder na de sessie">🔒 Beheer</button>
+      </div>
+
+      <!-- Content Gebied -->
+      <div class="bg-[#e5e7eb] p-2 sm:p-3.5 space-y-3 text-xs sm:text-sm select-text">
+        
+        <!-- Status / Meldingen Balk -->
+        <div id="sbStatusBanner" class="hidden p-2 rounded border-2 font-bold text-xs"></div>
+
+        <!-- TAB 1: UPLOAD & AI UITLEZEN (SUBTIEL ONDER BEHEER) -->
+        <div id="sbViewUpload" class="hidden space-y-3">
+          <div class="win98-inset p-3 space-y-3">
+            <div class="flex items-center justify-between border-b pb-2">
+              <h2 class="font-black text-blue-900 text-sm sm:text-base">📸 Wekelijkse Uitslag Inlezen (2 Foto's)</h2>
+              <span class="text-[10px] bg-green-100 text-green-800 border border-green-400 px-2 py-0.5 rounded font-bold">Auto-CPU Filter Actief</span>
+            </div>
+            <p class="text-xs text-gray-700 leading-relaxed">
+              Selecteer <strong>tot 2 foto's</strong> van het eindscherm op je gsm. De AI leest direct de punten van alle echte spelers uit en negeert automatisch Mario Kart CPU's. <em>Na verwerking worden de foto's direct uit het geheugen verwijderd.</em>
+            </p>
+
+            <div class="flex flex-col sm:flex-row gap-2 items-stretch sm:items-center">
+              <label class="win98-btn py-2.5 px-4 bg-yellow-300 hover:bg-yellow-400 text-black font-black text-xs sm:text-sm text-center cursor-pointer flex-1">
+                📱 Kies 1 of 2 Foto's van GSM
+                <input id="sbPhotoInput" type="file" accept="image/*" multiple class="hidden" onchange="handleSbPhotos(event)">
+              </label>
+              <button id="sbAnalyzeBtn" onclick="analyzeUploadedPhotos()" disabled class="win98-btn py-2.5 px-4 bg-cyan-300 disabled:opacity-50 text-black font-black text-xs sm:text-sm">
+                🤖 Lees Scores Uit
+              </button>
+            </div>
+
+            <!-- Voorvertoning (wordt direct gewist na uitlezen) -->
+            <div id="sbPreviewContainer" class="hidden border border-gray-400 bg-gray-100 p-2 rounded">
+              <div class="flex justify-between items-center mb-1.5">
+                <span id="sbFileCountText" class="text-[11px] font-bold text-blue-900">0 foto's klaar</span>
+                <button onclick="clearTempPhotos()" class="text-[10px] text-red-700 underline font-bold">Wis selectie</button>
+              </div>
+              <div id="sbThumbnails" class="flex gap-2 overflow-x-auto"></div>
+            </div>
+
+            <!-- Laad-indicator tijdens Vision AI analyse -->
+            <div id="sbLoadingBox" class="hidden text-center py-3 bg-blue-50 border border-blue-300 rounded font-bold text-blue-900 animate-pulse text-xs">
+              ⏳ Bezig met AI-beeldherkenning & CPU's wegfilteren... Even geduld!
+            </div>
+          </div>
+
+          <!-- Controle & Opslaan Formulier (Apart voor beide sessies van dezelfde avond) -->
+          <div id="sbReviewBox" class="win98-inset p-3 space-y-3">
+            <div class="flex flex-wrap justify-between items-center gap-2 border-b pb-2">
+              <h3 class="font-black text-purple-900 text-sm">✏️ Controleer & Bewaar Sessies</h3>
+              <div class="flex items-center gap-1.5">
+                <label class="text-[11px] font-bold text-gray-800">Datum avond:</label>
+                <input id="sbSessionDate" type="date" class="border-2 border-gray-500 px-2 py-0.5 bg-white text-black font-bold text-xs">
+              </div>
+            </div>
+
+            <!-- SESSIE 1 BLOK (EERSTE SESSIE VAN DE AVOND - FOTO 2) -->
+            <div class="border-2 border-purple-400 bg-purple-50/60 p-2.5 rounded space-y-2">
+              <div class="flex flex-wrap justify-between items-center gap-2 border-b border-purple-300 pb-1.5">
+                <span class="font-black text-purple-950 text-xs sm:text-sm">🏁 Sessie 1 — Eerste sessie (Foto 2)</span>
+                <div class="flex items-center gap-2">
+                  <label class="text-[11px] font-bold text-gray-800">Winnaar Sessie 1:</label>
+                  <select id="sbWinningTeam1" class="border-2 border-gray-500 px-2 py-0.5 bg-white text-black font-bold text-xs">
+                    <option value="Rood">🔴 Team Rood</option>
+                    <option value="Blauw">🔵 Team Blauw</option>
+                    <option value="Geen / FFA">🏁 Geen / FFA</option>
+                  </select>
+                  <button onclick="addEmptyPlayerRow(1)" class="win98-btn text-[10px] bg-green-200">+ Speler</button>
+                </div>
+              </div>
+              <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse text-xs">
+                  <thead>
+                    <tr class="bg-purple-100 border-b border-purple-300">
+                      <th class="p-1">Echte Speler</th>
+                      <th class="p-1 w-20">Punten</th>
+                      <th class="p-1 w-28">Team</th>
+                      <th class="p-1 w-8 text-center">Wis</th>
+                    </tr>
+                  </thead>
+                  <tbody id="sbExtractedRows1">
+                    <tr><td colspan="4" class="p-2 text-center text-gray-500 italic">Upload foto 2 of klik op "+ Speler".</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- SESSIE 2 BLOK (LAATSTE SESSIE VAN DE AVOND - FOTO 1) -->
+            <div class="border-2 border-blue-400 bg-blue-50/60 p-2.5 rounded space-y-2">
+              <div class="flex flex-wrap justify-between items-center gap-2 border-b border-blue-300 pb-1.5">
+                <span class="font-black text-blue-950 text-xs sm:text-sm">🏁 Sessie 2 — Laatste sessie (Foto 1)</span>
+                <div class="flex items-center gap-2">
+                  <label class="text-[11px] font-bold text-gray-800">Winnaar Sessie 2:</label>
+                  <select id="sbWinningTeam2" class="border-2 border-gray-500 px-2 py-0.5 bg-white text-black font-bold text-xs">
+                    <option value="Rood">🔴 Team Rood</option>
+                    <option value="Blauw">🔵 Team Blauw</option>
+                    <option value="Geen / FFA">🏁 Geen / FFA</option>
+                  </select>
+                  <button onclick="addEmptyPlayerRow(2)" class="win98-btn text-[10px] bg-green-200">+ Speler</button>
+                </div>
+              </div>
+              <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse text-xs">
+                  <thead>
+                    <tr class="bg-blue-100 border-b border-blue-300">
+                      <th class="p-1">Echte Speler</th>
+                      <th class="p-1 w-20">Punten</th>
+                      <th class="p-1 w-28">Team</th>
+                      <th class="p-1 w-8 text-center">Wis</th>
+                    </tr>
+                  </thead>
+                  <tbody id="sbExtractedRows2">
+                    <tr><td colspan="4" class="p-2 text-center text-gray-500 italic">Upload foto 1 of klik op "+ Speler".</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="flex justify-end pt-2 border-t">
+              <button id="sbSaveSessionBtn" onclick="saveMarioKartSession()" class="win98-btn py-2 px-5 bg-green-400 hover:bg-green-500 text-black font-black text-xs sm:text-sm">
+                💾 Beide Sessies Opslaan in Scorebord
+              </button>
+            </div>
+          </div>
+
+          <!-- Beheer van reeds opgeslagen sessies (Aanpassen & Wissen enkel in Beheer) -->
+          <div class="win98-inset p-3 space-y-2">
+            <div class="flex justify-between items-center border-b pb-1.5">
+              <h3 class="font-black text-red-900 text-xs sm:text-sm">🗂️ Opgeslagen Sessies Beheren (Aanpassen / Wissen)</h3>
+              <span class="text-[10px] text-gray-600 font-bold">Alleen voor beheerder</span>
+            </div>
+            <div id="sbAdminSessionsList" class="space-y-1.5">
+              <p class="text-center text-gray-500 p-2 text-xs">Nog geen opgeslagen sessies om te beheren.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 2: SPELERS & AANWEZIGHEID (STANDAARD ZICHTBAAR) -->
+        <div id="sbViewStats" class="space-y-3">
+          <div class="win98-inset p-2.5 sm:p-3">
+            <div class="flex flex-wrap justify-between items-center gap-1 border-b pb-2 mb-2">
+              <h2 class="font-black text-blue-900 text-xs sm:text-base">📊 Algemeen Klassement & Aanwezigheid</h2>
+              <span id="sbTotalSessionsBadge" class="text-[10px] sm:text-[11px] bg-blue-100 text-blue-900 px-2 py-0.5 rounded font-bold border border-blue-300">0 Sessies</span>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left border-collapse text-[11px] sm:text-xs">
+                <thead>
+                  <tr class="bg-gray-200 border-b-2 border-gray-400">
+                    <th class="py-1.5 px-1 sm:p-2 w-7">#</th>
+                    <th class="py-1.5 px-1.5 sm:p-2">Speler</th>
+                    <th class="py-1.5 px-1.5 sm:p-2 text-right whitespace-nowrap">Ptn</th>
+                    <th class="py-1.5 px-1.5 sm:p-2 text-right whitespace-nowrap">Gem.</th>
+                    <th class="py-1.5 px-1 sm:p-2 text-center whitespace-nowrap">Winst</th>
+                    <th class="py-1.5 px-1 sm:p-2 text-center whitespace-nowrap">Aanwezig</th>
+                  </tr>
+                </thead>
+                <tbody id="sbPlayersTableBody" class="divide-y divide-gray-200">
+                  <tr><td colspan="6" class="p-4 text-center text-gray-500">Nog geen gegevens beschikbaar...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 3: TOPSCORES -->
+        <div id="sbViewTop" class="hidden space-y-3">
+          <div class="win98-inset p-3">
+            <h2 class="font-black text-amber-800 text-sm sm:text-base border-b pb-2 mb-2">👑 Hall of Fame — Hoogste Individuele Scores</h2>
+            <div id="sbTopScoresList" class="space-y-2">
+              <p class="text-center text-gray-500 p-4">Nog geen topscores geregistreerd.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 4: SESSIES & TEAMS HISTORIE -->
+        <div id="sbViewHistory" class="hidden space-y-3">
+          <div class="win98-inset p-3">
+            <h2 class="font-black text-purple-900 text-sm sm:text-base border-b pb-2 mb-2">📅 Gespeelde Avonden & Team Uitslagen</h2>
+            <div id="sbSessionsHistoryList" class="space-y-2.5">
+              <p class="text-center text-gray-500 p-4">Nog geen sessies opgeslagen.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 4. COMPACTE FOOTER MET MARIO KART RACER & LINK NAAR PARRE.BE -->
+    <div class="w-full flex flex-col items-center justify-center gap-2 pt-1">
       <img 
         src="https://i.ibb.co/m5T9rydk/tumblr-p0exqx-Sq-Om1rl04amo2-250.webp" 
         alt="Mario Kart Racer Animatie" 
-        class="clean-mk-gif w-24 h-24 sm:w-28 sm:h-28 object-contain"
+        class="clean-mk-gif w-16 h-16 sm:w-20 sm:h-20 object-contain"
       >
-    </div>
-
-    <!-- 4. SUBTIELE, MOOI GECENTREERDE LINK NAAR PARRE.BE -->
-    <div class="w-full flex items-center justify-center my-2">
       <a href="https://www.parre.be" target="_blank" rel="noopener noreferrer" class="subtle-parre-link">
         <span>🌐</span>
         <span>WWW.PARRE.BE</span>
@@ -602,207 +760,6 @@
         <iframe id="bentVsSausIframe" class="w-full h-full border-0 block" allow="autoplay"></iframe>
       </div>
 
-    </div>
-  </div>
-
-  <!-- MARIO KART SCOREBORD & STATISTIEKEN APP MODAL -->
-  <div id="scoreboardModal" class="hidden fixed inset-0 z-[99999] bg-black/85 flex items-center justify-center p-1 sm:p-3 overflow-y-auto">
-    <div class="win98-window rainbow-neon-border w-full max-w-3xl p-1 text-black shadow-[0_15px_50px_rgba(0,0,0,0.9)] my-auto max-h-[95vh] flex flex-col font-sans">
-      
-      <!-- Window Titlebar -->
-      <div class="win98-titlebar bg-gradient-to-r from-blue-900 via-purple-900 to-pink-800 text-white shrink-0">
-        <div class="flex items-center gap-1.5 min-w-0">
-          <span>🏆</span>
-          <span class="tracking-wider text-[11px] sm:text-xs font-black truncate text-yellow-300">
-            C:\MARIOKART\SCOREBOARD_STATS.EXE - [Dinsdagavond Cup]
-          </span>
-        </div>
-        <div class="flex gap-1 shrink-0">
-          <button class="win98-btn" onclick="closeScoreboardModal()">_</button>
-          <button class="win98-btn" onclick="closeScoreboardModal()">✕</button>
-        </div>
-      </div>
-
-      <!-- Navigatie Tabs -->
-      <div class="bg-[#c0c0c0] px-2 pt-2 flex flex-wrap gap-1 border-b border-gray-500 shrink-0">
-        <button id="sbTabUpload" class="win98-tab active" onclick="switchSbTab('upload')">📸 2 Foto's Uploaden</button>
-        <button id="sbTabStats" class="win98-tab" onclick="switchSbTab('stats')">📊 Spelers & Aanwezigheid</button>
-        <button id="sbTabTop" class="win98-tab" onclick="switchSbTab('top')">👑 Topscores</button>
-        <button id="sbTabHistory" class="win98-tab" onclick="switchSbTab('history')">📅 Sessies</button>
-      </div>
-
-      <!-- Content Gebied -->
-      <div class="bg-[#e5e7eb] p-2 sm:p-4 overflow-y-auto flex-1 space-y-3 text-xs sm:text-sm select-text">
-        
-        <!-- Status / Meldingen Balk -->
-        <div id="sbStatusBanner" class="hidden p-2 rounded border-2 font-bold text-xs"></div>
-
-        <!-- TAB 1: UPLOAD & AI UITLEZEN -->
-        <div id="sbViewUpload" class="space-y-3">
-          <div class="win98-inset p-3 space-y-3">
-            <div class="flex items-center justify-between border-b pb-2">
-              <h2 class="font-black text-blue-900 text-sm sm:text-base">📸 Wekelijkse Uitslag Inlezen (2 Foto's)</h2>
-              <span class="text-[10px] bg-green-100 text-green-800 border border-green-400 px-2 py-0.5 rounded font-bold">Auto-CPU Filter Actief</span>
-            </div>
-            <p class="text-xs text-gray-700 leading-relaxed">
-              Selecteer <strong>tot 2 foto's</strong> van het eindscherm op je gsm. De AI leest direct de punten van alle echte spelers uit en negeert automatisch Mario Kart CPU's. <em>Na verwerking worden de foto's direct uit het geheugen verwijderd.</em>
-            </p>
-
-            <div class="flex flex-col sm:flex-row gap-2 items-stretch sm:items-center">
-              <label class="win98-btn py-2.5 px-4 bg-yellow-300 hover:bg-yellow-400 text-black font-black text-xs sm:text-sm text-center cursor-pointer flex-1">
-                📱 Kies 1 of 2 Foto's van GSM
-                <input id="sbPhotoInput" type="file" accept="image/*" multiple class="hidden" onchange="handleSbPhotos(event)">
-              </label>
-              <button id="sbAnalyzeBtn" onclick="analyzeUploadedPhotos()" disabled class="win98-btn py-2.5 px-4 bg-cyan-300 disabled:opacity-50 text-black font-black text-xs sm:text-sm">
-                🤖 Lees Scores Uit
-              </button>
-            </div>
-
-            <!-- Tijdelijke thumbnails (worden gewist na verwerking) -->
-            <div id="sbPreviewContainer" class="hidden flex gap-3 items-center bg-gray-100 p-2 border border-dashed border-gray-400">
-              <div id="sbThumbnails" class="flex gap-2"></div>
-              <div class="text-[11px] text-gray-600">
-                <p id="sbFileCountText" class="font-bold text-black">0 foto's klaar</p>
-                <p>Worden direct gewist na uitlezen.</p>
-              </div>
-            </div>
-
-            <!-- Laadindicator -->
-            <div id="sbLoadingBox" class="hidden bg-blue-950 text-cyan-300 p-3 rounded border-2 border-cyan-400 text-center font-mono text-xs animate-pulse">
-              ⏳ Bezig met AI-beeldherkenning & CPU's wegfilteren... Even geduld!
-            </div>
-          </div>
-
-          <!-- Controle & Opslaan Formulier (na uitlezen of handmatig) -->
-          <div id="sbReviewBox" class="win98-inset p-3 space-y-3">
-            <div class="flex justify-between items-center border-b pb-1.5">
-              <h3 class="font-black text-purple-900">📝 Beide Sessies (Foto 1 & Foto 2) Controleren</h3>
-              <span class="text-[11px] text-gray-600 font-bold">CPU's zijn al uitgefilterd</span>
-            </div>
-
-            <div>
-              <label class="block text-[11px] font-bold text-gray-700 mb-1">Datum van deze dinsdagavond:</label>
-              <input id="sbSessionDate" type="date" class="w-full sm:w-64 border-2 border-gray-500 px-2 py-1 bg-white text-black font-bold text-xs">
-            </div>
-
-            <!-- SESSIE / FOTO 1 BLOK -->
-            <div class="border-2 border-blue-400 bg-blue-50/60 p-2.5 rounded space-y-2">
-              <div class="flex flex-wrap justify-between items-center gap-2 border-b border-blue-300 pb-1.5">
-                <span class="font-black text-blue-950 text-xs sm:text-sm">🏁 Sessie 1 (Foto 1)</span>
-                <div class="flex items-center gap-2">
-                  <label class="text-[11px] font-bold text-gray-800">Winnaar Sessie 1:</label>
-                  <select id="sbWinningTeam1" class="border-2 border-gray-500 px-2 py-0.5 bg-white text-black font-bold text-xs">
-                    <option value="Rood">🔴 Team Rood</option>
-                    <option value="Blauw">🔵 Team Blauw</option>
-                    <option value="Geen / FFA">🏁 Geen / FFA</option>
-                  </select>
-                  <button onclick="addEmptyPlayerRow(1)" class="win98-btn text-[10px] bg-green-200">+ Speler</button>
-                </div>
-              </div>
-              <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse text-xs">
-                  <thead>
-                    <tr class="bg-purple-100 border-b border-purple-300">
-                      <th class="p-1">Echte Speler</th>
-                      <th class="p-1 w-20">Punten</th>
-                      <th class="p-1 w-28">Team</th>
-                      <th class="p-1 w-8 text-center">Wis</th>
-                    </tr>
-                  </thead>
-                  <tbody id="sbExtractedRows1">
-                    <tr><td colspan="4" class="p-2 text-center text-gray-500 italic">Upload foto 1 of klik op "+ Speler".</td></tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-            <!-- SESSIE / FOTO 2 BLOK -->
-            <div class="border-2 border-purple-400 bg-purple-50/60 p-2.5 rounded space-y-2">
-              <div class="flex flex-wrap justify-between items-center gap-2 border-b border-purple-300 pb-1.5">
-                <span class="font-black text-purple-950 text-xs sm:text-sm">🏁 Sessie 2 (Foto 2)</span>
-                <div class="flex items-center gap-2">
-                  <label class="text-[11px] font-bold text-gray-800">Winnaar Sessie 2:</label>
-                  <select id="sbWinningTeam2" class="border-2 border-gray-500 px-2 py-0.5 bg-white text-black font-bold text-xs">
-                    <option value="Rood">🔴 Team Rood</option>
-                    <option value="Blauw">🔵 Team Blauw</option>
-                    <option value="Geen / FFA">🏁 Geen / FFA</option>
-                  </select>
-                  <button onclick="addEmptyPlayerRow(2)" class="win98-btn text-[10px] bg-green-200">+ Speler</button>
-                </div>
-              </div>
-              <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse text-xs">
-                  <thead>
-                    <tr class="bg-purple-100 border-b border-purple-300">
-                      <th class="p-1">Echte Speler</th>
-                      <th class="p-1 w-20">Punten</th>
-                      <th class="p-1 w-28">Team</th>
-                      <th class="p-1 w-8 text-center">Wis</th>
-                    </tr>
-                  </thead>
-                  <tbody id="sbExtractedRows2">
-                    <tr><td colspan="4" class="p-2 text-center text-gray-500 italic">Upload foto 2 of klik op "+ Speler".</td></tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-            <div class="flex justify-end pt-2 border-t">
-              <button id="sbSaveSessionBtn" onclick="saveMarioKartSession()" class="win98-btn py-2 px-5 bg-green-400 hover:bg-green-500 text-black font-black text-xs sm:text-sm">
-                💾 Beide Sessies Opslaan in Scorebord
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- TAB 2: SPELERS & AANWEZIGHEID -->
-        <div id="sbViewStats" class="hidden space-y-3">
-          <div class="win98-inset p-3">
-            <div class="flex justify-between items-center border-b pb-2 mb-2">
-              <h2 class="font-black text-blue-900 text-sm sm:text-base">📊 Algemeen Klassement & Aanwezigheid</h2>
-              <span id="sbTotalSessionsBadge" class="text-[11px] bg-blue-100 text-blue-900 px-2 py-0.5 rounded font-bold border border-blue-300">0 Sessies</span>
-            </div>
-            <div class="overflow-x-auto">
-              <table class="w-full text-left border-collapse text-xs">
-                <thead>
-                  <tr class="bg-gray-200 border-b-2 border-gray-400">
-                    <th class="p-2">#</th>
-                    <th class="p-2">Speler</th>
-                    <th class="p-2 text-right">Totaal Ptn</th>
-                    <th class="p-2 text-right">Gemiddelde</th>
-                    <th class="p-2 text-center">Team Winst</th>
-                    <th class="p-2 text-center">Aanwezigheid</th>
-                  </tr>
-                </thead>
-                <tbody id="sbPlayersTableBody" class="divide-y divide-gray-200">
-                  <tr><td colspan="6" class="p-4 text-center text-gray-500">Nog geen gegevens beschikbaar...</td></tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-
-        <!-- TAB 3: TOPSCORES -->
-        <div id="sbViewTop" class="hidden space-y-3">
-          <div class="win98-inset p-3">
-            <h2 class="font-black text-amber-800 text-sm sm:text-base border-b pb-2 mb-2">👑 Hall of Fame — Hoogste Individuele Scores</h2>
-            <div id="sbTopScoresList" class="space-y-2">
-              <p class="text-center text-gray-500 p-4">Nog geen topscores geregistreerd.</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- TAB 4: SESSIES & TEAMS HISTORIE -->
-        <div id="sbViewHistory" class="hidden space-y-3">
-          <div class="win98-inset p-3">
-            <h2 class="font-black text-purple-900 text-sm sm:text-base border-b pb-2 mb-2">📅 Gespeelde Avonden & Team Uitslagen</h2>
-            <div id="sbSessionsHistoryList" class="space-y-2.5">
-              <p class="text-center text-gray-500 p-4">Nog geen sessies opgeslagen.</p>
-            </div>
-          </div>
-        </div>
-
-      </div>
     </div>
   </div>
 
@@ -998,21 +955,20 @@ BELANGRIJKE REGELS:
 
       const photosToProcess = [...tempBase64Photos];
 
-      // Verwerk Foto 1 (Sessie 1)
-      const s1 = await extractSinglePhotoWithVisionAI(photosToProcess[0], 1, loadingBox);
-      currentDraftPlayers1 = s1.players;
-      const t1 = document.getElementById('sbWinningTeam1');
-      if (t1) t1.value = s1.winningTeam;
-
-      // Verwerk Foto 2 (Sessie 2) indien aanwezig
+      // Foto 1 is de laatste sessie van de avond (Sessie 2), Foto 2 is de eerste sessie (Sessie 1)
       if (photosToProcess.length > 1) {
-        const s2 = await extractSinglePhotoWithVisionAI(photosToProcess[1], 2, loadingBox);
-        currentDraftPlayers2 = s2.players;
-        const t2 = document.getElementById('sbWinningTeam2');
-        if (t2) t2.value = s2.winningTeam;
+        const s1 = await extractSinglePhotoWithVisionAI(photosToProcess[1], 1, loadingBox);
+        currentDraftPlayers1 = s1.players;
+        const t1 = document.getElementById('sbWinningTeam1');
+        if (t1) t1.value = s1.winningTeam;
       } else {
-        currentDraftPlayers2 = [];
+        currentDraftPlayers1 = [];
       }
+
+      const s2 = await extractSinglePhotoWithVisionAI(photosToProcess[0], 2, loadingBox);
+      currentDraftPlayers2 = s2.players;
+      const t2 = document.getElementById('sbWinningTeam2');
+      if (t2) t2.value = s2.winningTeam;
 
       // FOTO'S DIRECT AUTOMATISCH VERWIJDEREN UIT GEHEUGEN
       clearTempPhotos();
@@ -1069,6 +1025,10 @@ BELANGRIJKE REGELS:
     };
 
     window.addEventListener('DOMContentLoaded', () => {
+      const dateInput = document.getElementById('sbSessionDate');
+      if (dateInput && !dateInput.value) {
+        dateInput.value = new Date().toISOString().split('T')[0];
+      }
       window.syncScoreboardFromSupabase();
     });
   </script>
@@ -1137,29 +1097,11 @@ BELANGRIJKE REGELS:
       }
     };
 
-    window.openScoreboardModal = function() {
-      const modal = document.getElementById('scoreboardModal');
-      isModalOpen = true;
-      if (modal) {
-        modal.classList.remove('hidden');
-        modal.style.display = 'flex';
+    window.scrollToScoreboard = function() {
+      const sbEl = document.getElementById('scoreboardSection');
+      if (sbEl) {
+        sbEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
-      const dateInput = document.getElementById('sbSessionDate');
-      if (dateInput && !dateInput.value) {
-        dateInput.value = new Date().toISOString().split('T')[0];
-      }
-      window.syncScoreboardFromSupabase();
-      renderAllScoreboardViews();
-    };
-
-    window.closeScoreboardModal = function() {
-      const modal = document.getElementById('scoreboardModal');
-      isModalOpen = false;
-      if (modal) {
-        modal.classList.add('hidden');
-        modal.style.display = 'none';
-      }
-      clearTempPhotos();
     };
 
     // ==========================================
@@ -1170,6 +1112,9 @@ BELANGRIJKE REGELS:
     let tempDataUrlPhotos = [];
     let currentDraftPlayers1 = [];
     let currentDraftPlayers2 = [];
+    let editingSessionId1 = null;
+    let editingSessionId2 = null;
+    let pendingDeleteSessionId = null;
 
     // Uitgebreide lijst met Mario Kart CPU namen (NL & EN) om weg te filteren
     const MARIO_KART_CPU_NAMES = new Set([
@@ -1294,7 +1239,8 @@ BELANGRIJKE REGELS:
           if (thumbs) {
             const imgWrap = document.createElement('div');
             imgWrap.className = 'relative border border-gray-500 bg-black p-0.5';
-            imgWrap.innerHTML = `<img src="${processed.dataUrl}" class="w-16 h-12 object-cover"><span class="absolute bottom-0 right-0 bg-blue-900 text-yellow-300 text-[9px] px-1 font-bold">S${i + 1}</span>`;
+            const badgeLabel = i === 0 ? 'S2' : 'S1';
+            imgWrap.innerHTML = `<img src="${processed.dataUrl}" class="w-16 h-12 object-cover"><span class="absolute bottom-0 right-0 bg-blue-900 text-yellow-300 text-[9px] px-1 font-bold">${badgeLabel}</span>`;
             thumbs.appendChild(imgWrap);
           }
         } catch (err) {
@@ -1372,12 +1318,61 @@ BELANGRIJKE REGELS:
     };
 
     window.deleteSbSession = async function(id) {
+      if (pendingDeleteSessionId !== id) {
+        pendingDeleteSessionId = id;
+        renderAdminSessionsList();
+        return;
+      }
+      pendingDeleteSessionId = null;
       if (String(id).startsWith('local-')) {
         window.mkSessionsData = window.mkSessionsData.filter(s => s.id !== id);
         renderAllScoreboardViews();
       } else {
         await window.deleteSessionFromCloud(id);
       }
+      showSbBanner("🗑️ Sessie verwijderd uit het scorebord.");
+    };
+
+    window.cancelDeleteSbSession = function() {
+      pendingDeleteSessionId = null;
+      renderAdminSessionsList();
+    };
+
+    window.editSbSessionInAdmin = function(id) {
+      const sess = (window.mkSessionsData || []).find(s => String(s.id) === String(id));
+      if (!sess) return;
+
+      const rawDate = String(sess.date || '');
+      const dateMatch = rawDate.match(/^(\d{4}-\d{2}-\d{2})/);
+      const dateInput = document.getElementById('sbSessionDate');
+      if (dateInput && dateMatch) {
+        dateInput.value = dateMatch[1];
+      }
+
+      const isSession2 = rawDate.includes('(Sessie 2)');
+      const clonedPlayers = (sess.players || []).map(p => ({
+        name: p.name || '',
+        points: Number(p.points) || 0,
+        team: p.team || 'Rood'
+      }));
+
+      if (isSession2) {
+        editingSessionId2 = sess.id;
+        currentDraftPlayers2 = clonedPlayers;
+        const t2 = document.getElementById('sbWinningTeam2');
+        if (t2) t2.value = sess.winningTeam || 'Rood';
+        renderDraftPlayersTable(2);
+      } else {
+        editingSessionId1 = sess.id;
+        currentDraftPlayers1 = clonedPlayers;
+        const t1 = document.getElementById('sbWinningTeam1');
+        if (t1) t1.value = sess.winningTeam || 'Rood';
+        renderDraftPlayersTable(1);
+      }
+
+      showSbBanner(`✏️ Sessie "${formatDutchSessionDate(sess.date)}" geladen om aan te passen. Klik op Opslaan om de wijziging door te voeren.`);
+      const reviewBox = document.getElementById('sbReviewBox');
+      if (reviewBox) reviewBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
     };
 
     function escapeHtmlAttr(str) {
@@ -1386,6 +1381,27 @@ BELANGRIJKE REGELS:
         .replace(/"/g, '&quot;')
         .replace(/</g, '&lt;')
         .replace(/>/g, '&gt;');
+    }
+
+    function formatDutchSessionDate(rawDateStr) {
+      if (!rawDateStr) return 'Onbekende datum';
+      const str = String(rawDateStr).trim();
+      const match = str.match(/^(\d{4})-(\d{2})-(\d{2})(.*)$/);
+      if (!match) return str;
+
+      const year = parseInt(match[1], 10);
+      const month = parseInt(match[2], 10);
+      const day = parseInt(match[3], 10);
+      const rest = match[4] || '';
+
+      const d = new Date(year, month - 1, day);
+      const days = ['zondag', 'maandag', 'dinsdag', 'woensdag', 'donderdag', 'vrijdag', 'zaterdag'];
+      const dayName = days[d.getDay()] || '';
+      const dd = String(day).padStart(2, '0');
+      const mm = String(month).padStart(2, '0');
+      const yy = String(year).slice(-2);
+
+      return `${dayName} ${dd}/${mm}/${yy}${rest}`;
     }
 
     function getKnownPlayerNames() {
@@ -1426,6 +1442,14 @@ BELANGRIJKE REGELS:
       let savedCount = 0;
 
       if (valid1.length > 0) {
+        if (editingSessionId1) {
+          if (String(editingSessionId1).startsWith('local-')) {
+            window.mkSessionsData = window.mkSessionsData.filter(s => s.id !== editingSessionId1);
+          } else {
+            await window.deleteSessionFromCloud(editingSessionId1);
+          }
+          editingSessionId1 = null;
+        }
         const s1Obj = { date: dateStr + ' (Sessie 1)', winningTeam: win1, players: valid1 };
         const ok1 = await window.saveSessionToCloud(s1Obj);
         if (!ok1) {
@@ -1435,6 +1459,14 @@ BELANGRIJKE REGELS:
       }
 
       if (valid2.length > 0) {
+        if (editingSessionId2) {
+          if (String(editingSessionId2).startsWith('local-')) {
+            window.mkSessionsData = window.mkSessionsData.filter(s => s.id !== editingSessionId2);
+          } else {
+            await window.deleteSessionFromCloud(editingSessionId2);
+          }
+          editingSessionId2 = null;
+        }
         const s2Obj = { date: dateStr + ' (Sessie 2)', winningTeam: win2, players: valid2 };
         const ok2 = await window.saveSessionToCloud(s2Obj);
         if (!ok2) {
@@ -1445,6 +1477,8 @@ BELANGRIJKE REGELS:
 
       currentDraftPlayers1 = [];
       currentDraftPlayers2 = [];
+      editingSessionId1 = null;
+      editingSessionId2 = null;
       renderDraftPlayersTable(1);
       renderDraftPlayersTable(2);
       renderAllScoreboardViews();
@@ -1456,13 +1490,13 @@ BELANGRIJKE REGELS:
 
     window.renderAllScoreboardViews = function() {
       const sessions = window.mkSessionsData || [];
-
-      // 1. Statistieken & Aanwezigheid per speler berekenen
+      // 1. Statistieken & Aanwezigheid per speler berekenen (op basis van elke aparte sessie)
       const uniqueDays = new Set(sessions.map(s => String(s.date || '').split(' ')[0]));
       const totalDays = uniqueDays.size;
+      const totalSessions = sessions.length;
 
       const badge = document.getElementById('sbTotalSessionsBadge');
-      if (badge) badge.textContent = `${totalDays} Speeldag(en) • ${sessions.length} Sessie(s)`;
+      if (badge) badge.textContent = `${totalDays} Speeldag(en) • ${totalSessions} Sessie(s)`;
 
       const playerStatsMap = new Map();
 
@@ -1501,18 +1535,18 @@ BELANGRIJKE REGELS:
         } else {
           tbody.innerHTML = sortedPlayers.map((st, idx) => {
             const avg = st.sessionCount > 0 ? (st.totalPoints / st.sessionCount).toFixed(1) : '0.0';
-            const attPct = totalDays > 0 ? Math.round((st.daysPresent.size / totalDays) * 100) : 0;
+            const attPct = totalSessions > 0 ? Math.round((st.sessionCount / totalSessions) * 100) : 0;
             const medal = idx === 0 ? '🥇' : idx === 1 ? '🥈' : idx === 2 ? '🥉' : `${idx + 1}.`;
             return `
               <tr class="hover:bg-blue-50 bg-white">
-                <td class="p-2 font-black">${medal}</td>
-                <td class="p-2 font-bold text-blue-950">${escapeHtmlAttr(st.displayName)}</td>
-                <td class="p-2 text-right font-black text-amber-700">${st.totalPoints}</td>
-                <td class="p-2 text-right text-gray-700">${avg}</td>
-                <td class="p-2 text-center font-bold text-green-700">${st.wins}x</td>
-                <td class="p-2 text-center">
-                  <span class="px-1.5 py-0.5 rounded text-[10px] font-bold ${attPct >= 75 ? 'bg-green-100 text-green-800' : 'bg-gray-200 text-gray-700'}">
-                    ${st.daysPresent.size}/${totalDays} (${attPct}%)
+                <td class="py-1.5 px-1 sm:p-2 font-black whitespace-nowrap">${medal}</td>
+                <td class="py-1.5 px-1.5 sm:p-2 font-bold text-blue-950 truncate max-w-[95px] sm:max-w-none">${escapeHtmlAttr(st.displayName)}</td>
+                <td class="py-1.5 px-1.5 sm:p-2 text-right font-black text-amber-700 whitespace-nowrap">${st.totalPoints}</td>
+                <td class="py-1.5 px-1.5 sm:p-2 text-right text-gray-700 whitespace-nowrap">${avg}</td>
+                <td class="py-1.5 px-1 sm:p-2 text-center font-bold text-green-700 whitespace-nowrap">${st.wins}x</td>
+                <td class="py-1.5 px-1 sm:p-2 text-center whitespace-nowrap" title="${st.sessionCount} van de ${totalSessions} sessies (${st.daysPresent.size} speeldagen)">
+                  <span class="px-1 sm:px-1.5 py-0.5 rounded text-[9px] sm:text-[10px] font-bold ${attPct >= 75 ? 'bg-green-100 text-green-800' : 'bg-gray-200 text-gray-700'}">
+                    ${st.sessionCount}/${totalSessions} (${attPct}%)
                   </span>
                 </td>
               </tr>
@@ -1553,30 +1587,22 @@ BELANGRIJKE REGELS:
           topListEl.innerHTML = '<p class="text-center text-gray-500 p-4">Nog geen topscores geregistreerd.</p>';
         } else {
           topListEl.innerHTML = allRecords.slice(0, 15).map((rec, idx) => {
-            const teamBadge = rec.team === 'Rood'
-              ? '<span class="text-red-700 font-bold">🔴 Rood</span>'
-              : rec.team === 'Blauw'
-              ? '<span class="text-blue-700 font-bold">🔵 Blauw</span>'
-              : '<span class="text-gray-700 font-bold">🏁 FFA</span>';
             return `
               <div class="border-2 border-gray-300 bg-white p-2.5 rounded flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                <div>
-                  <div class="flex items-center gap-2">
-                    <span class="font-black text-amber-700">#${idx + 1}</span>
-                    <span class="font-black text-sm text-black">${escapeHtmlAttr(rec.name)}</span>
-                    ${teamBadge}
-                    ${rec.won ? '<span class="bg-yellow-200 text-yellow-900 border border-yellow-500 text-[10px] px-1.5 rounded font-bold">🏆 Winst</span>' : ''}
-                  </div>
-                  <div class="text-[11px] text-gray-600 mt-1">
-                    📅 <strong>${escapeHtmlAttr(rec.date)}</strong>
-                    ${rec.teammates.length ? ` • 🤝 Team: <em>${escapeHtmlAttr(rec.teammates.join(', '))}</em>` : ''}
-                    ${rec.opponents.length ? ` • ⚔️ Tegen: <em>${escapeHtmlAttr(rec.opponents.join(', '))}</em>` : ''}
+                <div class="flex items-start gap-2 min-w-0">
+                  <span class="font-black text-amber-600 text-sm shrink-0">#${idx + 1}</span>
+                  <div class="min-w-0">
+                    <div class="flex flex-wrap items-center gap-1.5">
+                      <span class="font-black text-blue-950 text-xs sm:text-sm">${escapeHtmlAttr(rec.name)}</span>
+                    </div>
+                    <div class="text-[11px] text-gray-600 mt-0.5">📅 ${escapeHtmlAttr(formatDutchSessionDate(rec.date))}</div>
+                    ${rec.teammates.length > 0 ? `<div class="text-[10px] text-green-800 mt-0.5">🤝 Teamgenoten: <b>${escapeHtmlAttr(rec.teammates.join(', '))}</b></div>` : ''}
+                    ${rec.opponents.length > 0 ? `<div class="text-[10px] text-gray-600">⚔️ Tegenstanders: ${escapeHtmlAttr(rec.opponents.join(', '))}</div>` : ''}
                   </div>
                 </div>
                 <div class="text-right shrink-0">
-                  <span class="inline-block bg-blue-950 text-yellow-300 font-black px-3 py-1 rounded text-sm">
-                    ${rec.points} PTN
-                  </span>
+                  <span class="text-base sm:text-lg font-black text-amber-700">${rec.points}</span>
+                  <span class="text-[10px] font-bold text-gray-500"> ptn</span>
                 </div>
               </div>
             `;
@@ -1584,7 +1610,7 @@ BELANGRIJKE REGELS:
         }
       }
 
-      // 3. Sessies Historiek
+      // 3. Sessies Historiek (Met Team Rood vs Team Blauw kleurkaders)
       const histListEl = document.getElementById('sbSessionsHistoryList');
       if (histListEl) {
         if (sessions.length === 0) {
@@ -1592,49 +1618,108 @@ BELANGRIJKE REGELS:
         } else {
           histListEl.innerHTML = sessions.map(sess => {
             const players = Array.isArray(sess.players) ? sess.players : [];
-            const winTeam = sess.winningTeam || 'Rood';
-            const winners = players.filter(p => p.team && p.team.toLowerCase() === winTeam.toLowerCase()).sort((a, b) => b.points - a.points);
-            const others = players.filter(p => !p.team || p.team.toLowerCase() !== winTeam.toLowerCase()).sort((a, b) => b.points - a.points);
+            const winTeam = (sess.winningTeam || 'Rood').trim();
+            const isRedWinner = winTeam.toLowerCase() === 'rood';
+            const isBlueWinner = winTeam.toLowerCase() === 'blauw';
+
+            const redPlayers = players.filter(p => (p.team || '').toLowerCase() === 'rood').sort((a, b) => b.points - a.points);
+            const bluePlayers = players.filter(p => (p.team || '').toLowerCase() === 'blauw').sort((a, b) => b.points - a.points);
+            const otherPlayers = players.filter(p => !['rood', 'blauw'].includes((p.team || '').toLowerCase())).sort((a, b) => b.points - a.points);
 
             return `
-              <div class="border-2 border-gray-400 bg-white p-3 rounded space-y-2">
-                <div class="flex justify-between items-center border-b pb-1.5">
-                  <div>
-                    <span class="font-black text-purple-950 text-xs sm:text-sm">📅 ${escapeHtmlAttr(sess.date)}</span>
-                    <span class="ml-2 px-2 py-0.5 rounded text-[10px] font-black ${winTeam === 'Rood' ? 'bg-red-100 text-red-800 border border-red-400' : 'bg-blue-100 text-blue-800 border border-blue-400'}">
+              <div class="border-2 border-gray-400 bg-white p-2.5 sm:p-3 rounded space-y-2">
+                <div class="flex flex-wrap justify-between items-center gap-1.5 border-b pb-1.5">
+                  <div class="flex flex-wrap items-center gap-1.5">
+                    <span class="font-black text-purple-950 text-xs sm:text-sm">📅 ${escapeHtmlAttr(formatDutchSessionDate(sess.date))}</span>
+                    <span class="px-2 py-0.5 rounded text-[10px] font-black ${isRedWinner ? 'bg-red-600 text-white' : isBlueWinner ? 'bg-blue-600 text-white' : 'bg-gray-700 text-white'}">
                       🏆 Winnaar: Team ${escapeHtmlAttr(winTeam)}
                     </span>
                   </div>
-                  <button onclick="deleteSbSession('${escapeHtmlAttr(sess.id)}')" class="win98-btn bg-red-200 text-red-900 text-[10px] px-2">🗑 Wis</button>
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
-                  <div class="bg-green-50 border border-green-300 p-2 rounded">
-                    <div class="font-black text-green-900 text-[11px] mb-1">🏆 Winnend Team (${escapeHtmlAttr(winTeam)})</div>
-                    ${winners.length === 0 ? '<p class="text-gray-500 italic text-[11px]">Geen spelers</p>' : winners.map(p => `
-                      <div class="flex justify-between py-0.5 border-b border-green-200 last:border-0">
-                        <span class="font-bold">${escapeHtmlAttr(p.name)}</span>
-                        <span class="font-black text-green-900">${p.points} ptn</span>
+                  <!-- TEAM ROOD KADER -->
+                  <div class="bg-red-50 border-2 ${isRedWinner ? 'border-red-600 ring-2 ring-yellow-400' : 'border-red-300'} p-2 rounded">
+                    <div class="flex justify-between items-center font-black text-red-900 text-[11px] mb-1 border-b border-red-200 pb-0.5">
+                      <span>🔴 Team Rood</span>
+                      ${isRedWinner ? '<span class="bg-yellow-300 text-black px-1.5 py-0.2 rounded text-[9px] border border-yellow-600">🏆 WINNAAR</span>' : ''}
+                    </div>
+                    ${redPlayers.length === 0 ? '<p class="text-red-400 italic text-[11px]">Geen spelers</p>' : redPlayers.map(p => `
+                      <div class="flex justify-between items-center py-0.5 border-b border-red-200/70 last:border-0">
+                        <span class="font-bold text-red-950 truncate pr-2">${escapeHtmlAttr(p.name)}</span>
+                        <span class="font-black text-red-900 whitespace-nowrap">${p.points} ptn</span>
                       </div>
                     `).join('')}
                   </div>
 
-                  <div class="bg-gray-50 border border-gray-300 p-2 rounded">
-                    <div class="font-black text-gray-800 text-[11px] mb-1">⚔️ Tegenstanders</div>
-                    ${others.length === 0 ? '<p class="text-gray-500 italic text-[11px]">Geen tegenstanders</p>' : others.map(p => `
-                      <div class="flex justify-between py-0.5 border-b border-gray-200 last:border-0">
-                        <span class="font-bold">${escapeHtmlAttr(p.name)} <span class="text-[10px] text-gray-500">(${escapeHtmlAttr(p.team)})</span></span>
-                        <span class="font-black text-gray-800">${p.points} ptn</span>
+                  <!-- TEAM BLAUW KADER -->
+                  <div class="bg-blue-50 border-2 ${isBlueWinner ? 'border-blue-600 ring-2 ring-yellow-400' : 'border-blue-300'} p-2 rounded">
+                    <div class="flex justify-between items-center font-black text-blue-900 text-[11px] mb-1 border-b border-blue-200 pb-0.5">
+                      <span>🔵 Team Blauw</span>
+                      ${isBlueWinner ? '<span class="bg-yellow-300 text-black px-1.5 py-0.2 rounded text-[9px] border border-yellow-600">🏆 WINNAAR</span>' : ''}
+                    </div>
+                    ${bluePlayers.length === 0 ? '<p class="text-blue-400 italic text-[11px]">Geen spelers</p>' : bluePlayers.map(p => `
+                      <div class="flex justify-between items-center py-0.5 border-b border-blue-200/70 last:border-0">
+                        <span class="font-bold text-blue-950 truncate pr-2">${escapeHtmlAttr(p.name)}</span>
+                        <span class="font-black text-blue-900 whitespace-nowrap">${p.points} ptn</span>
                       </div>
                     `).join('')}
                   </div>
                 </div>
+
+                ${otherPlayers.length > 0 ? `
+                  <div class="bg-gray-100 border border-gray-300 p-2 rounded text-xs">
+                    <div class="font-black text-gray-800 text-[11px] mb-1">🏁 Overige Spelers</div>
+                    ${otherPlayers.map(p => `
+                      <div class="flex justify-between items-center py-0.5 border-b border-gray-200 last:border-0">
+                        <span class="font-bold text-gray-900 truncate pr-2">${escapeHtmlAttr(p.name)}</span>
+                        <span class="font-black text-gray-800 whitespace-nowrap">${p.points} ptn</span>
+                      </div>
+                    `).join('')}
+                  </div>
+                ` : ''}
               </div>
             `;
           }).join('');
         }
       }
+
+      renderAdminSessionsList();
     };
+
+    function renderAdminSessionsList() {
+      const adminListEl = document.getElementById('sbAdminSessionsList');
+      if (!adminListEl) return;
+      const sessions = window.mkSessionsData || [];
+
+      if (sessions.length === 0) {
+        adminListEl.innerHTML = '<p class="text-center text-gray-500 p-2 text-xs">Nog geen opgeslagen sessies om te beheren.</p>';
+        return;
+      }
+
+      adminListEl.innerHTML = sessions.map(sess => {
+        const players = Array.isArray(sess.players) ? sess.players : [];
+        const winTeam = (sess.winningTeam || 'Rood').trim();
+        const isConfirming = String(pendingDeleteSessionId) === String(sess.id);
+
+        return `
+          <div class="border border-gray-400 bg-gray-50 p-2 rounded flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
+            <div class="min-w-0">
+              <div class="font-black text-purple-950">📅 ${escapeHtmlAttr(formatDutchSessionDate(sess.date))} <span class="text-[10px] font-bold text-gray-600">(Winnaar: Team ${escapeHtmlAttr(winTeam)})</span></div>
+              <div class="text-[10px] text-gray-700 truncate">${players.map(p => `${escapeHtmlAttr(p.name)} (${p.points})`).join(', ') || 'Geen spelers'}</div>
+            </div>
+            <div class="flex items-center gap-1.5 shrink-0">
+              <button onclick="editSbSessionInAdmin('${escapeHtmlAttr(sess.id)}')" class="win98-btn bg-amber-200 text-amber-950 text-[10px] px-2 py-1">✏️ Aanpassen</button>
+              ${isConfirming
+                ? `<button onclick="deleteSbSession('${escapeHtmlAttr(sess.id)}')" class="win98-btn bg-red-600 text-white text-[10px] px-2 py-1">✔ Bevestig Wis</button>
+                   <button onclick="cancelDeleteSbSession()" class="win98-btn bg-gray-200 text-black text-[10px] px-2 py-1">Annuleer</button>`
+                : `<button onclick="deleteSbSession('${escapeHtmlAttr(sess.id)}')" class="win98-btn bg-red-200 text-red-900 text-[10px] px-2 py-1">🗑 Wis</button>`
+              }
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
 
     // ==========================================
     // 1. WEB AUDIO EFFECTEN VOOR MARIO KART COUNTDOWN
