@@ -8,6 +8,14 @@
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   
+  <!-- Tesseract.js (snelle fallback) + Transformers.js Browser Vision AI (100% lokaal zonder API) -->
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+  <script type="module">
+    import { pipeline, env } from 'https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.4.0';
+    env.allowLocalModels = false;
+    window.hfTransformers = { pipeline, env };
+  </script>
+  
   <!-- Retro Fonts (Press Start 2P, Comic Neue, Orbitron, Impact) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -432,7 +440,7 @@
               <span class="text-[10px] bg-green-100 text-green-800 border border-green-400 px-2 py-0.5 rounded font-bold">Auto-CPU Filter Actief</span>
             </div>
             <p class="text-xs text-gray-700 leading-relaxed">
-              Selecteer <strong>tot 2 foto's</strong> van het eindscherm op je gsm. De AI leest direct de punten van alle echte spelers uit en negeert automatisch Mario Kart CPU's. <em>Na verwerking worden de foto's direct uit het geheugen verwijderd.</em>
+              Selecteer <strong>tot 2 foto's</strong> van het eindscherm op je gsm. De ingebouwde scanner leest direct zonder API-sleutel de punten van alle echte spelers uit en negeert automatisch Mario Kart CPU's. <em>Na verwerking worden de foto's direct uit het geheugen verwijderd.</em>
             </p>
 
             <div class="flex flex-col sm:flex-row gap-2 items-stretch sm:items-center">
@@ -441,7 +449,7 @@
                 <input id="sbPhotoInput" type="file" accept="image/*" multiple class="hidden" onchange="handleSbPhotos(event)">
               </label>
               <button id="sbAnalyzeBtn" onclick="analyzeUploadedPhotos()" disabled class="win98-btn py-2.5 px-4 bg-cyan-300 disabled:opacity-50 text-black font-black text-xs sm:text-sm">
-                🤖 Lees Scores Uit
+                🔍 Lees Scores Uit
               </button>
             </div>
 
@@ -454,9 +462,9 @@
               <div id="sbThumbnails" class="flex gap-2 overflow-x-auto"></div>
             </div>
 
-            <!-- Laad-indicator tijdens Vision AI analyse -->
+            <!-- Laad-indicator tijdens lokale beeldanalyse -->
             <div id="sbLoadingBox" class="hidden text-center py-3 bg-blue-50 border border-blue-300 rounded font-bold text-blue-900 animate-pulse text-xs">
-              ⏳ Bezig met AI-beeldherkenning & CPU's wegfilteren... Even geduld!
+              ⏳ Bezig met Browser Vision AI opstarten (eenmalig model laden)... Even geduld!
             </div>
           </div>
 
@@ -792,150 +800,546 @@
       return bestMatch || rawName;
     }
 
-    // Analyseer één Mario Kart 8 Deluxe Team-eindscherm met Gemini Vision AI (multimodaal)
-    async function extractSinglePhotoWithVisionAI(base64Image, sessionNum, loadingBox) {
-      const apiKey = "";
-      const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+    // Hulpfuncties voor 100% lokale browser-beeldanalyse (geen API-sleutel nodig)
+    function loadImageFromDataUrl(dataUrl) {
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.onload = () => resolve(img);
+        img.onerror = reject;
+        img.src = dataUrl;
+      });
+    }
 
-      const knownList = Array.from(new Set([...FIXED_GROUP_NAMES, ...getKnownPlayerNames()])).join(', ');
-      const prompt = `Analyseer dit Mario Kart 8 Deluxe Team Race eindscherm (Sessie ${sessionNum}).
-Links staan 6 rijen voor Team Rood ("Rood") en rechts staan 6 rijen voor Team Blauw ("Blauw").
-Bovenaan staan in het groot de twee team-totaalscores (inclusief CPU-punten, bijv. 432 links voor Rood en 490 rechts voor Blauw) en een gouden trofee boven het winnende team.
+    // Zoek het exacte Mario Kart 8 Deluxe scorebordkader (rood links / blauw rechts)
+    function detectScoreboardBounds(img) {
+      const w = img.width;
+      const h = img.height;
+      const c = document.createElement('canvas');
+      c.width = w;
+      c.height = h;
+      const ctx = c.getContext('2d');
+      ctx.drawImage(img, 0, 0);
+      const data = ctx.getImageData(0, 0, w, h).data;
 
-BELANGRIJKE REGELS:
-1. WINNEND TEAM: Het winnende team ("Rood" of "Blauw") wordt UITSLUITEND bepaald door de grote team-totaalscore bovenaan (hoogste totaalscore = winnaar) en/of de gouden trofee. Let op: het winnende team is NIET noodzakelijk het team met de hoogste punten van de echte menselijke spelers alleen, want CPU-punten tellen mee in de grote teamscore bovenaan!
-2. ECHTE SPELERS vs CPU'S: Geef in de lijst "players" ALLEEN de echte menselijke spelers en hun individuele score terug (bekende namen in deze groep zijn o.a.: ${knownList}, maar ook eventuele nieuwe echte spelersnamen).
-3. NEGEER CPU'S: Neem standaard Mario Kart CPU-personages (zoals Mario, Luigi, Peach, Daisy, Yoshi, Toad, Koopa Troopa, Shy Guy, Lakitu, Toadette, King Boo, Baby Mario/Luigi/Peach/Daisy/Rosalina, Metal Mario, Pink Gold Peach, Wario, Waluigi, Donkey Kong, Bowser, Dry Bones, Bowser Jr., Dry Bowser, Lemmy, Larry, Wendy, Ludwig, Iggy, Roy, Morton, Inkling, Link, Villager, Isabelle, Birdo, Petey Piranha, Wiggler, Kamek, Peachette, Funky Kong, Diddy Kong, Pauline) NIET op in de lijst "players".`;
-
-      const payload = {
-        contents: [
-          {
-            role: "user",
-            parts: [
-              { text: prompt },
-              {
-                inlineData: {
-                  mimeType: "image/jpeg",
-                  data: base64Image
-                }
-              }
-            ]
-          }
-        ],
-        generationConfig: {
-          responseMimeType: "application/json",
-          responseSchema: {
-            type: "OBJECT",
-            properties: {
-              redTeamTotal: { type: "INTEGER" },
-              blueTeamTotal: { type: "INTEGER" },
-              winningTeam: { type: "STRING", enum: ["Rood", "Blauw"] },
-              players: {
-                type: "ARRAY",
-                items: {
-                  type: "OBJECT",
-                  properties: {
-                    name: { type: "STRING" },
-                    points: { type: "INTEGER" },
-                    team: { type: "STRING", enum: ["Rood", "Blauw"] }
-                  },
-                  required: ["name", "points", "team"]
-                }
-              }
-            },
-            required: ["redTeamTotal", "blueTeamTotal", "winningTeam", "players"]
-          }
-        }
-      };
-
-      const delays = [1000, 2000, 4000];
-      for (let attempt = 0; attempt <= delays.length; attempt++) {
-        try {
-          if (loadingBox) {
-            loadingBox.textContent = `⏳ Sessie ${sessionNum}: Vision AI leest grote teamscores en echte spelers uit...`;
-          }
-          const response = await fetch(apiUrl, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-          });
-
-          if (!response.ok) {
-            throw new Error(`HTTP ${response.status}`);
-          }
-
-          const result = await response.json();
-          const rawJson = result?.candidates?.[0]?.content?.parts?.[0]?.text;
-          if (!rawJson) throw new Error("Leeg antwoord van Vision AI");
-
-          const parsed = JSON.parse(rawJson);
-          const cleanPlayers = (parsed.players || [])
-            .filter(p => p && p.name && !isCpuName(p.name))
-            .map(p => ({
-              name: matchKnownPlayerName(p.name.trim()),
-              points: Number(p.points) || 0,
-              team: (p.team === 'Blauw') ? 'Blauw' : 'Rood'
-            }));
-
-          const redTot = Number(parsed.redTeamTotal) || 0;
-          const blueTot = Number(parsed.blueTeamTotal) || 0;
-          let winTeam = parsed.winningTeam === 'Blauw' ? 'Blauw' : 'Rood';
-          if (redTot > 0 && blueTot > 0 && redTot !== blueTot) {
-            winTeam = blueTot > redTot ? 'Blauw' : 'Rood';
-          }
-          return { winningTeam: winTeam, players: cleanPlayers };
-        } catch (err) {
-          if (attempt < delays.length) {
-            await new Promise(res => setTimeout(res, delays[attempt]));
-          } else {
-            console.warn(`Vision AI fout bij sessie ${sessionNum}:`, err);
-            return { winningTeam: 'Rood', players: [] };
+      let minX = w, maxX = 0, minY = h, maxY = 0, hits = 0;
+      for (let y = Math.floor(h * 0.08); y < Math.floor(h * 0.94); y += 2) {
+        for (let x = Math.floor(w * 0.03); x < Math.floor(w * 0.97); x += 2) {
+          const i = (y * w + x) * 4;
+          const r = data[i], g = data[i + 1], b = data[i + 2];
+          // Sterk rood (Team Rood balken) of sterk blauw (Team Blauw balken)
+          const isRedBar = r > 150 && r > g * 1.65 && r > b * 1.65;
+          const isBlueBar = b > 150 && b > r * 1.55 && b > g * 1.25;
+          if (isRedBar || isBlueBar) {
+            if (x < minX) minX = x;
+            if (x > maxX) maxX = x;
+            if (y < minY) minY = y;
+            if (y > maxY) maxY = y;
+            hits++;
           }
         }
       }
-      return { winningTeam: 'Rood', players: [] };
+
+      if (hits > 250 && (maxX - minX) > w * 0.35 && (maxY - minY) > h * 0.25) {
+        const padX = Math.round((maxX - minX) * 0.03);
+        const padY = Math.round((maxY - minY) * 0.06);
+        return {
+          x: Math.max(0, minX - padX),
+          y: Math.max(0, minY - padY),
+          w: Math.min(w, maxX + padX) - Math.max(0, minX - padX),
+          h: Math.min(h, maxY + padY) - Math.max(0, minY - padY)
+        };
+      }
+      return { x: 0, y: 0, w, h };
     }
 
-    // Vision AI aanroepen om scores uit te lezen
+    // Maak een hoog-contrast zwart-wit uitsnede voor optimale OCR
+    function createHighContrastCrop(img, sx, sy, sw, sh, scale = 2.2) {
+      const c = document.createElement('canvas');
+      c.width = Math.max(10, Math.round(sw * scale));
+      c.height = Math.max(10, Math.round(sh * scale));
+      const ctx = c.getContext('2d');
+      ctx.imageSmoothingEnabled = true;
+      ctx.drawImage(img, sx, sy, sw, sh, 0, 0, c.width, c.height);
+
+      const imgData = ctx.getImageData(0, 0, c.width, c.height);
+      const d = imgData.data;
+      for (let i = 0; i < d.length; i += 4) {
+        const lum = 0.299 * d[i] + 0.587 * d[i + 1] + 0.114 * d[i + 2];
+        // Witte letters/cijfers op gekleurde balken scherp zwart op wit maken
+        const val = lum > 168 ? 0 : 255;
+        d[i] = val;
+        d[i + 1] = val;
+        d[i + 2] = val;
+        d[i + 3] = 255;
+      }
+      ctx.putImageData(imgData, 0, 0);
+      return c;
+    }
+
+    // Wiskundige 7-segment LCD decoder voor het cijfervakje rechts op een rij
+    function decodeSevenSegmentScoreFromRow(img, rx, ry, rw, rh) {
+      const c = document.createElement('canvas');
+      c.width = Math.max(20, Math.round(rw * 3));
+      c.height = Math.max(16, Math.round(rh * 3));
+      const ctx = c.getContext('2d');
+      ctx.drawImage(img, rx, ry, rw, rh, 0, 0, c.width, c.height);
+
+      const w = c.width, h = c.height;
+      const d = ctx.getImageData(0, 0, w, h).data;
+      const bin = new Uint8Array(w * h);
+
+      for (let y = 0; y < h; y++) {
+        for (let x = 0; x < w; x++) {
+          const i = (y * w + x) * 4;
+          const lum = 0.299 * d[i] + 0.587 * d[i + 1] + 0.114 * d[i + 2];
+          bin[y * w + x] = lum > 175 ? 1 : 0;
+        }
+      }
+
+      // Vind verticale grenzen van de cijfers
+      let topY = h, botY = 0;
+      for (let y = Math.floor(h * 0.12); y < Math.floor(h * 0.88); y++) {
+        let rowSum = 0;
+        for (let x = 0; x < w; x++) rowSum += bin[y * w + x];
+        if (rowSum >= 2) {
+          if (y < topY) topY = y;
+          if (y > botY) botY = y;
+        }
+      }
+      if (botY - topY < 8) return null;
+
+      // Vind horizontale kolommen per afzonderlijk cijfer
+      const colActive = new Uint8Array(w);
+      for (let x = 0; x < w; x++) {
+        let colSum = 0;
+        for (let y = topY; y <= botY; y++) colSum += bin[y * w + x];
+        colActive[x] = colSum >= 2 ? 1 : 0;
+      }
+
+      const boxes = [];
+      let inBox = false, startX = 0;
+      for (let x = 0; x < w; x++) {
+        if (colActive[x] && !inBox) {
+          inBox = true;
+          startX = x;
+        } else if (!colActive[x] && inBox) {
+          inBox = false;
+          if (x - startX >= 2) boxes.push({ x0: startX, x1: x - 1 });
+        }
+      }
+      if (inBox && w - startX >= 2) boxes.push({ x0: startX, x1: w - 1 });
+      if (boxes.length === 0 || boxes.length > 3) return null;
+
+      const digitPatterns = {
+        '1111110': '0',
+        '0110000': '1',
+        '1101101': '2',
+        '1111001': '3',
+        '0110011': '4',
+        '1011011': '5',
+        '1011111': '6',
+        '1110000': '7',
+        '1111111': '8',
+        '1111011': '9'
+      };
+
+      const sampleZone = (x0, x1, y0, y1) => {
+        let count = 0, total = 0;
+        for (let y = Math.max(0, Math.floor(y0)); y <= Math.min(h - 1, Math.ceil(y1)); y++) {
+          for (let x = Math.max(0, Math.floor(x0)); x <= Math.min(w - 1, Math.ceil(x1)); x++) {
+            total++;
+            if (bin[y * w + x]) count++;
+          }
+        }
+        return total > 0 && (count / total) > 0.28 ? '1' : '0';
+      };
+
+      let resultDigits = '';
+      const dh = botY - topY;
+      for (const b of boxes) {
+        const dw = b.x1 - b.x0;
+        // Smalle staaf = cijfer 1
+        if (dw < dh * 0.28) {
+          resultDigits += '1';
+          continue;
+        }
+        const midX = (b.x0 + b.x1) / 2;
+        const midY = (topY + botY) / 2;
+        const q1Y = topY + dh * 0.25;
+        const q3Y = topY + dh * 0.75;
+
+        const segA = sampleZone(b.x0 + dw * 0.25, b.x1 - dw * 0.25, topY, topY + dh * 0.16);
+        const segB = sampleZone(b.x1 - dw * 0.26, b.x1, topY + dh * 0.12, midY - dh * 0.06);
+        const segC = sampleZone(b.x1 - dw * 0.26, b.x1, midY + dh * 0.06, botY - dh * 0.12);
+        const segD = sampleZone(b.x0 + dw * 0.25, b.x1 - dw * 0.25, botY - dh * 0.16, botY);
+        const segE = sampleZone(b.x0, b.x0 + dw * 0.26, midY + dh * 0.06, botY - dh * 0.12);
+        const segF = sampleZone(b.x0, b.x0 + dw * 0.26, topY + dh * 0.12, midY - dh * 0.06);
+        const segG = sampleZone(b.x0 + dw * 0.25, b.x1 - dw * 0.25, midY - dh * 0.10, midY + dh * 0.10);
+
+        const code = segA + segB + segC + segD + segE + segF + segG;
+        if (digitPatterns[code]) {
+          resultDigits += digitPatterns[code];
+        } else {
+          // Zoek dichtstbijzijnde 7-segment patroon (max 1 segment verschil)
+          let bestDigit = null, bestDiff = 99;
+          for (const [pat, dig] of Object.entries(digitPatterns)) {
+            let diff = 0;
+            for (let k = 0; k < 7; k++) if (pat[k] !== code[k]) diff++;
+            if (diff < bestDiff) {
+              bestDiff = diff;
+              bestDigit = dig;
+            }
+          }
+          if (bestDiff <= 1 && bestDigit) {
+            resultDigits += bestDigit;
+          } else {
+            return null;
+          }
+        }
+      }
+
+      const num = parseInt(resultDigits, 10);
+      return (!isNaN(num) && num >= 0 && num <= 300) ? num : null;
+    }
+
+    // Cache voor lokaal Browser Vision AI model (Florence-2 via Transformers.js, zonder API-sleutel)
+    let localVisionModelPromise = null;
+
+    async function getLocalVisionAI(loadingBox) {
+      if (!window.hfTransformers) return null;
+      if (!localVisionModelPromise) {
+        const { pipeline } = window.hfTransformers;
+        const device = navigator.gpu ? 'webgpu' : 'wasm';
+        localVisionModelPromise = pipeline('image-text-to-text', 'onnx-community/Florence-2-base-ft', {
+          device,
+          dtype: 'fp32',
+          progress_callback: (info) => {
+            if (loadingBox && info && info.status === 'progress' && typeof info.progress === 'number') {
+              loadingBox.textContent = `⏳ Browser Vision AI laden (${Math.round(info.progress)}%) — eenmalig, zonder API...`;
+            }
+          }
+        }).catch(err => {
+          localVisionModelPromise = null;
+          throw err;
+        });
+      }
+      return localVisionModelPromise;
+    }
+
+    // Parseer vrije OCR/Vision AI tekstregels met coördinaten in Team Rood (links) en Team Blauw (rechts)
+    function parseFlorenceOcrWithRegions(ocrResult, imgWidth, imgHeight, bounds) {
+      const quadBoxes = ocrResult?.quad_boxes || [];
+      const labels = ocrResult?.labels || [];
+      if (quadBoxes.length === 0 || labels.length === 0) return null;
+
+      const midX = bounds.x + bounds.w * 0.5;
+      const topCutoffY = bounds.y + bounds.h * 0.14;
+
+      const topRedNums = [];
+      const topBlueNums = [];
+      const redEntries = [];
+      const blueEntries = [];
+
+      for (let i = 0; i < labels.length; i++) {
+        const text = String(labels[i] || '').replace(/<\/?s>|<pad>/g, '').trim();
+        const box = quadBoxes[i];
+        if (!text || !box || box.length < 8) continue;
+
+        const xs = [box[0], box[2], box[4], box[6]];
+        const ys = [box[1], box[3], box[5], box[7]];
+        const cx = (Math.min(...xs) + Math.max(...xs)) / 2;
+        const cy = (Math.min(...ys) + Math.max(...ys)) / 2;
+        const isBlue = cx >= midX;
+
+        // Grote team-totaalscores bovenaan (om winnend team incl. CPU-punten te bepalen)
+        if (cy < topCutoffY) {
+          const bigNums = (text.match(/\d{2,4}/g) || []).map(n => parseInt(n, 10)).filter(n => n >= 40 && n <= 2000);
+          if (isBlue) topBlueNums.push(...bigNums);
+          else topRedNums.push(...bigNums);
+          continue;
+        }
+
+        const item = { text, cx, cy, x0: Math.min(...xs), x1: Math.max(...xs) };
+        if (isBlue) blueEntries.push(item);
+        else redEntries.push(item);
+      }
+
+      const buildTeamPlayers = (entries, teamLabel) => {
+        // Groepeer tekstblokjes op dezelfde verticale rij (cy binnen 3.2% van kaderhoogte)
+        const rowTol = Math.max(14, bounds.h * 0.032);
+        entries.sort((a, b) => a.cy - b.cy);
+        const rows = [];
+        for (const it of entries) {
+          const r = rows.find(row => Math.abs(row.cy - it.cy) <= rowTol);
+          if (r) {
+            r.items.push(it);
+            r.cy = (r.cy + it.cy) / 2;
+          } else {
+            rows.push({ cy: it.cy, items: [it] });
+          }
+        }
+
+        const players = [];
+        for (const r of rows) {
+          r.items.sort((a, b) => a.x0 - b.x0);
+          const fullRowText = r.items.map(it => it.text).join(' ').trim();
+
+          // Zoek naar punten (1 tot 3 cijfers, typisch helemaal rechts in de balk)
+          let points = null;
+          let nameParts = [];
+          for (let k = r.items.length - 1; k >= 0; k--) {
+            const t = r.items[k].text.trim();
+            const numMatch = t.match(/^(\d{1,3})$/);
+            if (points === null && numMatch) {
+              const val = parseInt(numMatch[1], 10);
+              if (val >= 0 && val <= 300) {
+                points = val;
+                continue;
+              }
+            }
+            // Soms plakt naam en score samen in één blok, bv. "PARRE 125"
+            const combinedMatch = t.match(/^(.+?)\s+(\d{1,3})$/);
+            if (points === null && combinedMatch) {
+              const val = parseInt(combinedMatch[2], 10);
+              if (val >= 0 && val <= 300) {
+                points = val;
+                nameParts.unshift(combinedMatch[1].trim());
+                continue;
+              }
+            }
+            nameParts.unshift(t);
+          }
+
+          const rawName = nameParts.join(' ').replace(/[^A-Za-zÀ-ÿ0-9\s-]/g, '').trim();
+          if (!rawName || rawName.length < 2 || /^\d+$/.test(rawName)) continue;
+
+          const matchedName = matchKnownPlayerName(rawName);
+          if (isCpuName(matchedName) || isCpuName(rawName)) continue;
+          if (players.some(p => p.name.toLowerCase() === matchedName.toLowerCase())) continue;
+
+          players.push({
+            name: matchedName,
+            points: points !== null ? points : 0,
+            team: teamLabel
+          });
+        }
+        return players;
+      };
+
+      const redPlayers = buildTeamPlayers(redEntries, 'Rood');
+      const bluePlayers = buildTeamPlayers(blueEntries, 'Blauw');
+      const redTotal = topRedNums.length > 0 ? Math.max(...topRedNums) : 0;
+      const blueTotal = topBlueNums.length > 0 ? Math.max(...topBlueNums) : 0;
+      const winningTeam = (blueTotal > redTotal && redTotal > 0) ? 'Blauw' : 'Rood';
+
+      return {
+        winningTeam,
+        players: [...redPlayers, ...bluePlayers]
+      };
+    }
+
+    // Analyseer één Mario Kart 8 Deluxe Team-eindscherm met Browser Vision AI (geen API-sleutel nodig) + OCR fallback
+    async function extractSinglePhotoLocally(dataUrlImage, sessionNum, loadingBox) {
+      try {
+        const img = await loadImageFromDataUrl(dataUrlImage);
+        const bounds = detectScoreboardBounds(img);
+
+        // Poging 1: Echte Vision AI in de browser via Transformers.js (Florence-2)
+        if (window.hfTransformers) {
+          try {
+            if (loadingBox) {
+              loadingBox.textContent = `⏳ Sessie ${sessionNum}: Browser Vision AI analyseert de foto...`;
+            }
+            const visionModel = await getLocalVisionAI(loadingBox);
+            if (visionModel) {
+              const prompt = '<OCR_WITH_REGION>';
+              const output = await visionModel(dataUrlImage, prompt, { max_new_tokens: 1024 });
+              const rawText = Array.isArray(output) ? output[0]?.generated_text : output?.generated_text;
+              if (rawText && visionModel.processor && visionModel.processor.post_process_generation) {
+                const parsed = visionModel.processor.post_process_generation(
+                  rawText,
+                  prompt,
+                  [img.width, img.height]
+                );
+                const ocrRegionData = parsed['<OCR_WITH_REGION>'];
+                const aiResult = parseFlorenceOcrWithRegions(ocrRegionData, img.width, img.height, bounds);
+                if (aiResult && aiResult.players.length > 0) {
+                  return {
+                    winningTeam: aiResult.winningTeam,
+                    players: aiResult.players,
+                    error: null
+                  };
+                }
+              }
+            }
+          } catch (visionErr) {
+            console.warn("Browser Vision AI fallback naar lokale scanner:", visionErr);
+          }
+        }
+
+        // Poging 2: Snelle fallback als Vision AI op het toestel niet ondersteund wordt
+        if (!window.Tesseract) {
+          return { winningTeam: 'Rood', players: [], error: 'Beeldherkenningsmodule kon niet worden geladen' };
+        }
+
+        const worker = await Tesseract.createWorker('eng');
+
+        // 1. Lees grote teamscores bovenaan (om winnend team incl. CPU-punten te bepalen)
+        if (loadingBox) {
+          loadingBox.textContent = `⏳ Sessie ${sessionNum}: Grote teamscores bovenaan lezen...`;
+        }
+        await worker.setParameters({ tessedit_char_whitelist: '0123456789' });
+        const topRedCrop = createHighContrastCrop(img, bounds.x + bounds.w * 0.05, bounds.y, bounds.w * 0.42, bounds.h * 0.16, 2.0);
+        const topBlueCrop = createHighContrastCrop(img, bounds.x + bounds.w * 0.53, bounds.y, bounds.w * 0.42, bounds.h * 0.16, 2.0);
+
+        const [redTopRes, blueTopRes] = await Promise.all([
+          worker.recognize(topRedCrop),
+          worker.recognize(topBlueCrop)
+        ]);
+
+        const extractLargestNumber = (txt) => {
+          const nums = (txt.match(/\d{2,4}/g) || []).map(n => parseInt(n, 10)).filter(n => n >= 40 && n <= 2000);
+          return nums.length > 0 ? Math.max(...nums) : 0;
+        };
+        const redTeamTotal = extractLargestNumber(redTopRes.data.text || '');
+        const blueTeamTotal = extractLargestNumber(blueTopRes.data.text || '');
+        const winningTeam = (blueTeamTotal > redTeamTotal && redTeamTotal > 0) ? 'Blauw' : 'Rood';
+
+        // 2. Scan linker kolom (Team Rood) en rechter kolom (Team Blauw)
+        const scanTeamColumn = async (teamLabel, nameStartRatio, nameWidthRatio, scoreStartRatio, scoreWidthRatio) => {
+          if (loadingBox) {
+            loadingBox.textContent = `⏳ Sessie ${sessionNum}: Spelers & punten van Team ${teamLabel} uitlezen...`;
+          }
+          const colY = bounds.y + bounds.h * 0.13;
+          const colH = bounds.h * 0.84;
+          const nameX = bounds.x + bounds.w * nameStartRatio;
+          const nameW = bounds.w * nameWidthRatio;
+
+          await worker.setParameters({ tessedit_char_whitelist: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 ' });
+          const scale = 2.4;
+          const nameCrop = createHighContrastCrop(img, nameX, colY, nameW, colH, scale);
+          const nameRes = await worker.recognize(nameCrop);
+
+          const words = (nameRes.data.words || []).filter(w => w.text && w.text.trim().length >= 2);
+          // Groepeer woorden op dezelfde verticale Y-hoogte (zoals "Yon" + "Herm")
+          const rows = [];
+          words.sort((a, b) => a.bbox.y0 - b.bbox.y0);
+          for (const wObj of words) {
+            const cy = (wObj.bbox.y0 + wObj.bbox.y1) / 2;
+            const existingRow = rows.find(r => Math.abs(r.cy - cy) < (16 * scale));
+            if (existingRow) {
+              existingRow.words.push(wObj);
+              existingRow.y0 = Math.min(existingRow.y0, wObj.bbox.y0);
+              existingRow.y1 = Math.max(existingRow.y1, wObj.bbox.y1);
+            } else {
+              rows.push({
+                cy,
+                y0: wObj.bbox.y0,
+                y1: wObj.bbox.y1,
+                words: [wObj]
+              });
+            }
+          }
+
+          const foundPlayers = [];
+          await worker.setParameters({ tessedit_char_whitelist: '0123456789' });
+
+          for (const row of rows) {
+            row.words.sort((a, b) => a.bbox.x0 - b.bbox.x0);
+            const rawCombined = row.words.map(w => w.text.trim()).join(' ').trim();
+            if (!rawCombined || /^\d+$/.test(rawCombined)) continue;
+
+            const matchedName = matchKnownPlayerName(rawCombined);
+            if (isCpuName(matchedName) || isCpuName(rawCombined)) continue;
+            // Vermijd dubbele invoer van dezelfde speler in hetzelfde team
+            if (foundPlayers.some(p => p.name.toLowerCase() === matchedName.toLowerCase())) continue;
+
+            // Bereken exacte Y-positie op de originele afbeelding voor het puntenvakje rechts
+            const origRowTop = colY + (row.y0 / scale) - (bounds.h * 0.015);
+            const origRowHeight = Math.max(bounds.h * 0.065, ((row.y1 - row.y0) / scale) + (bounds.h * 0.03));
+            const scoreX = bounds.x + bounds.w * scoreStartRatio;
+            const scoreW = bounds.w * scoreWidthRatio;
+
+            // Probeer eerst de wiskundige 7-segment decoder, en val terug op cijfer-OCR
+            let pts = decodeSevenSegmentScoreFromRow(img, scoreX, origRowTop, scoreW, origRowHeight);
+            if (pts === null) {
+              const scoreCrop = createHighContrastCrop(img, scoreX, origRowTop, scoreW, origRowHeight, 3.0);
+              const scoreRes = await worker.recognize(scoreCrop);
+              const digitsMatch = (scoreRes.data.text || '').replace(/\s+/g, '').match(/\d{1,3}/);
+              pts = digitsMatch ? parseInt(digitsMatch[0], 10) : 0;
+            }
+
+            foundPlayers.push({
+              name: matchedName,
+              points: pts || 0,
+              team: teamLabel
+            });
+          }
+
+          return foundPlayers;
+        };
+
+        const redPlayers = await scanTeamColumn('Rood', 0.11, 0.28, 0.39, 0.095);
+        const bluePlayers = await scanTeamColumn('Blauw', 0.56, 0.28, 0.84, 0.095);
+
+        await worker.terminate();
+
+        return {
+          winningTeam,
+          players: [...redPlayers, ...bluePlayers],
+          error: null
+        };
+      } catch (err) {
+        console.warn(`Lokale scanner fout bij sessie ${sessionNum}:`, err);
+        return { winningTeam: 'Rood', players: [], error: err.message || 'Onbekende fout' };
+      }
+    }
+
+    // Lokale beeldherkenning aanroepen om scores uit te lezen zonder API
     window.analyzeUploadedPhotos = async function() {
-      if (tempBase64Photos.length === 0) return;
+      if (tempDataUrlPhotos.length === 0) return;
 
       const loadingBox = document.getElementById('sbLoadingBox');
       const analyzeBtn = document.getElementById('sbAnalyzeBtn');
       loadingBox.classList.remove('hidden');
-      loadingBox.textContent = "⏳ Bezig met starten van Vision AI beeldherkenning...";
+      loadingBox.textContent = "⏳ Bezig met opstarten van lokale beeldherkenning...";
       analyzeBtn.disabled = true;
 
-      const photosToProcess = [...tempBase64Photos];
+      const photosToProcess = [...tempDataUrlPhotos];
+      let lastError = null;
 
       // Foto 1 is de laatste sessie van de avond (Sessie 2), Foto 2 is de eerste sessie (Sessie 1)
       if (photosToProcess.length > 1) {
-        const s1 = await extractSinglePhotoWithVisionAI(photosToProcess[1], 1, loadingBox);
+        const s1 = await extractSinglePhotoLocally(photosToProcess[1], 1, loadingBox);
         currentDraftPlayers1 = s1.players;
+        if (s1.error) lastError = s1.error;
         const t1 = document.getElementById('sbWinningTeam1');
         if (t1) t1.value = s1.winningTeam;
       } else {
         currentDraftPlayers1 = [];
       }
 
-      const s2 = await extractSinglePhotoWithVisionAI(photosToProcess[0], 2, loadingBox);
+      const s2 = await extractSinglePhotoLocally(photosToProcess[0], 2, loadingBox);
       currentDraftPlayers2 = s2.players;
+      if (s2.error) lastError = s2.error;
       const t2 = document.getElementById('sbWinningTeam2');
       if (t2) t2.value = s2.winningTeam;
 
       // FOTO'S DIRECT AUTOMATISCH VERWIJDEREN UIT GEHEUGEN
       clearTempPhotos();
       loadingBox.classList.add('hidden');
-      loadingBox.textContent = "⏳ Bezig met AI-beeldherkenning & CPU's wegfilteren... Even geduld!";
+      loadingBox.textContent = "⏳ Bezig met lokale beeldherkenning & CPU's wegfilteren... Even geduld!";
 
       renderDraftPlayersTable(1);
       renderDraftPlayersTable(2);
 
       const totalFound = currentDraftPlayers1.length + currentDraftPlayers2.length;
       if (totalFound > 0) {
-        showSbBanner(`✅ ${totalFound} speler(s) uitgelezen via Vision AI! Controleer hieronder de namen/teams en klik op Opslaan.`);
+        showSbBanner(`✅ ${totalFound} speler(s) uitgelezen met Browser Vision AI (zonder API)! Controleer hieronder de namen/punten en klik op Opslaan.`);
+      } else if (lastError) {
+        showSbBanner(`⚠️ Fout tijdens uitlezen (${lastError}). Voeg de spelers handmatig toe via '+ Speler'.`, true);
       } else {
-        showSbBanner("⚠️ Kon de foto's niet automatisch uitlezen. Voeg de spelers handmatig toe via '+ Speler'.", true);
+        showSbBanner("⚠️ Kon geen spelers herkennen op de foto. Voeg de spelers handmatig toe via '+ Speler'.", true);
       }
     };
 
